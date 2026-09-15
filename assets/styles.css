@@ -56,8 +56,9 @@ html {
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /* nav / reserved face-safe zone the text may never start above / text */
+  grid-template-rows: auto minmax(46dvh, 1fr) auto;
   color: #fff;
   overflow: hidden;
 }
@@ -85,6 +86,7 @@ html {
 /* -- Nav -- */
 
 .hero__nav {
+  grid-row: 1;
   position: relative;
   z-index: 3;
   display: flex;
@@ -178,12 +180,13 @@ html {
   z-index: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: flex-start;
+  padding-top: clamp(4.5rem, 11dvh, 7rem);
   pointer-events: none;
 }
 
 .hero__image img {
-  height: 78%;
+  height: 68dvh;
   width: auto;
   max-width: none;
   display: block;
@@ -208,11 +211,9 @@ html {
 /* -- Body -- */
 
 .hero__body {
+  grid-row: 3;
   position: relative;
   z-index: 2;
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
   padding: 1rem clamp(1rem, 4vw, 3rem) clamp(2rem, 6vw, 4rem);
 }
 
