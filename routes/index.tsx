@@ -1,5 +1,6 @@
 import { Head } from "fresh/runtime";
 import { define } from "../utils.ts";
+import ParallaxBg from "../islands/ParallaxBg.tsx";
 import logo from "../assets/logotyp-bialy.png";
 import flagBg from "../assets/flaga-polski.jpg";
 import filipHero from "../assets/filip-impreza-transparent.png";
@@ -11,7 +12,7 @@ export default define.page(function Home() {
         <title>Homeyko — Filip Gałązka na przewodniczącego</title>
       </Head>
       <section class="hero">
-        <div class="hero__bg" style={{ backgroundImage: `url(${flagBg})` }} />
+        <ParallaxBg src={flagBg} class="hero__bg" />
         <div class="hero__overlay" />
 
         <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden />
