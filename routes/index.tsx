@@ -97,17 +97,13 @@ export default define.page(function Home() {
         <div class="hero__body">
           <div class="hero__content">
             <h1 class="hero__title">
-              <span class="hero__title-main">Gałązka</span>
               <span class="hero__title-sub">Filip</span>
+              <span class="hero__title-main">Gałązka</span>
             </h1>
             <p class="hero__text">
-              Kandydat w wyborach na przewodniczącego samorządu uczniowskiego
-              CXXII LO im. Ignacego Domeyki w Warszawie.
+              Kandydat w wyborach na przewodniczącego samorządu w CXXII LO im.
+              Ignacego Domeyki.
             </p>
-            <div class="hero__cta">
-              <a href="#program" class="btn btn--primary">Poznaj program</a>
-              <a href="#kontakt" class="btn btn--ghost">Skontaktuj się</a>
-            </div>
           </div>
         </div>
       </section>
