@@ -98,12 +98,20 @@ export default define.page(function Home() {
           <div class="hero__content">
             <h1 class="hero__title">
               <span class="hero__title-sub">Filip</span>
-              <span class="hero__title-main">Gałązka</span>
+              <span class="hero__title-main">
+                <svg
+                  class="hero__checkbox"
+                  viewBox="0 0 100 100"
+                  aria-hidden="true"
+                >
+                  <path d="M19 13 Q10 14 10 23 L8 76 Q8 87 19 88 L79 90 Q90 90 91 79 L93 22 Q93 11 82 12 Z" />
+                  <path d="M26 27 Q50 53 74 76" />
+                  <path d="M75 26 Q49 52 25 75" />
+                </svg>
+                Gałązka
+              </span>
             </h1>
-            <p class="hero__text">
-              Kandydat w wyborach na przewodniczącego samorządu w CXXII LO im.
-              Ignacego Domeyki.
-            </p>
+            <p class="hero__text">Wszyscy siedzimy na jednej gałęzi.</p>
           </div>
         </div>
       </section>

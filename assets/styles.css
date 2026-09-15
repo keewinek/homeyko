@@ -229,10 +229,29 @@ html {
 }
 
 .hero__title-main {
+  position: relative;
   font-size: clamp(2.75rem, 9vw, 5.5rem);
   font-weight: 900;
   letter-spacing: 0.01em;
   color: #fff;
+}
+
+.hero__checkbox {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-54%);
+  width: 0.62em;
+  height: 0.62em;
+  margin-right: 0.16em;
+}
+
+.hero__checkbox path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .hero__title-sub {
