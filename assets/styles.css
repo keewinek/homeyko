@@ -50,6 +50,7 @@ html {
   --brand-maroon: #540002;
   --brand-maroon-dark: #2e0001;
   --brand-coral: #e07676;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
 }
 
 .hero {
@@ -158,20 +159,12 @@ html {
 
 .nav-toggle-btn {
   display: none;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 5px;
   width: 28px;
-  height: 22px;
+  height: 28px;
+  color: #fff;
   cursor: pointer;
-}
-
-.nav-toggle-btn span {
-  display: block;
-  height: 2px;
-  width: 100%;
-  background: #fff;
-  border-radius: 2px;
 }
 
 /* -- Full-screen photo background -- */
@@ -225,39 +218,28 @@ html {
   margin: 0 auto;
 }
 
-.hero__eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--brand-coral);
-  margin-bottom: 0.75rem;
-}
-
 .hero__title {
   display: flex;
   flex-direction: column;
-  font-weight: 800;
+  align-items: center;
+  font-family: var(--font-display);
   line-height: 1.05;
-  letter-spacing: 0.02em;
   margin-bottom: 1.25rem;
 }
 
-.hero__title span {
-  font-size: clamp(2.5rem, 7vw, 4.5rem);
+.hero__title-main {
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: #fff;
 }
 
-.hero__title span.hero__title-sub {
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
-  font-weight: 400;
-  font-style: italic;
-  color: #f2e4e4;
-  margin: 0.15em 0;
-}
-
-.hero__title span.hero__title-accent {
+.hero__title-sub {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--brand-coral);
-  font-size: clamp(1.75rem, 5vw, 3.25rem);
+  margin-top: 0.1em;
 }
 
 .hero__text {
