@@ -214,17 +214,18 @@ html {
 
 .hero__content {
   width: 100%;
-  text-align: left;
+  text-align: center;
 }
 
 .hero__title {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: fit-content;
+  margin: 0 auto 1rem;
   font-family: var(--font-display);
   text-transform: uppercase;
   line-height: 1.05;
-  margin-bottom: 1rem;
 }
 
 .hero__title-main {
@@ -246,7 +247,7 @@ html {
   color: #f2e4e4;
   font-size: clamp(0.85rem, 1.3vw, 1rem);
   max-width: 40ch;
-  margin: 0;
+  margin: 0 auto;
 }
 
 .hero__cta {
