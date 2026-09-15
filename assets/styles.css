@@ -75,9 +75,9 @@ html {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(46, 0, 1, 0.96) 0%,
-    rgba(84, 0, 2, 0.88) 45%,
-    rgba(46, 0, 1, 0.96) 100%
+    rgba(46, 0, 1, 0.75) 0%,
+    rgba(84, 0, 2, 0.55) 45%,
+    rgba(46, 0, 1, 0.75) 100%
   );
   z-index: -1;
 }
@@ -183,7 +183,7 @@ html {
 }
 
 .hero__image img {
-  height: 108%;
+  height: 78%;
   width: auto;
   max-width: none;
   display: block;
@@ -197,11 +197,11 @@ html {
   z-index: 1;
   background: linear-gradient(
     180deg,
-    rgba(46, 0, 1, 0.55) 0%,
-    rgba(46, 0, 1, 0) 30%,
-    rgba(46, 0, 1, 0) 55%,
-    rgba(46, 0, 1, 0.85) 85%,
-    rgba(46, 0, 1, 0.97) 100%
+    rgba(0, 0, 0, 0.25) 0%,
+    rgba(0, 0, 0, 0) 22%,
+    rgba(0, 0, 0, 0) 42%,
+    rgba(0, 0, 0, 0.75) 68%,
+    rgba(0, 0, 0, 0.96) 100%
   );
 }
 
