@@ -86,6 +86,7 @@ html {
 
 .hero__nav {
   position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -169,36 +170,56 @@ html {
   border-radius: 2px;
 }
 
-/* -- Body -- */
-
-.hero__body {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: clamp(1.5rem, 5vw, 4rem);
-  padding: 1rem clamp(1rem, 4vw, 3rem) clamp(2rem, 6vw, 4rem);
-}
+/* -- Full-screen photo background -- */
 
 .hero__image {
-  flex: 1 1 0;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  min-width: 0;
-  align-self: flex-end;
+  pointer-events: none;
 }
 
 .hero__image img {
-  width: 100%;
-  max-width: 480px;
-  height: auto;
+  height: 108%;
+  width: auto;
+  max-width: none;
   display: block;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45));
+  object-fit: contain;
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.5));
+}
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(46, 0, 1, 0.55) 0%,
+    rgba(46, 0, 1, 0) 30%,
+    rgba(46, 0, 1, 0) 55%,
+    rgba(46, 0, 1, 0.85) 85%,
+    rgba(46, 0, 1, 0.97) 100%
+  );
+}
+
+/* -- Body -- */
+
+.hero__body {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem clamp(1rem, 4vw, 3rem) clamp(2rem, 6vw, 4rem);
 }
 
 .hero__content {
-  flex: 1 1 0;
-  min-width: 0;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .hero__eyebrow {
@@ -240,12 +261,13 @@ html {
   color: #f2e4e4;
   font-size: clamp(1rem, 1.6vw, 1.125rem);
   max-width: 46ch;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem;
 }
 
 .hero__cta {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -290,33 +312,6 @@ html {
 }
 
 /* -- Responsive -- */
-
-@media (max-width: 900px) {
-  .hero__body {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .hero__image {
-    align-self: stretch;
-    order: -1;
-  }
-
-  .hero__image img {
-    max-width: 280px;
-    margin: 0 auto;
-  }
-
-  .hero__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .hero__cta {
-    justify-content: center;
-  }
-}
 
 @media (max-width: 760px) {
   .hero__links {

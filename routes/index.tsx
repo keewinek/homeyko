@@ -66,11 +66,12 @@ export default define.page(function Home() {
           </div>
         </header>
 
-        <div class="hero__body">
-          <div class="hero__image">
-            <img src={filipHero} alt="Filip Gałązka" />
-          </div>
+        <div class="hero__image">
+          <img src={filipHero} alt="Filip Gałązka" />
+        </div>
+        <div class="hero__scrim" />
 
+        <div class="hero__body">
           <div class="hero__content">
             <p class="hero__eyebrow">Wybory samorządowe 2026/2027</p>
             <h1 class="hero__title">
