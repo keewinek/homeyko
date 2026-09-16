@@ -43,21 +43,6 @@ export default define.page(function Home() {
                   height="22"
                   aria-hidden="true"
                 >
-                  <defs>
-                    <linearGradient
-                      id="ig-gradient"
-                      x1="0%"
-                      y1="100%"
-                      x2="100%"
-                      y2="0%"
-                    >
-                      <stop offset="0%" stop-color="#FEDA75" />
-                      <stop offset="30%" stop-color="#FA7E1E" />
-                      <stop offset="55%" stop-color="#D62976" />
-                      <stop offset="80%" stop-color="#962FBF" />
-                      <stop offset="100%" stop-color="#4F5BD5" />
-                    </linearGradient>
-                  </defs>
                   <rect
                     x="2.2"
                     y="2.2"
@@ -65,7 +50,7 @@ export default define.page(function Home() {
                     height="19.6"
                     rx="6.2"
                     fill="none"
-                    stroke="url(#ig-gradient)"
+                    stroke="#fff"
                     stroke-width="2.3"
                   />
                   <circle
@@ -73,10 +58,10 @@ export default define.page(function Home() {
                     cy="12"
                     r="5.1"
                     fill="none"
-                    stroke="url(#ig-gradient)"
+                    stroke="#fff"
                     stroke-width="2.3"
                   />
-                  <circle cx="17.6" cy="6.4" r="1.5" fill="url(#ig-gradient)" />
+                  <circle cx="17.6" cy="6.4" r="1.5" fill="#fff" />
                 </svg>
               </a>
             </div>
