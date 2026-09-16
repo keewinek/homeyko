@@ -51,6 +51,7 @@ html {
   --brand-maroon-dark: #2e0001;
   --brand-coral: #e07676;
   --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-tagline: "Anton", ui-sans-serif, sans-serif;
 }
 
 .hero {
@@ -264,7 +265,10 @@ html {
 
 .hero__text {
   color: #f2e4e4;
-  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  font-family: var(--font-tagline);
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   max-width: 40ch;
   margin: 0 auto;
 }

@@ -14,7 +14,7 @@ export default define.page(function App({ Component }) {
           crossorigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900&family=Anton&display=swap"
           rel="stylesheet"
         />
       </head>

@@ -111,7 +111,7 @@ export default define.page(function Home() {
                 Gałązka
               </span>
             </h1>
-            <p class="hero__text">Wszyscy siedzimy na jednej gałęzi.</p>
+            <p class="hero__text">Domeyko 26/27</p>
           </div>
         </div>
       </section>
