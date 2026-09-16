@@ -35,4 +35,20 @@
     );
     applyParallax();
   }
+
+  var heroTitle = document.querySelector(".hero__title");
+  var heroCta = document.querySelector(".hero__cta .btn");
+  if (heroTitle && heroCta) {
+    function syncCtaWidth() {
+      heroCta.style.width = "";
+      var naturalWidth = heroCta.offsetWidth;
+      var targetWidth = Math.max(heroTitle.offsetWidth, naturalWidth);
+      heroCta.style.width = targetWidth + "px";
+    }
+    syncCtaWidth();
+    window.addEventListener("resize", syncCtaWidth);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncCtaWidth);
+    }
+  }
 })();

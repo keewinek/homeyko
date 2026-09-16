@@ -263,10 +263,15 @@ html {
 
 .hero__cta {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
   margin-top: clamp(1.25rem, 4vw, 2rem);
+}
+
+.hero__cta .btn {
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+  white-space: nowrap;
+  /* width is set inline by main.js to match .hero__title's rendered width */
 }
 
 .btn {
