@@ -12,17 +12,18 @@ Strona ma promować kandydata i kampanię wśród uczniów szkoły — docelowo 
 przedstawienie kandydata, program wyborczy, aktualności z kampanii i sposób
 kontaktu / poparcia.
 
-## Status
+## Stack
 
-Wczesny etap: repozytorium to świeżo zainicjowany szkielet aplikacji Fresh
-(Deno), zawierający jedynie stronę powitalną "Strona w przygotowaniu."
-Treść merytoryczna (program wyborczy, podstrony, grafika kampanii) nie
-została jeszcze ustalona.
+Statyczna strona: czysty HTML (`public/index.html`) + Tailwind CSS
+(kompilowany z `src/input.css` do `public/css/styles.css`) + vanilla
+JavaScript (`public/js/main.js`). Hostowana na Netlify (build command
+`npm run build`, publish dir `public`). Projekt wcześniej był aplikacją
+Fresh/Deno — przepisany na statyczny stack, bo kampania samorządowa nie
+potrzebuje backendu/serwera; ewentualna przyszła strona samorządu z
+kalendarzem/rezerwacjami będzie osobnym projektem.
 
 ## Do ustalenia (TODO)
 
-- Punkty programu wyborczego Filipa Gałązki / partii Homeyko.
+- Docelowe podstrony/sekcje (Zespół, Galeria, Kontakt — linki w nawigacji
+  na razie prowadzą donikąd poza `#program`).
 - Data wyborów i harmonogram kampanii (do uzupełnienia w `roadmap.md`).
-- Identyfikacja wizualna / branding kampanii (kolory, logo — obecnie jest
-  placeholder `static/logo.svg`).
-- Docelowe podstrony (np. program, o kandydacie, aktualności, kontakt).

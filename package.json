@@ -1,0 +1,12 @@
+{
+  "name": "homeyko",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./public/css/styles.css --minify",
+    "watch": "tailwindcss -i ./src/input.css -o ./public/css/styles.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}
