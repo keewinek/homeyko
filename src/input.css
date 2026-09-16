@@ -164,6 +164,21 @@ html {
   filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.5));
 }
 
+/* On short viewports (common laptop resolutions) 68dvh leaves too
+   little room for the nav + title rows, so the photo bleeds over the
+   letters instead of just behind them. Shrink it as height drops. */
+@media (max-height: 820px) {
+  .hero__image img {
+    height: 54dvh;
+  }
+}
+
+@media (max-height: 700px) {
+  .hero__image img {
+    height: 46dvh;
+  }
+}
+
 .hero__scrim {
   position: absolute;
   inset: 0;
