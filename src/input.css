@@ -327,6 +327,7 @@ html {
 .program__item {
   display: flex;
   align-items: baseline;
+  gap: 0.5rem;
 }
 
 .program__number {
@@ -339,7 +340,7 @@ html {
 }
 
 .program__content {
-  margin-left: -0.5rem;
+  min-width: 0;
 }
 
 .program__item-title {
