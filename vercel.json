@@ -4,6 +4,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/kontakt/:typ", "destination": "/kontakt.html" }
+    { "source": "/kontakt/pomysl", "destination": "/kontakt.html" },
+    { "source": "/kontakt/pytania", "destination": "/kontakt.html" }
   ]
 }
