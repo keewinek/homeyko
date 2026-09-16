@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homeyko — Zgłoś pomysł</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="bg-white">
+    <header class="bg-[color:var(--brand-maroon-dark)] px-4 py-5">
+      <a href="/" class="inline-flex items-center">
+        <img src="/images/logo-white.png" alt="Homeyko" class="h-7 w-auto" />
+      </a>
+    </header>
+
+    <main class="mx-auto max-w-xl px-4 py-12 sm:py-16">
+      <h1
+        id="kontakt-title"
+        class="mb-2 text-center text-3xl font-black uppercase text-[color:var(--brand-maroon-dark)]"
+        style="font-family: var(--font-display)"
+      >
+        Zgłoś pomysł
+      </h1>
+      <p class="mb-8 text-center text-gray-600">
+        Napisz do nas — przeczytamy każdą wiadomość.
+      </p>
+
+      <form id="kontakt-form" class="flex flex-col gap-4" novalidate>
+        <input type="hidden" id="kontakt-type" name="type" value="pomysl" />
+
+        <!-- Honeypot: ukryte pole, ludzie go nie widzą i nie wypełniają -->
+        <div class="hidden" aria-hidden="true">
+          <label for="website">Zostaw puste</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <div>
+          <label for="message" class="mb-1 block text-sm font-semibold text-gray-800">
+            Wiadomość *
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            required
+            maxlength="2000"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[color:var(--brand-maroon)] focus:outline-none"
+          ></textarea>
+        </div>
+
+        <div>
+          <label for="contact" class="mb-1 block text-sm font-semibold text-gray-800">
+            Kontakt (opcjonalnie)
+          </label>
+          <input
+            type="text"
+            id="contact"
+            name="contact"
+            placeholder="e-mail lub Instagram, jeśli chcesz odpowiedź"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[color:var(--brand-maroon)] focus:outline-none"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn--primary mt-2 justify-center"
+        >
+          Wyślij
+        </button>
+
+        <p id="kontakt-status" role="status" class="text-center text-sm"></p>
+      </form>
+    </main>
+
+    <script src="/js/kontakt.js"></script>
+  </body>
+</html>
