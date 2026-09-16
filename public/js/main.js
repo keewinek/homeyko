@@ -38,10 +38,14 @@
 
   var heroTitle = document.querySelector(".hero__title");
   var heroCta = document.querySelector(".hero__cta .btn");
+  // The icon is positioned absolutely (so the label can be truly
+  // centered), which removes it from the button's natural flow width.
+  // Reserve extra room for it so centered text never overlaps it.
+  var ICON_RESERVE_PX = 44;
   if (heroTitle && heroCta) {
     function syncCtaWidth() {
       heroCta.style.width = "";
-      var naturalWidth = heroCta.offsetWidth;
+      var naturalWidth = heroCta.offsetWidth + ICON_RESERVE_PX;
       var targetWidth = Math.max(heroTitle.offsetWidth, naturalWidth);
       heroCta.style.width = targetWidth + "px";
     }
