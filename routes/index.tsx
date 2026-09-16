@@ -2,7 +2,7 @@ import { Head } from "fresh/runtime";
 import { define } from "../utils.ts";
 import ParallaxBg from "../islands/ParallaxBg.tsx";
 import logo from "../assets/logotyp-bialy.png";
-import flagBg from "../assets/flaga-polski.jpg";
+import flagBg from "../assets/tlo-czerwone.jpg";
 import filipHero from "../assets/filip-impreza-transparent.png";
 
 export default define.page(function Home() {
