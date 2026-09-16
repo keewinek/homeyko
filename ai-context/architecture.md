@@ -7,7 +7,12 @@
   `src/input.css`, kompilowane do `public/css/styles.css`
 - **JS:** vanilla JavaScript (`public/js/main.js`) — obsługa mobilnego menu
   i efektu paralaksy tła w hero
-- **Hosting:** Netlify (build command `npm run build`, publish dir `public`)
+- **Hosting:** Vercel (build command `npm run build`, output dir `public`) —
+  wybrany zamiast Netlify, bo darmowy plan Vercela ma limit 100
+  deployów/dzień (reset codziennie), a Netlify free to ~20 deployów na cały
+  **miesiąc** (limit kredytowy) i po przekroczeniu zamraża wszystkie
+  projekty na koncie do końca miesiąca — zbyt ryzykowne przy częstych,
+  szybkich poprawkach.
 
 ## Struktura repozytorium
 
@@ -21,7 +26,7 @@ public/                # publikowany katalog (to jest publish dir na Netlify)
   favicon.ico
 src/input.css           # źródło Tailwinda (@import "tailwindcss" + custom CSS)
 package.json            # devDependencies: tailwindcss, @tailwindcss/cli
-netlify.toml            # konfiguracja builda/deployu na Netlify
+vercel.json              # konfiguracja builda/deployu na Vercel
 ```
 
 ## Komendy
@@ -32,14 +37,11 @@ netlify.toml            # konfiguracja builda/deployu na Netlify
 
 ## Deploy
 
-Dwie opcje, obie korzystają z tego samego `public/`:
-
-1. **Netlify + Git (zalecane):** połącz repo w panelu Netlify — build command
-   `npm run build`, publish directory `public` (już w `netlify.toml`), deploy
-   automatyczny po każdym pushu do `main`.
-2. **Netlify Drop:** przeciągnij zawartość folderu `public/` na
-   https://app.netlify.com/drop — działa od razu, bo `public/css/styles.css`
-   jest już zbudowany i zacommitowany.
+**Vercel + Git:** połącz repo w panelu Vercel ("Add New Project" → Import z
+GitHub → wybierz `keewinek/homeyko`). Vercel wykryje `vercel.json` (build
+command `npm run build`, output directory `public`) i będzie deployował
+automatycznie po każdym pushu do `main`. Domena własna (np. homeyko.pl)
+konfigurowana w ustawieniach projektu na Vercelu (Domains).
 
 ## Uwagi
 
