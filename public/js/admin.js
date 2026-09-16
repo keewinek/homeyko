@@ -4,6 +4,7 @@
   var loginForm = document.getElementById("login-form");
   var loginStatus = document.getElementById("login-status");
   var logoutBtn = document.getElementById("logout-btn");
+  var whoamiEl = document.getElementById("whoami");
   var listEl = document.getElementById("submissions-list");
   var emptyStateEl = document.getElementById("empty-state");
 
@@ -61,32 +62,46 @@
     });
   }
 
-  function showLoggedIn() {
+  function showLoggedIn(username) {
     loginSection.classList.add("hidden");
     submissionsSection.classList.remove("hidden");
     logoutBtn.classList.remove("hidden");
+    if (username) {
+      whoamiEl.textContent = "Zalogowano jako: " + username;
+      whoamiEl.classList.remove("hidden");
+    }
   }
 
   function showLoggedOut() {
     loginSection.classList.remove("hidden");
     submissionsSection.classList.add("hidden");
     logoutBtn.classList.add("hidden");
+    whoamiEl.classList.add("hidden");
   }
 
   function loadSubmissions() {
-    return fetch("/api/submissions")
+    return fetch("/api/me")
       .then(function (res) {
         if (res.status === 401) {
           showLoggedOut();
           return null;
         }
-        if (!res.ok) throw new Error("Błąd pobierania zgłoszeń");
+        if (!res.ok) throw new Error("Błąd sprawdzania sesji");
         return res.json();
       })
-      .then(function (data) {
-        if (!data) return;
-        showLoggedIn();
-        renderSubmissions(data.submissions || []);
+      .then(function (me) {
+        if (!me) return null;
+        return fetch("/api/submissions").then(function (res) {
+          if (!res.ok) throw new Error("Błąd pobierania zgłoszeń");
+          return res.json().then(function (data) {
+            return { me: me, data: data };
+          });
+        });
+      })
+      .then(function (result) {
+        if (!result) return;
+        showLoggedIn(result.me.username);
+        renderSubmissions(result.data.submissions || []);
       })
       .catch(function (err) {
         console.error(err);
@@ -100,7 +115,10 @@
     fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password: loginForm.password.value }),
+      body: JSON.stringify({
+        username: loginForm.username.value,
+        password: loginForm.password.value,
+      }),
     })
       .then(function (res) {
         return res.json().then(function (data) {

@@ -33,12 +33,19 @@ public/                # publikowany katalog (output dir na Vercel)
   favicon.ico
 api/                    # Vercel Serverless Functions (Node.js)
   submit.js                # POST — zapis zgłoszenia (publiczne)
-  login.js                  # POST — logowanie admina, ustawia cookie sesji
+  login.js                  # POST — login+hasło; pierwsze logowanie na
+                             #   dany login ustawia to hasło jako docelowe
   logout.js                  # POST — czyści cookie sesji
+  me.js                       # GET — zwraca username zalogowanego (401 jeśli brak)
   submissions.js               # GET/DELETE — lista/usuwanie (wymaga loginu)
 lib/
   db.js                   # klient Neon (@neondatabase/serverless) + schema
-  auth.js                  # podpisywanie/weryfikacja cookie sesji (HMAC)
+  auth.js                  # podpisywanie/weryfikacja cookie sesji (HMAC),
+                            #   token niesie username
+  password.js                # hashowanie/weryfikacja haseł (scrypt + sól)
+scripts/
+  manage-users.js          # CLI: dodawanie/reset/usuwanie loginów sztabu
+                            #   (uruchamiane lokalnie, wymaga DATABASE_URL)
 src/input.css           # źródło Tailwinda (@import "tailwindcss" + custom CSS)
 package.json            # dependencies: @neondatabase/serverless;
                          # devDependencies: tailwindcss, @tailwindcss/cli
@@ -66,14 +73,44 @@ projektu na Vercelu (Domains).
 1. W panelu Vercel: **Storage → Marketplace → Neon** — dodaje bazę
    Postgres i sam wstrzykuje `DATABASE_URL` do projektu.
 2. W **Settings → Environment Variables** dodać ręcznie:
-   - `ADMIN_PASSWORD` — hasło do `/admin.html`
    - `ADMIN_SESSION_SECRET` — dowolny długi losowy ciąg (sekret do
      podpisywania cookie sesji)
-3. Tabela `submissions` tworzy się sama przy pierwszym zapytaniu
-   (`CREATE TABLE IF NOT EXISTS` w `lib/db.js`) — nie trzeba nic ręcznie
-   migrować.
+3. Tabele `submissions` i `sztab_users` tworzą się same przy pierwszym
+   zapytaniu (`CREATE TABLE IF NOT EXISTS` w `lib/db.js`) — nie trzeba nic
+   ręcznie migrować.
+4. Dodać loginy członków sztabu (lokalnie, z `DATABASE_URL` w env):
+   ```
+   DATABASE_URL="..." node scripts/manage-users.js add kasia piotr ania ...
+   ```
+   Loginy zaczynają bez hasła — każda osoba ustawia je sama przy
+   pierwszym logowaniu na `/admin.html` (wpisuje swój login i nowe hasło;
+   to hasło zostaje zapisane jako docelowe).
 
 Zobacz `.env.example`.
+
+## Logowanie do panelu admina
+
+- Jeden login = jeden członek sztabu, w tabeli `sztab_users`
+  (`username`, `password_hash`, brak innych danych osobowych).
+- Hasła nigdy nie są przechowywane w postaci jawnej ani jako sam
+  SHA-256 — używany jest `scrypt` (wbudowany w Node.js `crypto`, solony,
+  "memory-hard", odporny na ataki brute-force/rainbow tables) —
+  `lib/password.js`.
+- Flow logowania (`api/login.js`) jest "self-service": administrator
+  najpierw dodaje sam **login** (`scripts/manage-users.js add ...`) bez
+  hasła; dana osoba wchodzi na `/admin.html`, wpisuje swój login i nowe
+  hasło — jeśli login istnieje i nie ma jeszcze hasła, to podane hasło
+  zostaje zapisane jako docelowe. Kolejne logowania wymagają już zgodnego
+  hasła.
+  **Uwaga:** to oznacza, że kto pierwszy wpisze dany (jeszcze
+  nieaktywowany) login i ustawi hasło, ten go przejmuje — loginy trzeba
+  rozdać sztabowi prywatnie i poprosić o rejestrację od razu.
+  `scripts/manage-users.js reset <login>` kasuje ustawione hasło (login
+  można wtedy przejąć/zarejestrować od nowa) — przydatne przy zapomnianym
+  haśle albo błędnej rejestracji.
+- Sesja to cookie podpisane HMAC-em (`lib/auth.js`), niosące username i
+  ważne 7 dni. `GET /api/me` zwraca zalogowany login (panel pokazuje
+  "Zalogowano jako: ...").
 
 ## Uwagi
 
@@ -81,8 +118,5 @@ Zobacz `.env.example`.
   HTML/Tailwind/JS, bo strona kampanii samorządowej nie potrzebowała
   backendu — backend (Vercel Functions + Postgres) doszedł tylko pod
   formularze "Zgłoś pomysł"/"Zadaj pytanie" i panel admina.
-- Panel `/admin.html` używa prostego, jednego hasła (bez kont
-  użytkowników) — wystarczające dla jednej osoby zarządzającej stroną.
-  Sesja to podpisany HMAC-em cookie z 7-dniowym wygaśnięciem.
 - `api/submit.js` ma honeypot (`website`) jako podstawową ochronę
   antyspamową — bez CAPTCHA.
