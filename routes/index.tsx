@@ -23,10 +23,64 @@ export default define.page(function Home() {
           </a>
 
           <nav class="hero__links" aria-label="Menu główne">
+            <div class="hero__links-top">
+              <img src={logo} alt="Homeyko" class="hero__links-logo" />
+              <label
+                for="nav-toggle"
+                class="nav-close-btn"
+                aria-label="Zamknij menu"
+              >
+                <svg
+                  viewBox="0 0 320 512"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M310.6 361.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L160 301.3 54.6 406.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L114.7 256 9.4 150.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 210.7 265.4 105.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L205.3 256 310.6 361.4z"
+                  />
+                </svg>
+              </label>
+            </div>
             <a href="#program">Program</a>
             <a href="#zespol">Zespół</a>
             <a href="#galeria">Galeria</a>
             <a href="#kontakt">Kontakt</a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              class="hero__links-instagram"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                aria-hidden="true"
+              >
+                <rect
+                  x="2.2"
+                  y="2.2"
+                  width="19.6"
+                  height="19.6"
+                  rx="6.2"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-width="2.3"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="5.1"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-width="2.3"
+                />
+                <circle cx="17.6" cy="6.4" r="1.5" fill="#fff" />
+              </svg>
+            </a>
           </nav>
 
           <div class="hero__nav-right">
