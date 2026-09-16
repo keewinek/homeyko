@@ -166,6 +166,77 @@ export default define.page(function Home() {
           </div>
         </div>
       </section>
+
+      <section class="program" id="program">
+        <div class="program__inner">
+          <p class="program__eyebrow">Nasz plan działania</p>
+          <h2 class="program__title">Postanowienia sztabu</h2>
+
+          <div class="program__grid">
+            <article class="program__card">
+              <span class="program__number">01</span>
+              <svg
+                class="program__icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <rect x="2.5" y="4" width="15" height="16" rx="1.5" />
+                <rect x="5" y="7" width="9" height="8" rx="0.5" />
+                <circle cx="19" cy="9" r="0.9" fill="currentColor" stroke="none" />
+                <circle cx="19" cy="12.5" r="0.9" fill="currentColor" stroke="none" />
+                <line x1="16.5" y1="17" x2="16.5" y2="20" />
+              </svg>
+              <h3 class="program__card-title">Mikrofalówka w klubiku</h3>
+            </article>
+
+            <article class="program__card">
+              <span class="program__number">02</span>
+              <svg
+                class="program__icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <rect x="3" y="4.5" width="18" height="16" rx="1.5" />
+                <line x1="3" y1="9" x2="21" y2="9" />
+                <line x1="7.5" y1="2.5" x2="7.5" y2="6.5" />
+                <line x1="16.5" y1="2.5" x2="16.5" y2="6.5" />
+                <path d="M8 14.5c1-1.2 2-1.2 3 0s2 1.2 3 0 2-1.2 3 0" />
+                <path d="M8 18c1-1.2 2-1.2 3 0s2 1.2 3 0 2-1.2 3 0" />
+              </svg>
+              <h3 class="program__card-title">
+                Dwie imprezy w ciągu roku szkolnego
+              </h3>
+            </article>
+
+            <article class="program__card">
+              <span class="program__number">03</span>
+              <svg
+                class="program__icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M4 13a8 8 0 0 1 16 0" />
+                <rect x="2.5" y="13" width="4" height="6" rx="1.5" />
+                <rect x="17.5" y="13" width="4" height="6" rx="1.5" />
+              </svg>
+              <h3 class="program__card-title">Silent disco</h3>
+            </article>
+
+            <article class="program__card">
+              <span class="program__number">04</span>
+              <svg
+                class="program__icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M12 3c3 3.6 5 6.8 5 9.5a5 5 0 0 1-10 0C7 9.8 9 6.6 12 3Z" />
+                <path d="M9.3 13.8c0 1.3 1 2.4 2.3 2.5" />
+              </svg>
+              <h3 class="program__card-title">Dystrybutor wody pitnej</h3>
+            </article>
+          </div>
+        </div>
+      </section>
     </>
   );
 });
