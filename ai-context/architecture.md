@@ -3,7 +3,9 @@
 ## Stack technologiczny
 
 - **Strona:** czysty HTML (`public/index.html`, `public/kontakt.html`,
-  `public/admin.html`)
+  `public/admin.html`) — serwowane pod czystymi URL-ami bez `.html`
+  (`cleanUrls` w `vercel.json`): `/`, `/kontakt/pomysl`, `/kontakt/pytania`,
+  `/admin`
 - **Style:** [Tailwind CSS](https://tailwindcss.com/) v4 (CLI), źródło w
   `src/input.css`, kompilowane do `public/css/styles.css`
 - **JS (front):** vanilla JavaScript (`public/js/*.js`) — menu mobilne,
@@ -49,7 +51,7 @@ scripts/
 src/input.css           # źródło Tailwinda (@import "tailwindcss" + custom CSS)
 package.json            # dependencies: @neondatabase/serverless;
                          # devDependencies: tailwindcss, @tailwindcss/cli
-vercel.json              # konfiguracja builda/deployu na Vercel
+vercel.json              # build/deploy + cleanUrls + rewrite /kontakt/:typ
 .env.example             # wymagane zmienne środowiskowe
 ```
 
@@ -83,7 +85,7 @@ projektu na Vercelu (Domains).
    DATABASE_URL="..." node scripts/manage-users.js add kasia piotr ania ...
    ```
    Loginy zaczynają bez hasła — każda osoba ustawia je sama przy
-   pierwszym logowaniu na `/admin.html` (wpisuje swój login i nowe hasło;
+   pierwszym logowaniu na `/admin` (wpisuje swój login i nowe hasło;
    to hasło zostaje zapisane jako docelowe).
 
 Zobacz `.env.example`.
@@ -98,7 +100,7 @@ Zobacz `.env.example`.
   `lib/password.js`.
 - Flow logowania (`api/login.js`) jest "self-service": administrator
   najpierw dodaje sam **login** (`scripts/manage-users.js add ...`) bez
-  hasła; dana osoba wchodzi na `/admin.html`, wpisuje swój login i nowe
+  hasła; dana osoba wchodzi na `/admin`, wpisuje swój login i nowe
   hasło — jeśli login istnieje i nie ma jeszcze hasła, to podane hasło
   zostaje zapisane jako docelowe. Kolejne logowania wymagają już zgodnego
   hasła.

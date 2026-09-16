@@ -1,6 +1,12 @@
 (function () {
+  var SLUG_TO_TYPE = { pomysl: "pomysl", pytania: "pytanie" };
+  var pathSegments = window.location.pathname.split("/").filter(Boolean);
+  var slug = pathSegments[1] || "";
   var params = new URLSearchParams(window.location.search);
-  var type = params.get("typ") === "pytanie" ? "pytanie" : "pomysl";
+
+  var type =
+    SLUG_TO_TYPE[slug] ||
+    (params.get("typ") === "pytanie" ? "pytanie" : "pomysl");
 
   var titles = {
     pomysl: "Zgłoś pomysł",
