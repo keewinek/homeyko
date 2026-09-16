@@ -3,12 +3,22 @@
   var submissionsSection = document.getElementById("submissions-section");
   var loginForm = document.getElementById("login-form");
   var loginStatus = document.getElementById("login-status");
+  var headerUser = document.getElementById("header-user");
   var logoutBtn = document.getElementById("logout-btn");
   var whoamiEl = document.getElementById("whoami");
   var listEl = document.getElementById("submissions-list");
   var emptyStateEl = document.getElementById("empty-state");
+  var countEl = document.getElementById("submissions-count");
+  var filterTabs = document.querySelectorAll(".filter-tab");
 
   var TYPE_LABELS = { pomysl: "Pomysł", pytanie: "Pytanie" };
+  var TYPE_STYLES = {
+    pomysl: { border: "border-l-[color:var(--brand-coral)]", badge: "bg-[color:var(--brand-coral)]/15 text-[color:var(--brand-maroon-dark)]" },
+    pytanie: { border: "border-l-[color:var(--brand-maroon)]", badge: "bg-[color:var(--brand-maroon)]/10 text-[color:var(--brand-maroon-dark)]" },
+  };
+
+  var allSubmissions = [];
+  var activeFilter = "all";
 
   function escapeHtml(str) {
     var div = document.createElement("div");
@@ -18,31 +28,62 @@
 
   function formatDate(iso) {
     try {
-      return new Date(iso).toLocaleString("pl-PL");
+      return new Date(iso).toLocaleString("pl-PL", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     } catch (e) {
       return iso;
     }
   }
 
-  function renderSubmissions(items) {
-    listEl.innerHTML = "";
+  function setActiveFilter(filter) {
+    activeFilter = filter;
+    filterTabs.forEach(function (tab) {
+      var isActive = tab.getAttribute("data-filter") === filter;
+      tab.classList.toggle("bg-white", isActive);
+      tab.classList.toggle("shadow-sm", isActive);
+      tab.classList.toggle("text-[color:var(--brand-maroon-dark)]", isActive);
+      tab.classList.toggle("text-gray-500", !isActive);
+    });
+    render();
+  }
+
+  function render() {
+    var items =
+      activeFilter === "all"
+        ? allSubmissions
+        : allSubmissions.filter(function (item) {
+            return item.type === activeFilter;
+          });
+
+    countEl.textContent = allSubmissions.length ? "(" + allSubmissions.length + ")" : "";
     emptyStateEl.classList.toggle("hidden", items.length > 0);
+    listEl.innerHTML = "";
 
     items.forEach(function (item) {
+      var style = TYPE_STYLES[item.type] || TYPE_STYLES.pomysl;
       var card = document.createElement("article");
-      card.className = "rounded-lg border border-gray-200 bg-white p-4 shadow-sm";
+      card.className =
+        "flex flex-col gap-2 rounded-xl border border-gray-100 border-l-4 bg-white p-4 shadow-sm sm:flex-row sm:items-start sm:justify-between sm:gap-4 " +
+        style.border;
       card.innerHTML =
-        '<div class="mb-2 flex items-center justify-between text-xs text-gray-500">' +
-        '<span class="rounded bg-gray-100 px-2 py-0.5 font-semibold uppercase">' +
+        '<div class="min-w-0 flex-1">' +
+        '<div class="mb-1.5 flex flex-wrap items-center gap-2 text-xs text-gray-400">' +
+        '<span class="rounded-full px-2 py-0.5 text-xs font-semibold ' + style.badge + '">' +
         escapeHtml(TYPE_LABELS[item.type] || item.type) +
         "</span>" +
         "<span>" + escapeHtml(formatDate(item.created_at)) + "</span>" +
         "</div>" +
-        '<p class="mb-2 whitespace-pre-wrap text-gray-900">' + escapeHtml(item.message) + "</p>" +
+        '<p class="whitespace-pre-wrap break-words text-gray-900">' + escapeHtml(item.message) + "</p>" +
         (item.contact
-          ? '<p class="mb-2 text-sm text-gray-600">Kontakt: ' + escapeHtml(item.contact) + "</p>"
+          ? '<p class="mt-1.5 text-sm text-gray-500">Kontakt: ' + escapeHtml(item.contact) + "</p>"
           : "") +
-        '<button type="button" data-id="' + item.id + '" class="delete-btn text-sm font-semibold text-red-600 underline">Usuń</button>';
+        "</div>" +
+        '<button type="button" data-id="' + item.id + '" class="delete-btn shrink-0 self-start rounded-md border border-gray-200 px-2.5 py-1 text-xs font-semibold text-gray-500 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-600">Usuń</button>';
       listEl.appendChild(card);
     });
 
@@ -65,18 +106,18 @@
   function showLoggedIn(username) {
     loginSection.classList.add("hidden");
     submissionsSection.classList.remove("hidden");
-    logoutBtn.classList.remove("hidden");
+    headerUser.classList.remove("hidden");
+    headerUser.classList.add("flex");
     if (username) {
       whoamiEl.textContent = "Zalogowano jako: " + username;
-      whoamiEl.classList.remove("hidden");
     }
   }
 
   function showLoggedOut() {
     loginSection.classList.remove("hidden");
     submissionsSection.classList.add("hidden");
-    logoutBtn.classList.add("hidden");
-    whoamiEl.classList.add("hidden");
+    headerUser.classList.add("hidden");
+    headerUser.classList.remove("flex");
   }
 
   function loadSubmissions() {
@@ -101,12 +142,19 @@
       .then(function (result) {
         if (!result) return;
         showLoggedIn(result.me.username);
-        renderSubmissions(result.data.submissions || []);
+        allSubmissions = result.data.submissions || [];
+        setActiveFilter(activeFilter);
       })
       .catch(function (err) {
         console.error(err);
       });
   }
+
+  filterTabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      setActiveFilter(tab.getAttribute("data-filter"));
+    });
+  });
 
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -141,5 +189,6 @@
     });
   });
 
+  setActiveFilter("all");
   loadSubmissions();
 })();

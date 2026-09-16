@@ -20,7 +20,7 @@
 
   titleEl.textContent = titles[type];
   typeInput.value = type;
-  document.title = "Homeyko — " + titles[type];
+  document.title = "Homeyko - " + titles[type];
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();

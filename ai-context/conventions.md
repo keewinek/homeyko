@@ -1,31 +1,38 @@
 # Konwencje projektu
 
+## Styl pisania (bardzo ważne)
+
+- **Nigdy nie używamy długiego myślnika (—) ani innych "AI slop" znaków
+  przestankowych w tekstach na stronie, w dokumentacji ani w treściach
+  commitów.** Zamiast tego: kropka, przecinek, dwukropek albo nawiasy,
+  w zależności od kontekstu zdania.
+- Krótkie, proste zdania. Bez sztucznego napuszenia.
+
 ## Styl kodu
 
-- Formatowanie i lint przez wbudowane narzędzia Deno: `deno fmt`, `deno lint`
-  (reguły: `fresh`, `recommended` — patrz `deno.json`).
-- Przed commitem warto uruchomić `deno task check` (fmt + lint + typecheck).
-- TypeScript / TSX, komponenty funkcyjne Preact.
-- JSX: `jsxImportSource: preact`, tryb `precompile`.
+- Vanilla JavaScript (bez frameworków na froncie), CommonJS w `api/` i `lib/`.
+- Tailwind CSS do nowych elementów UI. Bespoke CSS w `src/input.css` tylko
+  tam, gdzie utility classes nie wystarczają (hero, gradienty, animacje).
+- Prosty, czytelny kod bez nadmiarowych abstrakcji.
 
 ## Język
 
-- Treść strony (UI, teksty widoczne dla użytkownika) — **po polsku** (projekt
+- Treść strony (UI, teksty widoczne dla użytkownika): po polsku (projekt
   dotyczy polskiej szkoły).
-- Kod, nazwy zmiennych/plików, commity — po angielsku, zgodnie z ogólną
-  konwencją Claude Code (chyba że ustalimy inaczej).
+- Kod, nazwy zmiennych/plików, commity: po angielsku, zgodnie z ogólną
+  konwencją Claude Code.
 
-## Routing / pliki
+## Struktura plików
 
-- Nowe strony dodawać jako pliki w `routes/` zgodnie z konwencją fs-routes
-  Fresh.
-- Współdzielony layout w `routes/_app.tsx`.
-- Statyczne assety (favicon, obrazy niewymagające przetwarzania) → `static/`.
-- Assety przetwarzane przez build (style, itp.) → `assets/`.
+- Statyczne strony i assety w `public/` (to jest output dir na Vercel).
+- Backend jako Vercel Serverless Functions w `api/`, współdzielona logika
+  w `lib/`.
+- Skrypty administracyjne (uruchamiane lokalnie) w `scripts/`.
 
 ## Ogólne zasady pracy nad kodem
 
-- Minimalne, punktowe zmiany — bez nadmiarowych abstrakcji na tym wczesnym
-  etapie projektu.
-- Brak jeszcze ustalonych konwencji nazewnictwa komponentów / commitów —
-  do uzupełnienia w miarę rozwoju projektu.
+- Minimalne, punktowe zmiany. Bez nadmiarowych abstrakcji.
+- Każda zmiana wizualna testowana w przeglądarce (Playwright) przed
+  wgraniem, na desktopie i mobile.
+- Każda zmiana od razu commitowana i pushowana na `main` (bez pytania o
+  potwierdzenie, ustalone wcześniej w rozmowie).

@@ -33,7 +33,7 @@ module.exports = async function handler(req, res) {
     const user = rows[0];
 
     if (!user) {
-      res.status(401).json({ error: "Nieznany login — skontaktuj się z administratorem sztabu" });
+      res.status(401).json({ error: "Nieznany login. Skontaktuj się z administratorem sztabu" });
       return;
     }
 

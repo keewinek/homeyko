@@ -31,7 +31,7 @@ async function main() {
       const username = raw.trim().toLowerCase();
       if (!USERNAME_RE.test(username)) {
         console.error(
-          `Pomijam "${raw}" — dozwolone tylko litery a-z, cyfry, - i _, 2-32 znaki.`
+          `Pomijam "${raw}": dozwolone tylko litery a-z, cyfry, - i _, 2-32 znaki.`
         );
         continue;
       }
@@ -39,7 +39,7 @@ async function main() {
         INSERT INTO sztab_users (username) VALUES (${username})
         ON CONFLICT (username) DO NOTHING
       `;
-      console.log(`Dodano login: ${username} (bez hasła — ustawi je przy pierwszym logowaniu)`);
+      console.log(`Dodano login: ${username} (bez hasła, ustawi je przy pierwszym logowaniu)`);
     }
   } else if (command === "reset") {
     const username = (args[0] || "").trim().toLowerCase();
@@ -51,7 +51,7 @@ async function main() {
       UPDATE sztab_users SET password_hash = NULL, password_set_at = NULL
       WHERE username = ${username}
     `;
-    console.log(`Zresetowano hasło dla: ${username} — przy następnym logowaniu ustawi nowe.`);
+    console.log(`Zresetowano hasło dla: ${username}. Przy następnym logowaniu ustawi nowe.`);
   } else if (command === "remove") {
     const username = (args[0] || "").trim().toLowerCase();
     if (!username) {
@@ -71,7 +71,7 @@ async function main() {
     } else {
       rows.forEach((r) => {
         console.log(
-          `${r.username}  —  ${r.claimed ? "hasło ustawione" : "czeka na pierwsze logowanie"}`
+          `${r.username}: ${r.claimed ? "hasło ustawione" : "czeka na pierwsze logowanie"}`
         );
       });
     }
