@@ -417,7 +417,7 @@ html {
 /* ----------------------------------------------------------------- */
 
 .dlaczego {
-  background: #fdf7f5;
+  background: #fff;
   padding: clamp(3rem, 8vw, 5.5rem) clamp(1rem, 4vw, 3rem);
 }
 
@@ -647,6 +647,16 @@ html {
   flex-direction: column;
   align-items: center;
   gap: clamp(2.5rem, 6vw, 3.5rem);
+}
+
+.kontakt-cta__title {
+  color: var(--brand-maroon-dark);
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  letter-spacing: 0.01em;
+  text-align: center;
 }
 
 .kontakt-cta__ig {
