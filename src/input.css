@@ -268,18 +268,24 @@ html {
 }
 
 .hero__cta .btn {
-  position: relative;
   padding-top: 0.65rem;
   padding-bottom: 0.65rem;
   white-space: nowrap;
+  color: #fff;
   /* width is set inline by main.js to match .hero__title's rendered width */
 }
 
-.hero__cta .btn svg {
-  position: absolute;
-  left: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn {
