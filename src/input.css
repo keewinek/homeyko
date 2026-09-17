@@ -20,10 +20,10 @@ html {
 .hero {
   position: relative;
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
   display: grid;
   /* nav / reserved face-safe zone the text may never start above / text */
-  grid-template-rows: auto minmax(46dvh, 1fr) auto;
+  grid-template-rows: auto minmax(46svh, 1fr) auto;
   color: #fff;
   overflow: hidden;
 }
@@ -151,12 +151,12 @@ html {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: clamp(4.5rem, 11dvh, 7rem);
+  padding-top: clamp(4.5rem, 11svh, 7rem);
   pointer-events: none;
 }
 
 .hero__image img {
-  height: 68dvh;
+  height: 68svh;
   width: auto;
   max-width: none;
   display: block;
@@ -164,18 +164,18 @@ html {
   filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.5));
 }
 
-/* On short viewports (common laptop resolutions) 68dvh leaves too
+/* On short viewports (common laptop resolutions) 68svh leaves too
    little room for the nav + title rows, so the photo bleeds over the
    letters instead of just behind them. Shrink it as height drops. */
 @media (max-height: 820px) {
   .hero__image img {
-    height: 54dvh;
+    height: 54svh;
   }
 }
 
 @media (max-height: 700px) {
   .hero__image img {
-    height: 46dvh;
+    height: 46svh;
   }
 }
 
