@@ -12,23 +12,113 @@
     pomysl: "Zgłoś pomysł",
     pytanie: "Zadaj pytanie",
   };
+  var thanksMessages = {
+    pomysl: "Dziękujemy za pomysł!",
+    pytanie: "Dziękujemy za pytanie!",
+  };
 
   var titleEl = document.getElementById("kontakt-title");
   var typeInput = document.getElementById("kontakt-type");
   var form = document.getElementById("kontakt-form");
   var statusEl = document.getElementById("kontakt-status");
+  var card = document.getElementById("kontakt-card");
+  var mailbox = document.getElementById("mailbox");
+  var mailboxMessage = document.getElementById("mailbox-message");
+  var submitBtn = form.querySelector('button[type="submit"]');
 
   titleEl.textContent = titles[type];
   typeInput.value = type;
   document.title = "Homeyko - " + titles[type];
 
+  // Klonuje wygląd karteczki z wiadomością i animuje jej "lot" do szczeliny
+  // skrzynki (Web Animations API, bo start/koniec liczymy z rzeczywistych
+  // pozycji na ekranie, więc czystym CSS się nie da).
+  function flyCardIntoMailbox() {
+    var startRect = card.getBoundingClientRect();
+    var mailboxRect = mailbox.getBoundingClientRect();
+    var targetX = mailboxRect.left + mailboxRect.width / 2;
+    var targetY = mailboxRect.top + mailboxRect.height * 0.4;
+    var startCenterX = startRect.left + startRect.width / 2;
+    var startCenterY = startRect.top + startRect.height / 2;
+    var dx = targetX - startCenterX;
+    var dy = targetY - startCenterY;
+
+    var flying = document.createElement("div");
+    flying.className = "kontakt-flying-card";
+    flying.textContent = form.message.value;
+    flying.style.left = startRect.left + "px";
+    flying.style.top = startRect.top + "px";
+    flying.style.width = startRect.width + "px";
+    flying.style.height = startRect.height + "px";
+    document.body.appendChild(flying);
+
+    var animation = flying.animate(
+      [
+        { transform: "translate(0, 0) rotate(0deg) scale(1)", opacity: 1, offset: 0 },
+        {
+          transform:
+            "translate(" + dx * 0.55 + "px, " + dy * 0.35 + "px) rotate(-6deg) scale(0.55)",
+          opacity: 1,
+          offset: 0.6,
+        },
+        {
+          transform:
+            "translate(" + dx + "px, " + dy + "px) rotate(-16deg) scale(0.1)",
+          opacity: 0,
+          offset: 1,
+        },
+      ],
+      { duration: 650, easing: "cubic-bezier(0.55, 0, 0.85, 0.35)", fill: "forwards" }
+    );
+
+    return animation.finished.then(function () {
+      flying.remove();
+    });
+  }
+
+  function wait(ms) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  function playSuccessAnimation() {
+    form.classList.add("is-sending");
+    return flyCardIntoMailbox()
+      .then(function () {
+        mailbox.classList.add("is-bounce");
+        wait(500).then(function () {
+          mailbox.classList.remove("is-bounce");
+        });
+        return wait(150);
+      })
+      .then(function () {
+        mailbox.classList.add("is-centered");
+        return wait(500);
+      })
+      .then(function () {
+        mailboxMessage.textContent = thanksMessages[type] || "Dziękujemy!";
+        mailbox.classList.add("is-done");
+        return wait(2400);
+      })
+      .then(function () {
+        mailbox.classList.remove("is-done", "is-centered");
+        mailboxMessage.textContent = "";
+        return wait(400);
+      })
+      .then(function () {
+        form.classList.remove("is-sending");
+        form.reset();
+        typeInput.value = type;
+      });
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     statusEl.textContent = "";
-    statusEl.className = "text-center text-sm";
-
-    var submitBtn = form.querySelector('button[type="submit"]');
+    statusEl.className = "kontakt-status";
     submitBtn.disabled = true;
+    submitBtn.textContent = "Wysyłanie...";
 
     var payload = {
       type: typeInput.value,
@@ -49,17 +139,15 @@
         });
       })
       .then(function () {
-        statusEl.textContent = "Dziękujemy! Otrzymaliśmy Twoją wiadomość.";
-        statusEl.className = "text-center text-sm text-green-700";
-        form.reset();
-        typeInput.value = type;
+        submitBtn.textContent = "Wyślij";
+        submitBtn.disabled = false;
+        return playSuccessAnimation();
       })
       .catch(function (err) {
         statusEl.textContent = err.message;
-        statusEl.className = "text-center text-sm text-red-600";
-      })
-      .finally(function () {
+        statusEl.className = "kontakt-status kontakt-status--error";
         submitBtn.disabled = false;
+        submitBtn.textContent = "Wyślij";
       });
   });
 })();

@@ -536,3 +536,213 @@ html {
     padding: 1rem 1rem 2.5rem;
   }
 }
+
+/* ----------------------------------------------------------------- */
+/* Formularz kontaktowy                                              */
+/* ----------------------------------------------------------------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.kontakt-page {
+  max-width: 26rem;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 8vw, 4rem) 1.25rem 9rem;
+}
+
+.kontakt-page__title {
+  margin-bottom: 2rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  color: var(--brand-maroon-dark);
+}
+
+.kontakt-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.kontakt-form.is-sending {
+  opacity: 0;
+  transform: scale(0.96);
+  pointer-events: none;
+}
+
+.kontakt-card {
+  width: 100%;
+  max-width: 300px;
+}
+
+.kontakt-card__textarea {
+  width: 100%;
+  height: 140px;
+  resize: none;
+  padding: 1rem;
+  border: 2px solid #e5d6d6;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #2e0001;
+  background: #fffdfa;
+  box-shadow: 0 6px 16px rgba(84, 0, 2, 0.08);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kontakt-card__textarea:focus {
+  outline: none;
+  border-color: var(--brand-coral);
+  box-shadow: 0 6px 20px rgba(224, 118, 118, 0.25);
+}
+
+.kontakt-field {
+  width: 100%;
+  max-width: 300px;
+}
+
+.kontakt-field__label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #55494a;
+}
+
+.kontakt-field__input {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #d8c9c9;
+  padding: 0.6rem 0.85rem;
+}
+
+.kontakt-field__input:focus {
+  outline: none;
+  border-color: var(--brand-coral);
+}
+
+.kontakt-submit {
+  margin-top: 0.25rem;
+}
+
+.kontakt-status {
+  min-height: 1.2em;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.kontakt-status--error {
+  color: #c0392b;
+}
+
+/* -- Latająca karteczka (klon treści w trakcie animacji) -- */
+
+.kontakt-flying-card {
+  position: fixed;
+  z-index: 50;
+  background: #fffdfa;
+  border: 2px solid #e5d6d6;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(84, 0, 2, 0.15);
+  padding: 1rem;
+  overflow: hidden;
+  color: #2e0001;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  pointer-events: none;
+}
+
+/* -- Skrzynka pocztowa -- */
+
+.mailbox {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translate(-50%, 0) scale(1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 40;
+  transition: bottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.mailbox__body {
+  display: block;
+}
+
+.mailbox__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: #2f9e57;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.25s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mailbox__message {
+  opacity: 0;
+  transform: translateY(6px);
+  font-weight: 700;
+  color: var(--brand-maroon-dark);
+  text-align: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mailbox.is-centered {
+  bottom: 50%;
+  transform: translate(-50%, 50%) scale(1.3);
+}
+
+.mailbox.is-bounce .mailbox__body {
+  animation: mailbox-bounce 0.5s ease;
+}
+
+.mailbox.is-done .mailbox__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mailbox.is-done .mailbox__message {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes mailbox-bounce {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.15, 0.85);
+  }
+  55% {
+    transform: scale(0.92, 1.08);
+  }
+  75% {
+    transform: scale(1.04, 0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

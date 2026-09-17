@@ -24,19 +24,10 @@
       </a>
     </header>
 
-    <main class="mx-auto max-w-xl px-4 py-12 sm:py-16">
-      <h1
-        id="kontakt-title"
-        class="mb-2 text-center text-3xl font-black uppercase text-[color:var(--brand-maroon-dark)]"
-        style="font-family: var(--font-display)"
-      >
-        Zgłoś pomysł
-      </h1>
-      <p class="mb-8 text-center text-gray-600">
-        Napisz do nas. Przeczytamy każdą wiadomość.
-      </p>
+    <main class="kontakt-page">
+      <h1 id="kontakt-title" class="kontakt-page__title">Zgłoś pomysł</h1>
 
-      <form id="kontakt-form" class="flex flex-col gap-4" novalidate>
+      <form id="kontakt-form" class="kontakt-form" novalidate>
         <input type="hidden" id="kontakt-type" name="type" value="pomysl" />
 
         <!-- Honeypot: ukryte pole, ludzie go nie widzą i nie wypełniają -->
@@ -51,22 +42,21 @@
           />
         </div>
 
-        <div>
-          <label for="message" class="mb-1 block text-sm font-semibold text-gray-800">
-            Wiadomość *
-          </label>
+        <div class="kontakt-card" id="kontakt-card">
+          <label for="message" class="sr-only">Wiadomość</label>
           <textarea
             id="message"
             name="message"
-            rows="6"
+            rows="4"
             required
             maxlength="2000"
-            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[color:var(--brand-maroon)] focus:outline-none"
+            placeholder="Twój pomysł..."
+            class="kontakt-card__textarea"
           ></textarea>
         </div>
 
-        <div>
-          <label for="contact" class="mb-1 block text-sm font-semibold text-gray-800">
+        <div class="kontakt-field">
+          <label for="contact" class="kontakt-field__label">
             Kontakt (opcjonalnie)
           </label>
           <input
@@ -74,19 +64,30 @@
             id="contact"
             name="contact"
             placeholder="e-mail lub Instagram, jeśli chcesz odpowiedź"
-            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[color:var(--brand-maroon)] focus:outline-none"
+            class="kontakt-field__input"
           />
         </div>
 
-        <button
-          type="submit"
-          class="btn btn--primary mt-2 justify-center"
-        >
+        <button type="submit" class="btn btn--primary kontakt-submit">
           Wyślij
         </button>
 
-        <p id="kontakt-status" role="status" class="text-center text-sm"></p>
+        <p id="kontakt-status" role="status" class="kontakt-status"></p>
       </form>
+
+      <div class="mailbox" id="mailbox" aria-hidden="true">
+        <svg class="mailbox__body" viewBox="0 0 100 90" width="76" height="68">
+          <path d="M10 40 Q10 10 50 10 Q90 10 90 40 L90 85 Q90 88 87 88 L13 88 Q10 88 10 85 Z" fill="#c9302c" />
+          <rect x="4" y="82" width="92" height="8" rx="4" fill="#7a1613" />
+          <rect x="26" y="33" width="48" height="9" rx="4.5" fill="#5a0f0d" />
+        </svg>
+        <div class="mailbox__check">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M5 13l4 4L19 7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <p class="mailbox__message" id="mailbox-message"></p>
+      </div>
     </main>
 
     <script src="/js/kontakt.js"></script>
