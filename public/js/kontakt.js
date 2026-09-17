@@ -36,6 +36,7 @@
   var counterEl = document.getElementById("kontakt-counter");
   var mailbox = document.getElementById("mailbox");
   var mailboxBody = mailbox.querySelector(".mailbox__body");
+  var mailboxResult = document.getElementById("mailbox-result");
   var mailboxMessage = document.getElementById("mailbox-message");
   var submitBtn = form.querySelector('button[type="submit"]');
 
@@ -163,7 +164,7 @@
     var text = isLimited ? LIMIT_MESSAGE : thanksMessages[type] || "Dziękujemy!";
 
     form.classList.add("is-sending");
-    mailbox.classList.toggle("is-limited", isLimited);
+    mailboxResult.classList.toggle("is-limited", isLimited);
 
     var sequence = flyCardIntoMailbox()
       .then(function () {
@@ -174,8 +175,10 @@
         return wait(150);
       })
       .then(function () {
-        mailbox.classList.add("is-centered");
-        return wait(500);
+        // Skrzynka spełniła swoją rolę - odjeżdża w dół i znika, żeby nie
+        // zostawać na ekranie z podziękowaniem.
+        mailbox.classList.add("is-leaving");
+        return wait(300);
       })
       .then(function () {
         mailboxMessage.textContent = text;
@@ -183,7 +186,7 @@
         statusEl.className = isLimited
           ? "kontakt-status kontakt-status--error"
           : "kontakt-status";
-        mailbox.classList.add("is-done");
+        mailboxResult.classList.add("is-done");
       });
 
     // Po udanym wysłaniu ekran z serduszkiem zostaje już na stałe (nie
@@ -196,7 +199,8 @@
           return wait(2400);
         })
         .then(function () {
-          mailbox.classList.remove("is-done", "is-centered", "is-limited");
+          mailboxResult.classList.remove("is-done", "is-limited");
+          mailbox.classList.remove("is-leaving");
           mailboxMessage.textContent = "";
           return wait(400);
         })
