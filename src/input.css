@@ -725,7 +725,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--brand-maroon-dark);
+  background: var(--brand-maroon);
   color: #fff;
   text-align: center;
   padding: 2rem 1.5rem;
