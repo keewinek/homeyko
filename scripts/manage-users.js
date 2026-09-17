@@ -10,7 +10,7 @@
 const path = require("path");
 const { sql, ensureSchema } = require(path.join(__dirname, "..", "lib", "db"));
 
-const USERNAME_RE = /^[a-z0-9_-]{2,32}$/;
+const USERNAME_RE = /^[a-z0-9_.-]{2,32}$/;
 
 async function main() {
   const [, , command, ...args] = process.argv;
@@ -31,7 +31,7 @@ async function main() {
       const username = raw.trim().toLowerCase();
       if (!USERNAME_RE.test(username)) {
         console.error(
-          `Pomijam "${raw}": dozwolone tylko litery a-z, cyfry, - i _, 2-32 znaki.`
+          `Pomijam "${raw}": dozwolone tylko litery a-z, cyfry, ".", "-" i "_", 2-32 znaki.`
         );
         continue;
       }
