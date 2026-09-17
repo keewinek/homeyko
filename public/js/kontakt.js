@@ -84,7 +84,7 @@
   // - nigdy nie zmniejszamy jej po to, żeby się zmieściła, i nigdy nie
   // pozwalamy jej wejść nad kartę. `position: fixed` samo w sobie nie
   // dokłada scrolla, więc wystawanie poza viewport jest bezpieczne.
-  var MAILBOX_GAP_ABOVE = 16;
+  var MAILBOX_GAP_ABOVE = 48;
 
   function syncMailboxPosition() {
     // Nad grafiką skrzynki w tym samym kontenerze (position: fixed) jest
