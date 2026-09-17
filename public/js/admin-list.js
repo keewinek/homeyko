@@ -1,13 +1,21 @@
 (function () {
+  var PAGE_SIZE = 50;
+  var SKELETON_COUNT = 6;
+
   var listSection = document.getElementById("list-section");
   var headerUser = document.getElementById("header-user");
   var logoutBtn = document.getElementById("logout-btn");
   var whoamiEl = document.getElementById("whoami");
   var listEl = document.getElementById("submissions-list");
+  var skeletonEl = document.getElementById("submissions-skeleton");
   var emptyStateEl = document.getElementById("empty-state");
   var countEl = document.getElementById("submissions-count");
+  var loadMoreBtn = document.getElementById("load-more-btn");
 
   var type = listSection.getAttribute("data-type");
+  var loadedItems = [];
+  var total = 0;
+  var loadingMore = false;
 
   function escapeHtml(str) {
     var div = document.createElement("div");
@@ -29,12 +37,26 @@
     }
   }
 
-  function render(items) {
-    countEl.textContent = items.length ? "(" + items.length + ")" : "";
-    emptyStateEl.classList.toggle("hidden", items.length > 0);
+  function buildSkeleton() {
+    skeletonEl.innerHTML = "";
+    for (var i = 0; i < SKELETON_COUNT; i++) {
+      var card = document.createElement("div");
+      card.className =
+        "animate-pulse rounded-xl border border-gray-100 border-l-4 border-l-gray-200 bg-white p-4 shadow-sm";
+      card.innerHTML =
+        '<div class="mb-2 h-3 w-28 rounded bg-gray-200"></div>' +
+        '<div class="mb-1.5 h-4 w-full rounded bg-gray-200"></div>' +
+        '<div class="h-4 w-2/3 rounded bg-gray-200"></div>';
+      skeletonEl.appendChild(card);
+    }
+  }
+
+  function render() {
+    countEl.textContent = total ? "(" + total + ")" : "";
+    emptyStateEl.classList.toggle("hidden", total > 0);
     listEl.innerHTML = "";
 
-    items.forEach(function (item) {
+    loadedItems.forEach(function (item) {
       var card = document.createElement("article");
       card.className =
         "flex flex-col gap-2 rounded-xl border border-gray-100 border-l-4 border-l-[color:var(--brand-coral)] bg-white p-4 shadow-sm sm:flex-row sm:items-start sm:justify-between sm:gap-4";
@@ -54,12 +76,17 @@
 
     listEl.querySelectorAll(".delete-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        var id = btn.getAttribute("data-id");
+        var id = Number(btn.getAttribute("data-id"));
         if (!window.confirm("Usunąć to zgłoszenie?")) return;
         fetch("/api/submissions?id=" + encodeURIComponent(id), { method: "DELETE" })
           .then(function (res) {
             if (!res.ok) throw new Error("Nie udało się usunąć");
-            return loadSubmissions();
+            loadedItems = loadedItems.filter(function (item) {
+              return item.id !== id;
+            });
+            total = Math.max(total - 1, 0);
+            render();
+            updateLoadMoreButton();
           })
           .catch(function (err) {
             window.alert(err.message);
@@ -68,14 +95,79 @@
     });
   }
 
-  function loadSubmissions() {
-    return fetch("/api/submissions?type=" + encodeURIComponent(type)).then(function (res) {
+  function updateLoadMoreButton() {
+    var remaining = total - loadedItems.length;
+    if (remaining > 0) {
+      loadMoreBtn.textContent = "Załaduj więcej (" + remaining + ")";
+      loadMoreBtn.classList.remove("hidden");
+      loadMoreBtn.disabled = false;
+    } else {
+      loadMoreBtn.classList.add("hidden");
+    }
+  }
+
+  function fetchPage(offset) {
+    return fetch(
+      "/api/submissions?type=" + encodeURIComponent(type) + "&limit=" + PAGE_SIZE + "&offset=" + offset
+    ).then(function (res) {
       if (!res.ok) throw new Error("Błąd pobierania zgłoszeń");
-      return res.json().then(function (data) {
-        render(data.submissions || []);
-      });
+      return res.json();
     });
   }
+
+  function loadInitial() {
+    buildSkeleton();
+    listEl.classList.add("hidden");
+    listEl.classList.remove("flex");
+    emptyStateEl.classList.add("hidden");
+    loadMoreBtn.classList.add("hidden");
+    skeletonEl.classList.remove("hidden");
+    skeletonEl.classList.add("flex");
+
+    return fetchPage(0)
+      .then(function (data) {
+        loadedItems = data.submissions || [];
+        total = data.total || 0;
+        skeletonEl.classList.add("hidden");
+        skeletonEl.classList.remove("flex");
+        listEl.classList.remove("hidden");
+        listEl.classList.add("flex");
+        render();
+        updateLoadMoreButton();
+      })
+      .catch(function (err) {
+        skeletonEl.classList.add("hidden");
+        skeletonEl.classList.remove("flex");
+        console.error(err);
+      });
+  }
+
+  loadMoreBtn.addEventListener("click", function () {
+    if (loadingMore) return;
+    loadingMore = true;
+    loadMoreBtn.disabled = true;
+    loadMoreBtn.textContent = "Ładowanie...";
+
+    fetchPage(loadedItems.length)
+      .then(function (data) {
+        var existingIds = loadedItems.map(function (item) {
+          return item.id;
+        });
+        var newItems = (data.submissions || []).filter(function (item) {
+          return existingIds.indexOf(item.id) === -1;
+        });
+        loadedItems = loadedItems.concat(newItems);
+        total = data.total || 0;
+        render();
+        updateLoadMoreButton();
+      })
+      .catch(function (err) {
+        window.alert(err.message);
+      })
+      .then(function () {
+        loadingMore = false;
+      });
+  });
 
   function checkSessionAndLoad() {
     return fetch("/api/me")
@@ -92,7 +184,7 @@
         headerUser.classList.remove("hidden");
         headerUser.classList.add("flex");
         whoamiEl.textContent = "Zalogowano jako: " + me.username;
-        return loadSubmissions();
+        return loadInitial();
       })
       .catch(function (err) {
         console.error(err);

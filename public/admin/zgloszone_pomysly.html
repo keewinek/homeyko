@@ -41,7 +41,15 @@
           Brak zgłoszeń.
         </div>
 
-        <div id="submissions-list" class="flex flex-col gap-3"></div>
+        <div id="submissions-skeleton" class="hidden flex-col gap-3" aria-hidden="true"></div>
+
+        <div id="submissions-list" class="hidden flex-col gap-3"></div>
+
+        <button
+          type="button"
+          id="load-more-btn"
+          class="mx-auto mt-6 hidden rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50"
+        ></button>
       </section>
     </main>
 
