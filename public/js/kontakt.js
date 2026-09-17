@@ -16,6 +16,7 @@
     pomysl: "Dziękujemy za pomysł!",
     pytanie: "Dziękujemy za pytanie!",
   };
+  var LIMIT_MESSAGE = "Co za dużo, to niezdrowo! Zwolnij trochę.";
 
   var titleEl = document.getElementById("kontakt-title");
   var typeInput = document.getElementById("kontakt-type");
@@ -31,33 +32,32 @@
   typeInput.value = type;
   document.title = "Homeyko - " + titles[type];
 
-  // Skrzynka (position: fixed, duża) nie może zasłaniać ani "wchodzić"
-  // nad przycisk Wyślij. Liczymy realnie dostępną wysokość między dołem
-  // przycisku a dołem viewportu i tym ograniczamy rozmiar skrzynki, żeby
-  // jej góra zawsze zostawała poniżej przycisku, niezależnie od wysokości
-  // ekranu (np. krótszy viewport po otwarciu klawiatury).
-  var MAILBOX_BOTTOM_OFFSET = 20; // musi zgadzać się z `bottom` w .mailbox
+  // Skrzynka (position: fixed) w spoczynku musi zawsze zaczynać się
+  // poniżej przycisku Wyślij, na każdej wysokości ekranu. Jeśli się nie
+  // mieści, ma spokojnie wystawać poza dół ekranu (to tylko dekoracja) -
+  // nigdy nie zmniejszamy jej po to, żeby się zmieściła, i nigdy nie
+  // pozwalamy jej wejść nad przycisk. `position: fixed` samo w sobie nie
+  // dokłada scrolla, więc wystawanie poza viewport jest bezpieczne.
   var MAILBOX_GAP_ABOVE = 16;
-  var MAILBOX_MIN_SIZE = 40;
 
-  function syncMailboxSize() {
-    // Pod grafiką skrzynki w tym samym kontenerze (position: fixed, bottom)
-    // siedzą jeszcze serce i komunikat, więc licząc dostępne miejsce trzeba
-    // odjąć realną wysokość tego "ogona", a nie tylko samej grafiki.
-    var extra = mailbox.getBoundingClientRect().height - mailboxBody.getBoundingClientRect().height;
+  function syncMailboxPosition() {
+    // Nad grafiką skrzynki w tym samym kontenerze (position: fixed) jest
+    // jeszcze serce/X i komunikat, więc mierzymy realny odstęp między
+    // górą kontenera a górą samej grafiki, żeby to grafika, nie kontener,
+    // lądowała dokładnie pod przyciskiem.
+    var containerTop = mailbox.getBoundingClientRect().top;
+    var bodyTop = mailboxBody.getBoundingClientRect().top;
+    var extraAbove = bodyTop - containerTop;
     var btnBottom = submitBtn.getBoundingClientRect().bottom;
-    var available =
-      window.innerHeight - MAILBOX_BOTTOM_OFFSET - extra - btnBottom - MAILBOX_GAP_ABOVE;
-    var maxByViewport = Math.min(window.innerWidth * 0.88, 380);
-    var size = Math.max(MAILBOX_MIN_SIZE, Math.min(maxByViewport, available));
-    mailbox.style.setProperty("--mailbox-size", size + "px");
+    var desiredTop = btnBottom + MAILBOX_GAP_ABOVE - extraAbove;
+    mailbox.style.setProperty("--mailbox-top", desiredTop + "px");
   }
 
-  syncMailboxSize();
-  window.addEventListener("resize", syncMailboxSize);
-  window.addEventListener("orientationchange", syncMailboxSize);
+  syncMailboxPosition();
+  window.addEventListener("resize", syncMailboxPosition);
+  window.addEventListener("orientationchange", syncMailboxPosition);
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(syncMailboxSize);
+    document.fonts.ready.then(syncMailboxPosition);
   }
 
   // Klonuje wygląd karteczki z wiadomością i animuje jej "lot" do szczeliny
@@ -65,9 +65,9 @@
   // pozycji na ekranie, więc czystym CSS się nie da).
   function flyCardIntoMailbox() {
     var startRect = card.getBoundingClientRect();
-    var mailboxRect = mailbox.getBoundingClientRect();
-    var targetX = mailboxRect.left + mailboxRect.width / 2;
-    var targetY = mailboxRect.top + mailboxRect.height * 0.4;
+    var bodyRect = mailboxBody.getBoundingClientRect();
+    var targetX = bodyRect.left + bodyRect.width / 2;
+    var targetY = bodyRect.top + bodyRect.height * 0.4;
     var startCenterX = startRect.left + startRect.width / 2;
     var startCenterY = startRect.top + startRect.height / 2;
     var dx = targetX - startCenterX;
@@ -112,8 +112,14 @@
     });
   }
 
-  function playSuccessAnimation() {
+  // kind: "success" (serce) albo "limited" (X, przekroczony limit).
+  function playResultAnimation(kind) {
+    var isLimited = kind === "limited";
+    var text = isLimited ? LIMIT_MESSAGE : thanksMessages[type] || "Dziękujemy!";
+
     form.classList.add("is-sending");
+    mailbox.classList.toggle("is-limited", isLimited);
+
     return flyCardIntoMailbox()
       .then(function () {
         mailbox.classList.add("is-bounce");
@@ -127,19 +133,26 @@
         return wait(500);
       })
       .then(function () {
-        mailboxMessage.textContent = thanksMessages[type] || "Dziękujemy!";
+        mailboxMessage.textContent = text;
+        statusEl.textContent = text;
+        statusEl.className = isLimited
+          ? "kontakt-status kontakt-status--error"
+          : "kontakt-status";
         mailbox.classList.add("is-done");
         return wait(2400);
       })
       .then(function () {
-        mailbox.classList.remove("is-done", "is-centered");
+        mailbox.classList.remove("is-done", "is-centered", "is-limited");
         mailboxMessage.textContent = "";
         return wait(400);
       })
       .then(function () {
         form.classList.remove("is-sending");
-        form.reset();
-        typeInput.value = type;
+        if (!isLimited) {
+          form.reset();
+          typeInput.value = type;
+        }
+        syncMailboxPosition();
       });
   }
 
@@ -163,14 +176,15 @@
     })
       .then(function (response) {
         return response.json().then(function (data) {
-          if (!response.ok) throw new Error(data.error || "Coś poszło nie tak");
-          return data;
+          return { ok: response.ok, rateLimited: !!data.rateLimited, data: data };
         });
       })
-      .then(function () {
+      .then(function (result) {
         submitBtn.textContent = "Wyślij";
         submitBtn.disabled = false;
-        return playSuccessAnimation();
+        if (result.ok) return playResultAnimation("success");
+        if (result.rateLimited) return playResultAnimation("limited");
+        throw new Error(result.data.error || "Coś poszło nie tak");
       })
       .catch(function (err) {
         statusEl.textContent = err.message;

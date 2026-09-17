@@ -573,7 +573,7 @@ html {
 .kontakt-page {
   max-width: 26rem;
   margin: 0 auto;
-  padding: clamp(2.5rem, 8vw, 4rem) 1.25rem min(95vw, 420px);
+  padding: clamp(2.5rem, 8vw, 4rem) 1.25rem;
 }
 
 .kontakt-page__title {
@@ -666,61 +666,108 @@ html {
 .mailbox {
   position: fixed;
   left: 50%;
-  bottom: 1.25rem;
-  transform: translate(-50%, 0) scale(1);
+  top: var(--mailbox-top, 70vh);
+  transform: translate(-50%, 0);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
   z-index: 5;
-  transition: bottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+  transition: top 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
     transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
 }
 
+/* Sam rysunek skrzynki: w spoczynku ma być mniej więcej ten sam,
+   umiarkowany rozmiar na każdym ekranie (lekko responsywny tylko na
+   bardzo wąskich ekranach), a po wysłaniu (is-centered) wraca do
+   małego rozmiaru z pierwszej wersji tego komponentu. */
 .mailbox__body {
   display: block;
-  width: var(--mailbox-size, min(88vw, 380px));
+  width: clamp(90px, 30vw, 112px);
   height: auto;
+}
+
+.mailbox.is-centered .mailbox__body {
+  width: 82px;
+}
+
+.mailbox__result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  opacity: 0;
+  transform: translateY(10px) scale(0.85);
+  transition: opacity 0.3s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .mailbox__check {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  transform: scale(0);
-  transition: opacity 0.25s ease,
-    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mailbox__check--heart svg {
+  filter: drop-shadow(0 0 10px rgba(224, 67, 60, 0.55))
+    drop-shadow(0 0 22px rgba(224, 67, 60, 0.35));
+}
+
+.mailbox__check--limited {
+  display: none;
+}
+
+.mailbox.is-limited .mailbox__check--heart {
+  display: none;
+}
+
+.mailbox.is-limited .mailbox__check--limited {
+  display: flex;
 }
 
 .mailbox__message {
-  opacity: 0;
-  transform: translateY(6px);
   font-weight: 700;
   color: var(--brand-maroon-dark);
   text-align: center;
-  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .mailbox.is-centered {
-  bottom: 50%;
+  top: 50%;
   z-index: 20;
-  transform: translate(-50%, 50%) scale(1.08);
+  transform: translate(-50%, -50%);
 }
 
 .mailbox.is-bounce .mailbox__body {
   animation: mailbox-bounce 0.5s ease;
 }
 
-.mailbox.is-done .mailbox__check {
+.mailbox.is-done .mailbox__result {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(0) scale(1);
 }
 
-.mailbox.is-done .mailbox__message {
-  opacity: 1;
-  transform: translateY(0);
+.mailbox.is-done .mailbox__check--heart {
+  animation: heart-beat 1.1s ease-in-out infinite;
+}
+
+@keyframes heart-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.18);
+  }
+  30% {
+    transform: scale(0.96);
+  }
+  45% {
+    transform: scale(1.12);
+  }
+  60% {
+    transform: scale(1);
+  }
 }
 
 @keyframes mailbox-bounce {
