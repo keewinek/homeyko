@@ -1,4 +1,5 @@
 (function () {
+  var bootSpinner = document.getElementById("boot-spinner");
   var loginSection = document.getElementById("login-section");
   var loginCard = document.getElementById("login-card");
   var loginSpinner = document.getElementById("login-spinner");
@@ -10,7 +11,9 @@
   var whoamiEl = document.getElementById("whoami");
 
   function showLoggedIn(username) {
+    bootSpinner.classList.add("hidden");
     loginSection.classList.add("hidden");
+    loginSection.classList.remove("flex");
     dashboardSection.classList.remove("hidden");
     headerUser.classList.remove("hidden");
     headerUser.classList.add("flex");
@@ -20,7 +23,9 @@
   }
 
   function showLoggedOut() {
+    bootSpinner.classList.add("hidden");
     loginSection.classList.remove("hidden");
+    loginSection.classList.add("flex");
     loginCard.classList.remove("hidden");
     loginSpinner.classList.add("hidden");
     dashboardSection.classList.add("hidden");
@@ -42,6 +47,7 @@
       })
       .catch(function (err) {
         console.error(err);
+        showLoggedOut();
       });
   }
 
