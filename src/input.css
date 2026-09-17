@@ -271,7 +271,6 @@ html {
   padding-top: 0.65rem;
   padding-bottom: 0.65rem;
   white-space: nowrap;
-  color: #fff;
   /* width is set inline by main.js to match .hero__title's rendered width */
 }
 
@@ -310,7 +309,7 @@ html {
 
 .btn--primary {
   background: var(--brand-coral);
-  color: var(--brand-maroon-dark);
+  color: #fff;
 }
 
 .btn--primary:hover,
