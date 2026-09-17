@@ -120,7 +120,7 @@
     form.classList.add("is-sending");
     mailbox.classList.toggle("is-limited", isLimited);
 
-    return flyCardIntoMailbox()
+    var sequence = flyCardIntoMailbox()
       .then(function () {
         mailbox.classList.add("is-bounce");
         wait(500).then(function () {
@@ -139,21 +139,29 @@
           ? "kontakt-status kontakt-status--error"
           : "kontakt-status";
         mailbox.classList.add("is-done");
-        return wait(2400);
-      })
-      .then(function () {
-        mailbox.classList.remove("is-done", "is-centered", "is-limited");
-        mailboxMessage.textContent = "";
-        return wait(400);
-      })
-      .then(function () {
-        form.classList.remove("is-sending");
-        if (!isLimited) {
-          form.reset();
-          typeInput.value = type;
-        }
-        syncMailboxPosition();
       });
+
+    // Po udanym wysłaniu ekran z serduszkiem zostaje już na stałe (nie
+    // wraca do formularza) - nie ma po co wysyłać kolejnego pomysłu z tej
+    // samej wizyty na stronie. Po przekroczeniu limitu wraca do formularza,
+    // żeby dać spróbować ponownie później.
+    if (isLimited) {
+      sequence = sequence
+        .then(function () {
+          return wait(2400);
+        })
+        .then(function () {
+          mailbox.classList.remove("is-done", "is-centered", "is-limited");
+          mailboxMessage.textContent = "";
+          return wait(400);
+        })
+        .then(function () {
+          form.classList.remove("is-sending");
+          syncMailboxPosition();
+        });
+    }
+
+    return sequence;
   }
 
   form.addEventListener("submit", function (e) {
