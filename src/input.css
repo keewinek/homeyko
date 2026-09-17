@@ -6,6 +6,7 @@
   --brand-coral: #e07676;
   --font-display: "Montserrat", ui-sans-serif, sans-serif;
   --font-tagline: "Anton", ui-sans-serif, sans-serif;
+  --nav-height: 76px;
 }
 
 html {
@@ -22,8 +23,9 @@ html {
   min-height: 100vh;
   min-height: 100svh;
   display: grid;
-  /* nav / reserved face-safe zone the text may never start above / text */
-  grid-template-rows: auto minmax(46svh, 1fr) auto;
+  /* reserved face-safe zone the text may never start above / text */
+  grid-template-rows: minmax(46svh, 1fr) auto;
+  padding-top: var(--nav-height);
   color: #fff;
   overflow: hidden;
 }
@@ -53,14 +55,19 @@ html {
 /* -- Nav -- */
 
 .hero__nav {
-  grid-row: 1;
-  position: relative;
-  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  min-height: var(--nav-height);
   padding: 1.25rem clamp(1rem, 4vw, 3rem);
+  background: var(--brand-maroon-dark);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 .hero__brand {
@@ -102,6 +109,10 @@ html {
 }
 
 .hero__links-instagram {
+  display: none;
+}
+
+.hero__links-cta {
   display: none;
 }
 
@@ -844,9 +855,17 @@ html {
   .hero__nav-right .hero__socials {
     display: none;
   }
+
+  .hero__links-cta {
+    display: block;
+  }
 }
 
 @media (max-width: 480px) {
+  :root {
+    --nav-height: 68px;
+  }
+
   .hero__nav {
     padding: 1rem;
   }
