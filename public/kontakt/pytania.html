@@ -76,10 +76,33 @@
       </form>
 
       <div class="mailbox" id="mailbox" aria-hidden="true">
-        <svg class="mailbox__body" viewBox="0 0 100 90" width="76" height="68">
-          <path d="M10 40 Q10 10 50 10 Q90 10 90 40 L90 85 Q90 88 87 88 L13 88 Q10 88 10 85 Z" fill="#c9302c" />
-          <rect x="4" y="82" width="92" height="8" rx="4" fill="#7a1613" />
-          <rect x="26" y="33" width="48" height="9" rx="4.5" fill="#5a0f0d" />
+        <svg class="mailbox__body" viewBox="0 0 100 100" width="82" height="82">
+          <defs>
+            <linearGradient id="mailboxBody" x1="18" y1="12" x2="88" y2="92" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ff8f88" />
+              <stop offset="0.55" stop-color="#f2564e" />
+              <stop offset="1" stop-color="#d1342e" />
+            </linearGradient>
+            <linearGradient id="mailboxBase" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#e0433c" />
+              <stop offset="1" stop-color="#b52a25" />
+            </linearGradient>
+          </defs>
+
+          <ellipse cx="50" cy="94" rx="34" ry="5" fill="#2e0001" opacity="0.18" />
+          <rect x="10" y="82" width="80" height="10" rx="5" fill="url(#mailboxBase)" />
+          <path
+            d="M14 46 Q14 12 50 12 Q86 12 86 46 L86 82 L14 82 Z"
+            fill="url(#mailboxBody)"
+          />
+          <ellipse cx="32" cy="27" rx="14" ry="9" fill="#ffffff" opacity="0.25" />
+
+          <rect x="28" y="40" width="44" height="10" rx="5" fill="#7a1613" />
+          <rect x="28" y="40" width="44" height="3" rx="1.5" fill="#4a0b09" opacity="0.7" />
+          <rect x="28" y="48" width="44" height="2.5" rx="1.25" fill="#ff9c96" opacity="0.5" />
+
+          <circle cx="50" cy="8" r="5" fill="#ffbdb8" />
+          <circle cx="48.3" cy="6.3" r="1.6" fill="#ffffff" opacity="0.85" />
         </svg>
         <div class="mailbox__check">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">

@@ -395,6 +395,23 @@ html {
   line-height: 1.5;
 }
 
+.program__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: clamp(3rem, 8vw, 4.5rem);
+  padding-top: clamp(2rem, 6vw, 3rem);
+  border-top: 1px solid #f0e4e4;
+}
+
+.program__cta-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 3vw, 1.4rem);
+  color: var(--brand-maroon-dark);
+}
+
 /* ----------------------------------------------------------------- */
 /* Odliczanie do startu kampanii                                     */
 /* ----------------------------------------------------------------- */
