@@ -18,6 +18,15 @@
     link.addEventListener("click", closeNav);
   });
 
+  var heroNav = document.querySelector(".hero__nav");
+  if (heroNav) {
+    function syncNavBackground() {
+      heroNav.classList.toggle("hero__nav--scrolled", window.scrollY > 10);
+    }
+    window.addEventListener("scroll", syncNavBackground, { passive: true });
+    syncNavBackground();
+  }
+
   var heroBg = document.getElementById("hero-bg");
   if (heroBg) {
     var raf = 0;
