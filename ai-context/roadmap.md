@@ -18,11 +18,12 @@
 
 1. **Szkielet techniczny** ✅: strona statyczna (HTML/Tailwind/JS) na
    Vercelu, hero, sekcja programu, formularze i panel admina gotowe.
-2. **Treść merytoryczna kampanii**, do zrobienia:
-   - strona "O kandydacie" (Filip Gałązka)
-   - strona "Zespół" (sztab)
-   - galeria
-   - aktualności / newsy z kampanii
+2. **Treść merytoryczna kampanii**:
+   - sekcja "Dlaczego Filip" ✅ (szablon, treść do dopracowania)
+   - sekcja "Sztab" ✅ (szablon: zdjęcie grupowe i dane pozostałych osób
+     do uzupełnienia)
+   - sekcja "Kontakt" ✅
+   - do zrobienia: galeria, aktualności / newsy z kampanii
 3. **Identyfikacja wizualna** ✅: logo, kolory, zdjęcia kampanijne gotowe.
 4. **Wdrożenie / publikacja** ✅: strona działa na homeyko.pl.
 
