@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homeyko - Już wkrótce</title>
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <section class="countdown-gate">
+      <div class="countdown-gate__inner">
+        <img src="/images/logo-white.png" alt="Homeyko" class="countdown-gate__logo" />
+        <h1 class="countdown-gate__title">Kampania startuje wkrótce</h1>
+        <p class="countdown-gate__subtitle">Filip Gałązka na przewodniczącego</p>
+
+        <div id="cd-live" class="countdown-gate__timer">
+          <div class="countdown-gate__unit">
+            <span id="cd-days" class="countdown-gate__value">00</span>
+            <span class="countdown-gate__label">dni</span>
+          </div>
+          <div class="countdown-gate__unit">
+            <span id="cd-hours" class="countdown-gate__value">00</span>
+            <span class="countdown-gate__label">godz.</span>
+          </div>
+          <div class="countdown-gate__unit">
+            <span id="cd-minutes" class="countdown-gate__value">00</span>
+            <span class="countdown-gate__label">min.</span>
+          </div>
+          <div class="countdown-gate__unit">
+            <span id="cd-seconds" class="countdown-gate__value">00</span>
+            <span class="countdown-gate__label">sek.</span>
+          </div>
+        </div>
+
+        <p id="cd-done" hidden class="countdown-gate__done">
+          Kampania właśnie się rozpoczęła! Strona zaraz się odświeży.
+        </p>
+
+        <noscript>
+          <p class="countdown-gate__noscript">Start kampanii: 23 września, o północy.</p>
+        </noscript>
+      </div>
+    </section>
+
+    <script src="/js/countdown.js"></script>
+  </body>
+</html>
