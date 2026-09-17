@@ -362,8 +362,10 @@ html {
 
 .program__number {
   flex-shrink: 0;
+  width: 2ch;
   font-family: var(--font-display);
   font-weight: 900;
+  font-variant-numeric: tabular-nums;
   color: var(--brand-maroon);
   font-size: clamp(3.5rem, 9vw, 5.5rem);
   line-height: 1;
