@@ -363,7 +363,7 @@ html {
 .program__item {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 1.25rem;
 }
 
 .program__number {
