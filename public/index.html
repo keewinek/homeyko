@@ -8,7 +8,40 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="stylesheet" href="/css/styles.css" />
   </head>
-  <body class="flex min-h-screen items-center justify-center bg-[color:var(--brand-maroon-dark)]">
-    <img src="/images/logo-white.png" alt="Homeyko" class="h-10 w-auto opacity-90" />
+  <body>
+    <section class="countdown-gate" aria-label="Odliczanie do uruchomienia strony">
+      <div class="countdown-gate__inner">
+        <img src="/images/logo-white.png" alt="Homeyko" class="countdown-gate__logo" />
+
+        <div id="cd-live" class="countdown-gate__timer">
+          <div class="countdown-gate__unit">
+            <span id="cd-days" class="countdown-gate__value">00</span>
+            <span class="countdown-gate__label">dni</span>
+          </div>
+          <div class="countdown-gate__unit">
+            <span id="cd-hours" class="countdown-gate__value">00</span>
+            <span class="countdown-gate__label">godz.</span>
+          </div>
+          <div class="countdown-gate__unit">
+            <span id="cd-minutes" class="countdown-gate__value">00</span>
+            <span class="countdown-gate__label">min.</span>
+          </div>
+          <div class="countdown-gate__unit">
+            <span id="cd-seconds" class="countdown-gate__value">00</span>
+            <span class="countdown-gate__label">sek.</span>
+          </div>
+        </div>
+
+        <p id="cd-done" hidden class="countdown-gate__done">
+          Kampania właśnie się rozpoczęła! Strona zaraz się odświeży.
+        </p>
+
+        <noscript>
+          <p class="countdown-gate__noscript">Start kampanii: 23 września, o północy.</p>
+        </noscript>
+      </div>
+    </section>
+
+    <script src="/js/countdown.js"></script>
   </body>
 </html>

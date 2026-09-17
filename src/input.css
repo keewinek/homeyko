@@ -459,3 +459,72 @@ html {
     padding: 1rem 1rem 2.5rem;
   }
 }
+
+/* ----------------------------------------------------------------- */
+/* Odliczanie do startu kampanii                                     */
+/* ----------------------------------------------------------------- */
+
+.countdown-gate {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand-maroon-dark);
+  color: #fff;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.countdown-gate__inner {
+  max-width: 480px;
+}
+
+.countdown-gate__logo {
+  height: 36px;
+  width: auto;
+  margin: 0 auto clamp(3rem, 10vw, 4.5rem);
+  display: block;
+}
+
+.countdown-gate__timer {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.75rem, 4vw, 1.5rem);
+}
+
+.countdown-gate__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 4rem;
+}
+
+.countdown-gate__value {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.85rem, 8vw, 3rem);
+  color: var(--brand-coral);
+  line-height: 1;
+}
+
+.countdown-gate__label {
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #f2e4e4;
+}
+
+.countdown-gate__done {
+  font-size: 1.15rem;
+  font-weight: 700;
+  max-width: 32ch;
+  margin: 0 auto;
+}
+
+.countdown-gate__noscript {
+  color: #f2e4e4;
+  font-size: 0.95rem;
+}
