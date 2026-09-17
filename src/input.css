@@ -356,13 +356,13 @@ html {
 .program__list {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.5rem, 4vw, 2.5rem);
+  gap: clamp(1.1rem, 3vw, 1.9rem);
 }
 
 .program__item {
   display: flex;
   align-items: flex-start;
-  gap: 1.25rem;
+  gap: 0.85rem;
 }
 
 .program__number {
