@@ -49,15 +49,25 @@
             name="message"
             rows="4"
             required
-            maxlength="2000"
+            minlength="5"
+            maxlength="500"
             placeholder="Twój pomysł..."
             class="kontakt-card__textarea"
           ></textarea>
+          <span class="kontakt-card__counter" id="kontakt-counter" aria-hidden="true"></span>
+          <button type="submit" class="kontakt-send" aria-label="Wyślij" disabled>
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="kontakt-send__icon">
+              <path
+                d="M5 12h13M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
         </div>
-
-        <button type="submit" class="btn btn--primary kontakt-submit">
-          Wyślij
-        </button>
 
         <p id="kontakt-status" role="status" class="kontakt-status"></p>
       </form>

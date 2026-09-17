@@ -3,6 +3,14 @@ const { sql, ensureSchema } = require("../lib/db");
 
 const ALLOWED_TYPES = new Set(["pomysl", "pytanie"]);
 
+const MIN_MESSAGE_LENGTH = 5;
+const MAX_MESSAGE_LENGTH = 500;
+
+// Dozwolone: litery (także polskie znaki), cyfry, białe znaki i
+// podstawowa interpunkcja. Filtrujemy też na serwerze, bo klientowi
+// (JS w przeglądarce) nie ufamy, to tylko wygoda dla użytkownika.
+const ALLOWED_CHARS_REGEX = /[^\p{L}\p{N}\s.,!?:;'"()\-/%&+]/gu;
+
 // Antyspam: ta sama zasada dla wszystkich, także dla innych sztabów,
 // które mogłyby próbować zalać nas zgłoszeniami. Rozsądny limit, nie
 // blokujący normalnego użytkowania (np. całej szkoły za jednym IP NAT).
@@ -43,9 +51,15 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const trimmedMessage = String(message || "").trim();
-  if (!trimmedMessage || trimmedMessage.length > 2000) {
-    res.status(400).json({ error: "Wiadomość jest wymagana (max 2000 znaków)" });
+  const filteredMessage = String(message || "").replace(ALLOWED_CHARS_REGEX, "");
+  const trimmedMessage = filteredMessage.trim();
+  if (
+    trimmedMessage.length < MIN_MESSAGE_LENGTH ||
+    trimmedMessage.length > MAX_MESSAGE_LENGTH
+  ) {
+    res.status(400).json({
+      error: `Wiadomość musi mieć od ${MIN_MESSAGE_LENGTH} do ${MAX_MESSAGE_LENGTH} znaków`,
+    });
     return;
   }
 

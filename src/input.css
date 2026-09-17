@@ -603,6 +603,7 @@ html {
 }
 
 .kontakt-card {
+  position: relative;
   width: 100%;
   max-width: 300px;
 }
@@ -611,7 +612,7 @@ html {
   width: 100%;
   height: 140px;
   resize: none;
-  padding: 1rem;
+  padding: 1rem 3rem 1.75rem 1rem;
   border: 2px solid #e5d6d6;
   border-radius: 10px;
   font-size: 0.95rem;
@@ -628,9 +629,52 @@ html {
   box-shadow: 0 6px 20px rgba(224, 118, 118, 0.25);
 }
 
-.kontakt-submit {
-  margin-top: 0.25rem;
+.kontakt-card__counter {
+  position: absolute;
+  left: 14px;
+  bottom: 10px;
+  font-size: 0.72rem;
+  color: #b79c9c;
+  pointer-events: none;
+}
+
+.kontakt-card__counter.is-near-limit {
+  color: #c0392b;
+}
+
+.kontakt-send {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--brand-coral);
   color: #fff;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(84, 0, 2, 0.2);
+  transition: background-color 0.15s ease, transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.kontakt-send:hover:not(:disabled),
+.kontakt-send:focus-visible:not(:disabled) {
+  background: #eb8f8f;
+  transform: translateY(-1px) scale(1.05);
+}
+
+.kontakt-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.kontakt-send__icon {
+  transform: translateX(1px);
 }
 
 .kontakt-status {

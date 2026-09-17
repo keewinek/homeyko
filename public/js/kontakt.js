@@ -17,26 +17,71 @@
     pytanie: "Dziękujemy za pytanie!",
   };
   var LIMIT_MESSAGE = "Co za dużo, to niezdrowo! Zwolnij trochę.";
+  var MIN_MESSAGE_LENGTH = 5;
+  var MAX_MESSAGE_LENGTH = 500;
+  var TOO_SHORT_MESSAGE =
+    "Wiadomość musi mieć co najmniej " + MIN_MESSAGE_LENGTH + " znaków.";
+
+  // Dozwolone: litery (także polskie znaki), cyfry, białe znaki i
+  // podstawowa interpunkcja. Reszta (emoji, symbole, znaki sterujące)
+  // jest po cichu usuwana, żeby zgłoszenia nie zaśmiecały bazy.
+  var ALLOWED_CHARS_REGEX = /[^\p{L}\p{N}\s.,!?:;'"()\-/%&+]/gu;
 
   var titleEl = document.getElementById("kontakt-title");
   var typeInput = document.getElementById("kontakt-type");
   var form = document.getElementById("kontakt-form");
   var statusEl = document.getElementById("kontakt-status");
   var card = document.getElementById("kontakt-card");
+  var textarea = document.getElementById("message");
+  var counterEl = document.getElementById("kontakt-counter");
   var mailbox = document.getElementById("mailbox");
   var mailboxBody = mailbox.querySelector(".mailbox__body");
   var mailboxMessage = document.getElementById("mailbox-message");
   var submitBtn = form.querySelector('button[type="submit"]');
+
+  function filterAllowedChars(value) {
+    return value.replace(ALLOWED_CHARS_REGEX, "");
+  }
+
+  function updateSendState() {
+    var value = textarea.value;
+    var trimmedLength = value.trim().length;
+    if (counterEl) {
+      counterEl.textContent = value.length + "/" + MAX_MESSAGE_LENGTH;
+      counterEl.classList.toggle(
+        "is-near-limit",
+        value.length >= MAX_MESSAGE_LENGTH - 40
+      );
+    }
+    submitBtn.disabled = trimmedLength < MIN_MESSAGE_LENGTH;
+  }
+
+  textarea.addEventListener("input", function () {
+    var start = textarea.selectionStart;
+    var before = textarea.value;
+    var filtered = filterAllowedChars(before);
+    if (filtered !== before) {
+      var removedBefore =
+        before.slice(0, start).length -
+        filterAllowedChars(before.slice(0, start)).length;
+      textarea.value = filtered;
+      var newPos = Math.max(0, start - removedBefore);
+      textarea.setSelectionRange(newPos, newPos);
+    }
+    updateSendState();
+  });
+
+  updateSendState();
 
   titleEl.textContent = titles[type];
   typeInput.value = type;
   document.title = "Homeyko - " + titles[type];
 
   // Skrzynka (position: fixed) w spoczynku musi zawsze zaczynać się
-  // poniżej przycisku Wyślij, na każdej wysokości ekranu. Jeśli się nie
-  // mieści, ma spokojnie wystawać poza dół ekranu (to tylko dekoracja) -
-  // nigdy nie zmniejszamy jej po to, żeby się zmieściła, i nigdy nie
-  // pozwalamy jej wejść nad przycisk. `position: fixed` samo w sobie nie
+  // poniżej karty z wiadomością, na każdej wysokości ekranu. Jeśli się
+  // nie mieści, ma spokojnie wystawać poza dół ekranu (to tylko dekoracja)
+  // - nigdy nie zmniejszamy jej po to, żeby się zmieściła, i nigdy nie
+  // pozwalamy jej wejść nad kartę. `position: fixed` samo w sobie nie
   // dokłada scrolla, więc wystawanie poza viewport jest bezpieczne.
   var MAILBOX_GAP_ABOVE = 16;
 
@@ -44,12 +89,12 @@
     // Nad grafiką skrzynki w tym samym kontenerze (position: fixed) jest
     // jeszcze serce/X i komunikat, więc mierzymy realny odstęp między
     // górą kontenera a górą samej grafiki, żeby to grafika, nie kontener,
-    // lądowała dokładnie pod przyciskiem.
+    // lądowała dokładnie pod kartą.
     var containerTop = mailbox.getBoundingClientRect().top;
     var bodyTop = mailboxBody.getBoundingClientRect().top;
     var extraAbove = bodyTop - containerTop;
-    var btnBottom = submitBtn.getBoundingClientRect().bottom;
-    var desiredTop = btnBottom + MAILBOX_GAP_ABOVE - extraAbove;
+    var cardBottom = card.getBoundingClientRect().bottom;
+    var desiredTop = cardBottom + MAILBOX_GAP_ABOVE - extraAbove;
     mailbox.style.setProperty("--mailbox-top", desiredTop + "px");
   }
 
@@ -168,8 +213,14 @@
     e.preventDefault();
     statusEl.textContent = "";
     statusEl.className = "kontakt-status";
+
+    if (form.message.value.trim().length < MIN_MESSAGE_LENGTH) {
+      statusEl.textContent = TOO_SHORT_MESSAGE;
+      statusEl.className = "kontakt-status kontakt-status--error";
+      return;
+    }
+
     submitBtn.disabled = true;
-    submitBtn.textContent = "Wysyłanie...";
 
     var payload = {
       type: typeInput.value,
@@ -188,8 +239,7 @@
         });
       })
       .then(function (result) {
-        submitBtn.textContent = "Wyślij";
-        submitBtn.disabled = false;
+        updateSendState();
         if (result.ok) return playResultAnimation("success");
         if (result.rateLimited) return playResultAnimation("limited");
         throw new Error(result.data.error || "Coś poszło nie tak");
@@ -197,8 +247,7 @@
       .catch(function (err) {
         statusEl.textContent = err.message;
         statusEl.className = "kontakt-status kontakt-status--error";
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Wyślij";
+        updateSendState();
       });
   });
 })();
