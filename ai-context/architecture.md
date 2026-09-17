@@ -69,9 +69,19 @@ vercel.json              # build/deploy + cleanUrls
 **Vercel + Git:** połącz repo w panelu Vercel ("Add New Project" → Import z
 GitHub → wybierz `keewinek/homeyko`). Vercel wykryje `vercel.json` (build
 command `npm run build`, output directory `public`) i katalog `api/` jako
-Serverless Functions, i będzie deployował automatycznie po każdym pushu do
-`main`. Domena własna (np. homeyko.pl) konfigurowana w ustawieniach
-projektu na Vercelu (Domains).
+Serverless Functions, i będzie deployował automatycznie po każdym pushu.
+Domena własna (np. homeyko.pl) konfigurowana w ustawieniach projektu na
+Vercelu (Domains).
+
+### Środowiska: produkcja vs preview
+
+- **`main`** to branch produkcyjny, spięty z `homeyko.pl`. Do czasu
+  oficjalnego release'u zawiera tylko pustą stronę (`public/index.html`
+  bez treści kampanii), żeby nie zdradzać programu przed startem.
+- **`preview`** to branch roboczy z pełną, aktualną wersją strony. Spięty
+  z domeną `preview.homeyko.pl` (Settings → Domains → Environment:
+  Preview → Git Branch: `preview`).
+- Merge `preview` → `main` dopiero na wyraźną decyzję o publikacji.
 
 **Uwaga o `rewrites` w `vercel.json`:** próba przepisania `/kontakt/:typ`
 na `/kontakt.html` (dynamiczna i jawna wersja) 404owała w produkcji mimo
