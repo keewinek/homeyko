@@ -110,6 +110,21 @@ mechanizmem co `/admin`.
 
 Zobacz `.env.example`.
 
+**WAŻNE, częsta pułapka: integracja Neon ↔ Vercel tworzy osobną gałąź
+bazy danych (Neon branch) per gałąź gita.** Projekt Neon nazywa się
+"Homeyko" (`shiny-pond-15395839`). Gałąź `main`/produkcja używa Neon
+brancha `production` (domyślny/primary), a gałąź `preview` używa
+osobnego Neon brancha o nazwie `preview`. Każdy branch roboczy
+`claude/...` dostaje też własny, tymczasowy Neon branch
+(`preview/claude/...`). To znaczy, że zapytanie SQL wykonane bez
+podania `branch_id` (np. przez Neon MCP) trafia domyślnie do brancha
+`production`, a NIE do tego, którego używa `preview.homeyko.pl`. Przy
+ręcznych operacjach na danych (np. dodawanie loginów sztabu przez SQL
+zamiast `scripts/manage-users.js` z prawdziwym `DATABASE_URL`) trzeba
+jawnie wskazać właściwy branch (`preview` dla preview.homeyko.pl,
+`production` dla homeyko.pl), inaczej zmiana nie będzie widoczna tam,
+gdzie się jej testuje.
+
 ## Logowanie do panelu admina
 
 - Jeden login to jeden członek sztabu, w tabeli `sztab_users`
