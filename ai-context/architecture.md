@@ -110,8 +110,36 @@ mechanizmem co `/admin`.
 
 Zobacz `.env.example`.
 
+**WAŻNE, częsta pułapka: integracja Neon ↔ Vercel tworzy osobną gałąź
+bazy danych (Neon branch) per gałąź gita.** Projekt Neon nazywa się
+"Homeyko" (`shiny-pond-15395839`). Gałąź `main`/produkcja używa Neon
+brancha `production` (domyślny/primary), a gałąź `preview` używa
+osobnego Neon brancha o nazwie `preview`. Każdy branch roboczy
+`claude/...` dostaje też własny, tymczasowy Neon branch
+(`preview/claude/...`). To znaczy, że zapytanie SQL wykonane bez
+podania `branch_id` (np. przez Neon MCP) trafia domyślnie do brancha
+`production`, a NIE do tego, którego używa `preview.homeyko.pl`. Przy
+ręcznych operacjach na danych (np. dodawanie loginów sztabu przez SQL
+zamiast `scripts/manage-users.js` z prawdziwym `DATABASE_URL`) trzeba
+jawnie wskazać właściwy branch (`preview` dla preview.homeyko.pl,
+`production` dla homeyko.pl), inaczej zmiana nie będzie widoczna tam,
+gdzie się jej testuje.
+
 ## Logowanie do panelu admina
 
+- Hasło (nowe, ustawiane przy pierwszym logowaniu) musi mieć min. 8
+  znaków (`api/login.js`), niezależnie od tego, czy login już ma
+  zapisane hasło. To sprawdzenie działa zanim padnie zapytanie do bazy,
+  więc krótkiego "tymczasowego" hasła (np. "admin") nie da się w ogóle
+  wysłać.
+- `ADMIN_SESSION_SECRET` (Vercel → Settings → Environment Variables)
+  musi być ustawiony dla **każdego** środowiska osobno (Production,
+  Preview, Development), inaczej `/api/login` zwraca 500 ("Missing
+  ADMIN_SESSION_SECRET env var"). Zmienna trafia do już zbudowanych
+  funkcji dopiero po nowym deployu, więc samo zapisanie jej w panelu
+  nie naprawia aktualnie działającego deploya, trzeba go redeployować
+  (uważać, żeby redeployować właściwy branch/projekt, nie np. `main`
+  zamiast `preview`).
 - Jeden login to jeden członek sztabu, w tabeli `sztab_users`
   (`username`, `password_hash`, brak innych danych osobowych).
 - Hasła nigdy nie są przechowywane w postaci jawnej ani jako sam
@@ -133,6 +161,33 @@ Zobacz `.env.example`.
 - Sesja to cookie podpisane HMAC-em (`lib/auth.js`), niosące username i
   ważne 7 dni. `GET /api/me` zwraca zalogowany login (panel pokazuje
   "Zalogowano jako: ...").
+
+### Aktualny skład sztabu (loginy w `sztab_users`)
+
+Dodane 2026-09-17, na podstawie zrzutów ekranu z listą sztabu (bez haseł,
+każdy ustawia swoje przy pierwszym logowaniu na `/admin`). Login to
+imię.nazwisko, małymi literami, bez polskich znaków:
+
+- filip.galazka (administrator kampanii)
+- alicja.janaszek
+- diana.koronevich
+- julia.stawczyk
+- karolina.opara
+- natalia.holubowicz
+- waleria.wroblewska
+- wojciech.kolacz
+- alicja.skrzymowska
+- hanna.bialas
+- kamil.kamyk
+- maria.grzyb
+- marta.debek
+- natasza.kurpiewska
+- zosia.piskorz
+
+Uwaga: "Administrator" przy Filipie na zrzutach to etykieta/rola w innej
+aplikacji (ekran "znajomi" z przyciskami "Dodaj znajomego"), niepowiązana
+z tym panelem, tabela `sztab_users` nie ma pojęcia roli, wszystkie loginy
+są równorzędne.
 
 ## Uwagi
 
