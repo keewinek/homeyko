@@ -626,31 +626,6 @@ html {
   box-shadow: 0 6px 20px rgba(224, 118, 118, 0.25);
 }
 
-.kontakt-field {
-  width: 100%;
-  max-width: 300px;
-}
-
-.kontakt-field__label {
-  display: block;
-  margin-bottom: 0.35rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #55494a;
-}
-
-.kontakt-field__input {
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid #d8c9c9;
-  padding: 0.6rem 0.85rem;
-}
-
-.kontakt-field__input:focus {
-  outline: none;
-  border-color: var(--brand-coral);
-}
-
 .kontakt-submit {
   margin-top: 0.25rem;
 }

@@ -123,7 +123,6 @@
     var payload = {
       type: typeInput.value,
       message: form.message.value,
-      contact: form.contact.value,
       website: form.website.value,
     };
 
