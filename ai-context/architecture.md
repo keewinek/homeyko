@@ -53,12 +53,21 @@ api/                    # Vercel Serverless Functions (Node.js)
   submissions.js               # GET/DELETE, lista/usuwanie (wymaga loginu);
                                 #   GET przyjmuje opcjonalne ?type=, ?limit=
                                 #   (domyślnie 50, max 100), ?offset=, zwraca
-                                #   też total (całkowitą liczbę zgłoszeń)
+                                #   też total (całkowitą liczbę zgłoszeń);
+                                #   sortowanie: nie-spam najpierw, potem
+                                #   najnowsze
+  cron/
+    check-spam.js               # GET, wywoływane co godzinę przez Vercel
+                                  #   Cron (chronione CRON_SECRET), sprawdza
+                                  #   nowe zgłoszenia (spam_checked_at IS
+                                  #   NULL) przez API Groq i ustawia is_spam
 lib/
   db.js                   # klient Neon (@neondatabase/serverless) + schema
   auth.js                  # podpisywanie/weryfikacja cookie sesji (HMAC),
                             #   token niesie username
   password.js                # hashowanie/weryfikacja haseł (scrypt + sól)
+  spam-detector.js           # klasyfikacja treści spam/nie spam przez
+                              #   darmowe API Groq (chat completions)
 scripts/
   manage-users.js          # CLI: dodawanie/reset/usuwanie loginów sztabu
                             #   (uruchamiane lokalnie, wymaga DATABASE_URL)
@@ -93,6 +102,12 @@ Vercelu (Domains).
   z domeną `preview.homeyko.pl` (Settings → Domains → Environment:
   Preview → Git Branch: `preview`).
 - Merge `preview` → `main` dopiero na wyraźną decyzję o publikacji.
+- **Cron (`vercel.json` → `crons`) działa tylko na deployu Produkcyjnym**
+  (branch `main`), Vercel nie odpala cronów na Preview. Dopóki
+  `api/cron/check-spam.js` jest tylko na `preview`, trzeba go testować
+  ręcznym wywołaniem (`curl` z nagłówkiem `Authorization: Bearer
+  $CRON_SECRET` na URL preview deploya), automatyczne uruchamianie co
+  godzinę zacznie działać dopiero po wejściu tego kodu na `main`.
 
 **Uwaga o `rewrites` w `vercel.json`:** próba przepisania `/kontakt/:typ`
 na `/kontakt.html` (dynamiczna i jawna wersja) 404owała w produkcji mimo
@@ -108,9 +123,15 @@ mechanizmem co `/admin`.
 2. W **Settings → Environment Variables** dodać ręcznie:
    - `ADMIN_SESSION_SECRET`: dowolny długi losowy ciąg (sekret do
      podpisywania cookie sesji)
+   - `CRON_SECRET`: dowolny długi losowy ciąg. Vercel Cron sam dokłada go
+     jako nagłówek `Authorization: Bearer ...` do wywołań
+     `api/cron/check-spam.js`, jeśli zmienna nosi dokładnie tę nazwę
+   - `GROQ_API_KEY`: klucz do darmowego API Groq
+     (https://console.groq.com/keys), używany przez moderację spamu
 3. Tabele `submissions` i `sztab_users` tworzą się same przy pierwszym
-   zapytaniu (`CREATE TABLE IF NOT EXISTS` w `lib/db.js`). Nie trzeba nic
-   ręcznie migrować.
+   zapytaniu (`CREATE TABLE IF NOT EXISTS` w `lib/db.js`), podobnie jak
+   kolumny `is_spam`/`spam_checked_at` (`ALTER TABLE ... ADD COLUMN IF NOT
+   EXISTS`). Nie trzeba nic ręcznie migrować.
 4. Dodać loginy członków sztabu (lokalnie, z `DATABASE_URL` w env):
    ```
    DATABASE_URL="..." node scripts/manage-users.js add kasia piotr ania ...
@@ -208,6 +229,17 @@ są równorzędne.
   formularze "Zgłoś pomysł"/"Zadaj pytanie" i panel admina.
 - `api/submit.js` ma honeypot (`website`) jako podstawową ochronę
   antyspamową, bez CAPTCHA.
+- **Moderacja spamu przez AI (dodane 2026-09-17):** cron
+  `api/cron/check-spam.js`, odpalany co godzinę przez Vercel Cron
+  (`vercel.json` → `crons`), bierze zgłoszenia jeszcze nie sprawdzone
+  (`spam_checked_at IS NULL`), klasyfikuje treść przez darmowe API Groq
+  (`lib/spam-detector.js`) i ustawia `is_spam`/`spam_checked_at`. Panel
+  admina (`public/js/admin-list.js`) pokazuje takie zgłoszenia na końcu
+  listy (`ORDER BY is_spam ASC` w `api/submissions.js`) z etykietą "Wykryto
+  spam" i wyszarzeniem karty, a usuwanie ich nie wymaga potwierdzenia
+  popupem (w przeciwieństwie do zwykłych zgłoszeń). Błąd wywołania AI
+  zostawia zgłoszenie niesprawdzone (retry przy kolejnym uruchomieniu
+  crona), zamiast fałszywie oznaczać je jako "nie spam".
 - **Styl treści:** nigdy nie używamy długiego myślnika (—) w tekstach na
   stronie ani w dokumentacji projektu. Zamiast tego: przecinek, kropka,
   dwukropek albo nawiasy, w zależności od kontekstu.

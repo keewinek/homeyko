@@ -59,25 +59,30 @@
     loadedItems.forEach(function (item) {
       var card = document.createElement("article");
       card.className =
-        "flex flex-col gap-2 rounded-xl border border-gray-100 border-l-4 border-l-[color:var(--brand-coral)] bg-white p-4 shadow-sm sm:flex-row sm:items-start sm:justify-between sm:gap-4";
+        "flex flex-col gap-2 rounded-xl border border-gray-100 border-l-4 bg-white p-4 shadow-sm sm:flex-row sm:items-start sm:justify-between sm:gap-4 " +
+        (item.is_spam ? "border-l-gray-300 opacity-60" : "border-l-[color:var(--brand-coral)]");
       card.innerHTML =
         '<div class="min-w-0 flex-1">' +
-        '<div class="mb-1.5 text-xs text-gray-400">' +
-        escapeHtml(formatDate(item.created_at)) +
+        '<div class="mb-1.5 flex items-center gap-2 text-xs text-gray-400">' +
+        "<span>" + escapeHtml(formatDate(item.created_at)) + "</span>" +
+        (item.is_spam
+          ? '<span class="rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-semibold text-red-700">Wykryto spam</span>'
+          : "") +
         "</div>" +
         '<p class="whitespace-pre-wrap break-words text-gray-900">' + escapeHtml(item.message) + "</p>" +
         (item.contact
           ? '<p class="mt-1.5 text-sm text-gray-500">Kontakt: ' + escapeHtml(item.contact) + "</p>"
           : "") +
         "</div>" +
-        '<button type="button" data-id="' + item.id + '" class="delete-btn shrink-0 self-start rounded-md border border-gray-200 px-2.5 py-1 text-xs font-semibold text-gray-500 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-600">Usuń</button>';
+        '<button type="button" data-id="' + item.id + '" data-spam="' + (item.is_spam ? "1" : "0") + '" class="delete-btn shrink-0 self-start rounded-md border border-gray-200 px-2.5 py-1 text-xs font-semibold text-gray-500 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-600">Usuń</button>';
       listEl.appendChild(card);
     });
 
     listEl.querySelectorAll(".delete-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var id = Number(btn.getAttribute("data-id"));
-        if (!window.confirm("Usunąć to zgłoszenie?")) return;
+        var isSpamItem = btn.getAttribute("data-spam") === "1";
+        if (!isSpamItem && !window.confirm("Usunąć to zgłoszenie?")) return;
         fetch("/api/submissions?id=" + encodeURIComponent(id), { method: "DELETE" })
           .then(function (res) {
             if (!res.ok) throw new Error("Nie udało się usunąć");

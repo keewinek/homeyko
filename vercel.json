@@ -2,5 +2,11 @@
   "buildCommand": "npm run build",
   "outputDirectory": "public",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "crons": [
+    {
+      "path": "/api/cron/check-spam",
+      "schedule": "0 * * * *"
+    }
+  ]
 }

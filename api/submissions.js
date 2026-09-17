@@ -17,16 +17,16 @@ module.exports = async function handler(req, res) {
 
       const rows = type
         ? await sql`
-            SELECT id, type, message, contact, created_at
+            SELECT id, type, message, contact, created_at, is_spam
             FROM submissions
             WHERE type = ${type}
-            ORDER BY created_at DESC
+            ORDER BY is_spam ASC, created_at DESC
             LIMIT ${limit} OFFSET ${offset}
           `
         : await sql`
-            SELECT id, type, message, contact, created_at
+            SELECT id, type, message, contact, created_at, is_spam
             FROM submissions
-            ORDER BY created_at DESC
+            ORDER BY is_spam ASC, created_at DESC
             LIMIT ${limit} OFFSET ${offset}
           `;
 
