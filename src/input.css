@@ -630,6 +630,7 @@ html {
 
 .kontakt-submit {
   margin-top: 0.25rem;
+  color: #fff;
 }
 
 .kontakt-status {
@@ -679,7 +680,7 @@ html {
 
 .mailbox__body {
   display: block;
-  width: min(88vw, 380px);
+  width: var(--mailbox-size, min(88vw, 380px));
   height: auto;
 }
 
@@ -687,10 +688,6 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  background: #2f9e57;
   opacity: 0;
   transform: scale(0);
   transition: opacity 0.25s ease,

@@ -23,12 +23,42 @@
   var statusEl = document.getElementById("kontakt-status");
   var card = document.getElementById("kontakt-card");
   var mailbox = document.getElementById("mailbox");
+  var mailboxBody = mailbox.querySelector(".mailbox__body");
   var mailboxMessage = document.getElementById("mailbox-message");
   var submitBtn = form.querySelector('button[type="submit"]');
 
   titleEl.textContent = titles[type];
   typeInput.value = type;
   document.title = "Homeyko - " + titles[type];
+
+  // Skrzynka (position: fixed, duża) nie może zasłaniać ani "wchodzić"
+  // nad przycisk Wyślij. Liczymy realnie dostępną wysokość między dołem
+  // przycisku a dołem viewportu i tym ograniczamy rozmiar skrzynki, żeby
+  // jej góra zawsze zostawała poniżej przycisku, niezależnie od wysokości
+  // ekranu (np. krótszy viewport po otwarciu klawiatury).
+  var MAILBOX_BOTTOM_OFFSET = 20; // musi zgadzać się z `bottom` w .mailbox
+  var MAILBOX_GAP_ABOVE = 16;
+  var MAILBOX_MIN_SIZE = 40;
+
+  function syncMailboxSize() {
+    // Pod grafiką skrzynki w tym samym kontenerze (position: fixed, bottom)
+    // siedzą jeszcze serce i komunikat, więc licząc dostępne miejsce trzeba
+    // odjąć realną wysokość tego "ogona", a nie tylko samej grafiki.
+    var extra = mailbox.getBoundingClientRect().height - mailboxBody.getBoundingClientRect().height;
+    var btnBottom = submitBtn.getBoundingClientRect().bottom;
+    var available =
+      window.innerHeight - MAILBOX_BOTTOM_OFFSET - extra - btnBottom - MAILBOX_GAP_ABOVE;
+    var maxByViewport = Math.min(window.innerWidth * 0.88, 380);
+    var size = Math.max(MAILBOX_MIN_SIZE, Math.min(maxByViewport, available));
+    mailbox.style.setProperty("--mailbox-size", size + "px");
+  }
+
+  syncMailboxSize();
+  window.addEventListener("resize", syncMailboxSize);
+  window.addEventListener("orientationchange", syncMailboxSize);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(syncMailboxSize);
+  }
 
   // Klonuje wygląd karteczki z wiadomością i animuje jej "lot" do szczeliny
   // skrzynki (Web Animations API, bo start/koniec liczymy z rzeczywistych
