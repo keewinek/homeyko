@@ -4,13 +4,16 @@
 
 - **Strona:** czysty HTML (`public/index.html`, `public/kontakt.html`,
   `public/admin.html`, `public/kontakt/pomysl.html`,
-  `public/kontakt/pytania.html`), serwowana pod czystymi URL-ami bez
-  `.html` (`cleanUrls` w `vercel.json`): `/`, `/kontakt`, `/kontakt/pomysl`,
-  `/kontakt/pytania`, `/admin`
+  `public/kontakt/pytania.html`, `public/admin/zgloszone_pomysly.html`,
+  `public/admin/zgloszone_pytania.html`), serwowana pod czystymi URL-ami
+  bez `.html` (`cleanUrls` w `vercel.json`): `/`, `/kontakt`,
+  `/kontakt/pomysl`, `/kontakt/pytania`, `/admin`,
+  `/admin/zgloszone_pomysly`, `/admin/zgloszone_pytania`
 - **Style:** [Tailwind CSS](https://tailwindcss.com/) v4 (CLI), źródło w
   `src/input.css`, kompilowane do `public/css/styles.css`
 - **JS (front):** vanilla JavaScript (`public/js/*.js`): menu mobilne,
-  paralaksa tła w hero, formularz kontaktowy, panel admina
+  paralaksa tła w hero, formularz kontaktowy, panel admina (logowanie +
+  dashboard menu, lista/usuwanie zgłoszeń na podstronach dashboardu)
 - **Backend:** Vercel Serverless Functions (Node.js, CommonJS) w `api/`
 - **Baza danych:** Postgres przez Neon (integracja Vercel Marketplace),
   klient `@neondatabase/serverless`
@@ -29,11 +32,14 @@ public/                # publikowany katalog (output dir na Vercel)
   kontakt.html             # domyślny formularz (typ "pomysl")
   kontakt/pomysl.html       # "Zgłoś pomysł" pod czystym URL /kontakt/pomysl
   kontakt/pytania.html      # "Zadaj pytanie" pod czystym URL /kontakt/pytania
-  admin.html                # panel admina (logowanie + lista zgłoszeń)
+  admin.html                # panel admina: logowanie + dashboard menu
+  admin/zgloszone_pomysly.html # lista zgłoszonych pomysłów (wymaga loginu)
+  admin/zgloszone_pytania.html # lista zgłoszonych pytań (wymaga loginu)
   css/styles.css             # skompilowany CSS (generowany, zacommitowany)
   js/main.js                 # menu mobilne + paralaksa (strona główna)
   js/kontakt.js               # obsługa formularza kontaktowego
-  js/admin.js                  # logowanie + lista/usuwanie zgłoszeń
+  js/admin.js                  # logowanie (z loading spinnerem) + dashboard menu
+  js/admin-list.js              # lista/usuwanie zgłoszeń na podstronach dashboardu
   images/                        # zdjęcia i logotypy kampanii
   favicon.ico
 api/                    # Vercel Serverless Functions (Node.js)
@@ -42,7 +48,8 @@ api/                    # Vercel Serverless Functions (Node.js)
                              #   dany login ustawia to hasło jako docelowe
   logout.js                  # POST, czyści cookie sesji
   me.js                       # GET, zwraca username zalogowanego (401 jeśli brak)
-  submissions.js               # GET/DELETE, lista/usuwanie (wymaga loginu)
+  submissions.js               # GET/DELETE, lista/usuwanie (wymaga loginu);
+                                #   GET przyjmuje opcjonalny ?type=
 lib/
   db.js                   # klient Neon (@neondatabase/serverless) + schema
   auth.js                  # podpisywanie/weryfikacja cookie sesji (HMAC),

@@ -11,11 +11,19 @@ module.exports = async function handler(req, res) {
     await ensureSchema();
 
     if (req.method === "GET") {
-      const rows = await sql`
-        SELECT id, type, message, contact, created_at
-        FROM submissions
-        ORDER BY created_at DESC
-      `;
+      const type = req.query.type ? String(req.query.type) : null;
+      const rows = type
+        ? await sql`
+            SELECT id, type, message, contact, created_at
+            FROM submissions
+            WHERE type = ${type}
+            ORDER BY created_at DESC
+          `
+        : await sql`
+            SELECT id, type, message, contact, created_at
+            FROM submissions
+            ORDER BY created_at DESC
+          `;
       res.status(200).json({ submissions: rows });
       return;
     }
