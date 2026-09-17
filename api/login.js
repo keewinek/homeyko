@@ -2,7 +2,7 @@ const { sql, ensureSchema } = require("../lib/db");
 const { hashPassword, verifyPassword } = require("../lib/password");
 const { createSessionToken, sessionCookieHeader } = require("../lib/auth");
 
-const USERNAME_RE = /^[a-z0-9_-]{2,32}$/;
+const USERNAME_RE = /^[a-z0-9_.-]{2,32}$/;
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
