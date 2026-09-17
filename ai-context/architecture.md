@@ -39,7 +39,9 @@ public/                # publikowany katalog (output dir na Vercel)
   js/main.js                 # menu mobilne + paralaksa (strona główna)
   js/kontakt.js               # obsługa formularza kontaktowego
   js/admin.js                  # logowanie (z loading spinnerem) + dashboard menu
-  js/admin-list.js              # lista/usuwanie zgłoszeń na podstronach dashboardu
+  js/admin-list.js              # lista/usuwanie zgłoszeń na podstronach
+                                 #   dashboardu, ze skeleton loadingiem i
+                                 #   stronicowaniem (po 50, przycisk "Załaduj więcej")
   images/                        # zdjęcia i logotypy kampanii
   favicon.ico
 api/                    # Vercel Serverless Functions (Node.js)
@@ -49,7 +51,9 @@ api/                    # Vercel Serverless Functions (Node.js)
   logout.js                  # POST, czyści cookie sesji
   me.js                       # GET, zwraca username zalogowanego (401 jeśli brak)
   submissions.js               # GET/DELETE, lista/usuwanie (wymaga loginu);
-                                #   GET przyjmuje opcjonalny ?type=
+                                #   GET przyjmuje opcjonalne ?type=, ?limit=
+                                #   (domyślnie 50, max 100), ?offset=, zwraca
+                                #   też total (całkowitą liczbę zgłoszeń)
 lib/
   db.js                   # klient Neon (@neondatabase/serverless) + schema
   auth.js                  # podpisywanie/weryfikacja cookie sesji (HMAC),

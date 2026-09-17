@@ -12,19 +12,29 @@ module.exports = async function handler(req, res) {
 
     if (req.method === "GET") {
       const type = req.query.type ? String(req.query.type) : null;
+      const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 100);
+      const offset = Math.max(Number(req.query.offset) || 0, 0);
+
       const rows = type
         ? await sql`
             SELECT id, type, message, contact, created_at
             FROM submissions
             WHERE type = ${type}
             ORDER BY created_at DESC
+            LIMIT ${limit} OFFSET ${offset}
           `
         : await sql`
             SELECT id, type, message, contact, created_at
             FROM submissions
             ORDER BY created_at DESC
+            LIMIT ${limit} OFFSET ${offset}
           `;
-      res.status(200).json({ submissions: rows });
+
+      const totalRows = type
+        ? await sql`SELECT COUNT(*)::int AS count FROM submissions WHERE type = ${type}`
+        : await sql`SELECT COUNT(*)::int AS count FROM submissions`;
+
+      res.status(200).json({ submissions: rows, total: totalRows[0].count });
       return;
     }
 
