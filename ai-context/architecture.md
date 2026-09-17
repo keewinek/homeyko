@@ -134,6 +134,33 @@ Zobacz `.env.example`.
   ważne 7 dni. `GET /api/me` zwraca zalogowany login (panel pokazuje
   "Zalogowano jako: ...").
 
+### Aktualny skład sztabu (loginy w `sztab_users`)
+
+Dodane 2026-09-17, na podstawie zrzutów ekranu z listą sztabu (bez haseł,
+każdy ustawia swoje przy pierwszym logowaniu na `/admin`). Login to
+imię.nazwisko, małymi literami, bez polskich znaków:
+
+- filip.galazka (administrator kampanii)
+- alicja.janaszek
+- diana.koronevich
+- julia.stawczyk
+- karolina.opara
+- natalia.holubowicz
+- waleria.wroblewska
+- wojciech.kolacz
+- alicja.skrzymowska
+- hanna.bialas
+- kamil.kamyk
+- maria.grzyb
+- marta.debek
+- natasza.kurpiewska
+- zosia.piskorz
+
+Uwaga: "Administrator" przy Filipie na zrzutach to etykieta/rola w innej
+aplikacji (ekran "znajomi" z przyciskami "Dodaj znajomego"), niepowiązana
+z tym panelem, tabela `sztab_users` nie ma pojęcia roli, wszystkie loginy
+są równorzędne.
+
 ## Uwagi
 
 - Wcześniej był to szkielet Fresh/Deno, przepisany na statyczny
