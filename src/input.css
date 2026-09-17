@@ -356,7 +356,7 @@ html {
 .program__list {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.1rem, 3vw, 1.9rem);
+  gap: clamp(0.6rem, 1.8vw, 1.1rem);
 }
 
 .program__item {
@@ -385,6 +385,7 @@ html {
   font-weight: 700;
   font-size: clamp(1.1rem, 2.6vw, 1.4rem);
   line-height: 1.3;
+  margin-top: clamp(0.2rem, 1vw, 0.4rem);
   margin-bottom: 0.3rem;
 }
 
@@ -401,7 +402,6 @@ html {
   gap: 1rem;
   margin-top: clamp(3rem, 8vw, 4.5rem);
   padding-top: clamp(2rem, 6vw, 3rem);
-  border-top: 1px solid #f0e4e4;
 }
 
 .program__cta-text {
