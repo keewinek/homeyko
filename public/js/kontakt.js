@@ -73,6 +73,7 @@
   });
 
   updateSendState();
+  textarea.focus();
 
   titleEl.textContent = titles[type];
   typeInput.value = type;
