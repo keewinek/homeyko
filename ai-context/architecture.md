@@ -127,6 +127,19 @@ gdzie się jej testuje.
 
 ## Logowanie do panelu admina
 
+- Hasło (nowe, ustawiane przy pierwszym logowaniu) musi mieć min. 8
+  znaków (`api/login.js`), niezależnie od tego, czy login już ma
+  zapisane hasło. To sprawdzenie działa zanim padnie zapytanie do bazy,
+  więc krótkiego "tymczasowego" hasła (np. "admin") nie da się w ogóle
+  wysłać.
+- `ADMIN_SESSION_SECRET` (Vercel → Settings → Environment Variables)
+  musi być ustawiony dla **każdego** środowiska osobno (Production,
+  Preview, Development), inaczej `/api/login` zwraca 500 ("Missing
+  ADMIN_SESSION_SECRET env var"). Zmienna trafia do już zbudowanych
+  funkcji dopiero po nowym deployu, więc samo zapisanie jej w panelu
+  nie naprawia aktualnie działającego deploya, trzeba go redeployować
+  (uważać, żeby redeployować właściwy branch/projekt, nie np. `main`
+  zamiast `preview`).
 - Jeden login to jeden członek sztabu, w tabeli `sztab_users`
   (`username`, `password_hash`, brak innych danych osobowych).
 - Hasła nigdy nie są przechowywane w postaci jawnej ani jako sam
