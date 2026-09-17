@@ -1,0 +1,51 @@
+name: Sync claude/* branches to preview
+
+# Zasada z CLAUDE.md: każda zmiana w tym repo ma automatycznie trafiać na
+# branch `preview`. Część sesji (np. Claude Code on the web) dostaje
+# jednak własny branch roboczy `claude/...` i czasem kończy pracę bez
+# ręcznego scalenia go do `preview`. Ten workflow robi to za nie: przy
+# każdym pushu na branch pasujący do `claude/**` scala go do `preview`
+# i pushuje `preview` na origin.
+
+on:
+  push:
+    branches:
+      - "claude/**"
+
+permissions:
+  contents: write
+
+jobs:
+  sync-to-preview:
+    if: github.event.deleted == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: preview
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge branch into preview
+        env:
+          SOURCE_BRANCH: ${{ github.ref_name }}
+        run: |
+          git fetch origin "$SOURCE_BRANCH"
+
+          if git merge --ff-only "origin/$SOURCE_BRANCH"; then
+            echo "Fast-forward OK."
+          else
+            git merge --no-ff "origin/$SOURCE_BRANCH" \
+              -m "Auto-sync: scal $SOURCE_BRANCH do preview" || {
+                echo "::error::Konflikt przy scalaniu $SOURCE_BRANCH do preview. Scal ręcznie."
+                git merge --abort
+                exit 1
+              }
+          fi
+
+          git push origin preview

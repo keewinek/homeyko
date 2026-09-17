@@ -16,3 +16,5 @@ Część sesji (np. Claude Code on the web) dostaje na starcie systemową instru
 W praktyce: rozwijaj i commituj na tym branchu roboczym tak jak każe harness (to nie jest "inny branch" w rozumieniu zasady o `main`), ale zanim uznasz zadanie za skończone, zawsze dodatkowo scal ten branch (fast-forward, jeśli się da) do `preview` i wypchnij `preview` na `origin`. Zadanie, po którym zmiana leży tylko na branchu roboczym, a nie na `preview`, jest niedokończone, niezależnie od tego, jak duża czy mała była zmiana.
 
 Jeśli kiedykolwiek nie masz pewności, gdzie wypchnąć zmianę: zawsze `preview`.
+
+Dodatkowe zabezpieczenie: workflow `.github/workflows/sync-claude-branches-to-preview.yml` przy każdym pushu na branch `claude/**` sam scala go do `preview` i pushuje. To siatka bezpieczeństwa na wypadek, gdyby agent o tym zapomniał, nie zwalnia jednak z ręcznego pushowania na `preview` opisanego wyżej.
