@@ -742,7 +742,7 @@ html {
   background: var(--brand-maroon);
   color: #fff;
   text-align: center;
-  padding: 2rem 1.5rem;
+  padding: 2rem clamp(1rem, 4vw, 3rem);
 }
 
 .countdown-gate__inner {
@@ -898,7 +898,7 @@ html {
 .kontakt-page {
   max-width: 26rem;
   margin: 0 auto;
-  padding: clamp(2.5rem, 8vw, 4rem) 1.25rem;
+  padding: clamp(2.5rem, 8vw, 4rem) clamp(1rem, 4vw, 3rem);
 }
 
 .kontakt-page__title {
