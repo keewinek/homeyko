@@ -261,29 +261,20 @@ html {
   stroke-linejoin: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: hero-checkbox-draw 3.4s ease-in-out infinite;
+  animation: hero-checkbox-draw 0.7s ease-out 1 forwards;
 }
 
 .hero__checkbox-x1 {
-  animation-delay: 0.85s;
+  animation-delay: 0.5s;
 }
 
 .hero__checkbox-x2 {
-  animation-delay: 1.05s;
+  animation-delay: 0.65s;
 }
 
 @keyframes hero-checkbox-draw {
-  0% {
-    stroke-dashoffset: 1;
-  }
-  22% {
+  to {
     stroke-dashoffset: 0;
-  }
-  88% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: 1;
   }
 }
 
