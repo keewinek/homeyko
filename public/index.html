@@ -93,9 +93,13 @@
             <span class="hero__title-sub">Filip</span>
             <span class="hero__title-main">
               <svg class="hero__checkbox" viewBox="0 0 100 100" aria-hidden="true">
-                <path d="M19 13 Q10 14 10 23 L8 76 Q8 87 19 88 L79 90 Q90 90 91 79 L93 22 Q93 11 82 12 Z" />
-                <path d="M26 27 Q50 53 74 76" />
-                <path d="M75 26 Q49 52 25 75" />
+                <path
+                  class="hero__checkbox-box"
+                  pathLength="1"
+                  d="M19 13 Q10 14 10 23 L8 76 Q8 87 19 88 L79 90 Q90 90 91 79 L93 22 Q93 11 82 12 Z"
+                />
+                <path class="hero__checkbox-x1" pathLength="1" d="M26 27 Q50 53 74 76" />
+                <path class="hero__checkbox-x2" pathLength="1" d="M75 26 Q49 52 25 75" />
               </svg>
               Gałązka
             </span>
@@ -257,14 +261,8 @@
       <div class="zespol__inner">
         <h2 class="zespol__title">Sztab</h2>
 
-        <div class="zespol__group-photo zespol__group-photo--placeholder">
-          <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M9 3 7.17 5H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-3.17L15 3H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
-            />
-          </svg>
-          <span>Zdjęcie sztabu, wkrótce</span>
+        <div class="zespol__group-photo">
+          <img src="/images/sztab-grupa.jpg" alt="Sztab kampanii" class="zespol__group-photo-img" />
         </div>
 
         <p class="zespol__intro">
@@ -293,6 +291,21 @@
             </div>
             <h3 class="zespol__member-name">Kamil Piątka</h3>
             <p class="zespol__member-role">Wiceprzewodniczący</p>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <div class="zespol__headshot-fallback">
+                <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <h3 class="zespol__member-name">Marta Dębek</h3>
+            <p class="zespol__member-role">Wiceprzewodnicząca</p>
           </article>
 
           <article class="zespol__member">

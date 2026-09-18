@@ -1,0 +1,29 @@
+name: Moderacja spamu (cron co godzinę)
+
+# Vercel Cron (vercel.json -> crons) odpala się tylko na deployu
+# Produkcyjnym (branch main), nigdy na Preview. Dopóki kod moderacji jest
+# tylko na `preview`, ten workflow zastępuje Vercel Cron: woła co godzinę
+# endpoint api/cron/check-spam.js na preview.homeyko.pl. Wymaga sekretu
+# repozytorium CRON_SECRET (Settings -> Secrets and variables -> Actions),
+# z tą samą wartością co CRON_SECRET ustawiony w Vercelu.
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  check-spam:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wywołaj moderację spamu na preview.homeyko.pl
+        run: |
+          status=$(curl -sS -o /tmp/response.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            https://preview.homeyko.pl/api/cron/check-spam)
+          echo "HTTP $status"
+          cat /tmp/response.json
+          if [ "$status" -ge 300 ]; then
+            echo "::error::Cron moderacji zwrócił HTTP $status"
+            exit 1
+          fi

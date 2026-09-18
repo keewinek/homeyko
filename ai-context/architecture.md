@@ -4,13 +4,16 @@
 
 - **Strona:** czysty HTML (`public/index.html`, `public/kontakt.html`,
   `public/admin.html`, `public/kontakt/pomysl.html`,
-  `public/kontakt/pytania.html`), serwowana pod czystymi URL-ami bez
-  `.html` (`cleanUrls` w `vercel.json`): `/`, `/kontakt`, `/kontakt/pomysl`,
-  `/kontakt/pytania`, `/admin`
+  `public/kontakt/pytania.html`, `public/admin/zgloszone_pomysly.html`,
+  `public/admin/zgloszone_pytania.html`), serwowana pod czystymi URL-ami
+  bez `.html` (`cleanUrls` w `vercel.json`): `/`, `/kontakt`,
+  `/kontakt/pomysl`, `/kontakt/pytania`, `/admin`,
+  `/admin/zgloszone_pomysly`, `/admin/zgloszone_pytania`
 - **Style:** [Tailwind CSS](https://tailwindcss.com/) v4 (CLI), źródło w
   `src/input.css`, kompilowane do `public/css/styles.css`
 - **JS (front):** vanilla JavaScript (`public/js/*.js`): menu mobilne,
-  paralaksa tła w hero, formularz kontaktowy, panel admina
+  paralaksa tła w hero, formularz kontaktowy, panel admina (logowanie +
+  dashboard menu, lista/usuwanie zgłoszeń na podstronach dashboardu)
 - **Backend:** Vercel Serverless Functions (Node.js, CommonJS) w `api/`
 - **Baza danych:** Postgres przez Neon (integracja Vercel Marketplace),
   klient `@neondatabase/serverless`
@@ -29,11 +32,16 @@ public/                # publikowany katalog (output dir na Vercel)
   kontakt.html             # domyślny formularz (typ "pomysl")
   kontakt/pomysl.html       # "Zgłoś pomysł" pod czystym URL /kontakt/pomysl
   kontakt/pytania.html      # "Zadaj pytanie" pod czystym URL /kontakt/pytania
-  admin.html                # panel admina (logowanie + lista zgłoszeń)
+  admin.html                # panel admina: logowanie + dashboard menu
+  admin/zgloszone_pomysly.html # lista zgłoszonych pomysłów (wymaga loginu)
+  admin/zgloszone_pytania.html # lista zgłoszonych pytań (wymaga loginu)
   css/styles.css             # skompilowany CSS (generowany, zacommitowany)
   js/main.js                 # menu mobilne + paralaksa (strona główna)
   js/kontakt.js               # obsługa formularza kontaktowego
-  js/admin.js                  # logowanie + lista/usuwanie zgłoszeń
+  js/admin.js                  # logowanie (z loading spinnerem) + dashboard menu
+  js/admin-list.js              # lista/usuwanie zgłoszeń na podstronach
+                                 #   dashboardu, ze skeleton loadingiem i
+                                 #   stronicowaniem (po 50, przycisk "Załaduj więcej")
   images/                        # zdjęcia i logotypy kampanii
   favicon.ico
 api/                    # Vercel Serverless Functions (Node.js)
@@ -42,12 +50,24 @@ api/                    # Vercel Serverless Functions (Node.js)
                              #   dany login ustawia to hasło jako docelowe
   logout.js                  # POST, czyści cookie sesji
   me.js                       # GET, zwraca username zalogowanego (401 jeśli brak)
-  submissions.js               # GET/DELETE, lista/usuwanie (wymaga loginu)
+  submissions.js               # GET/DELETE, lista/usuwanie (wymaga loginu);
+                                #   GET przyjmuje opcjonalne ?type=, ?limit=
+                                #   (domyślnie 50, max 100), ?offset=, zwraca
+                                #   też total (całkowitą liczbę zgłoszeń);
+                                #   sortowanie: nie-spam najpierw, potem
+                                #   najnowsze
+  cron/
+    check-spam.js               # GET, wywoływane co godzinę przez Vercel
+                                  #   Cron (chronione CRON_SECRET), sprawdza
+                                  #   nowe zgłoszenia (spam_checked_at IS
+                                  #   NULL) przez API Groq i ustawia is_spam
 lib/
   db.js                   # klient Neon (@neondatabase/serverless) + schema
   auth.js                  # podpisywanie/weryfikacja cookie sesji (HMAC),
                             #   token niesie username
   password.js                # hashowanie/weryfikacja haseł (scrypt + sól)
+  spam-detector.js           # klasyfikacja treści spam/nie spam przez
+                              #   darmowe API Groq (chat completions)
 scripts/
   manage-users.js          # CLI: dodawanie/reset/usuwanie loginów sztabu
                             #   (uruchamiane lokalnie, wymaga DATABASE_URL)
@@ -82,6 +102,26 @@ Vercelu (Domains).
   z domeną `preview.homeyko.pl` (Settings → Domains → Environment:
   Preview → Git Branch: `preview`).
 - Merge `preview` → `main` dopiero na wyraźną decyzję o publikacji.
+- **Cron (`vercel.json` → `crons`) działa tylko na deployu Produkcyjnym**
+  (branch `main`), Vercel nie odpala cronów na Preview. Dlatego
+  `api/cron/check-spam.js` jest wywoływany na `preview.homeyko.pl`
+  wyłącznie przez GitHub Actions (`.github/workflows/moderation-cron.yml`,
+  co godzinę, przez `curl` z nagłówkiem `Authorization: Bearer
+  $CRON_SECRET`), niezależnie od Vercela.
+- **Pułapka: wpis w `vercel.json` → `crons` z harmonogramem częstszym niż
+  raz dziennie wywalał WSZYSTKIE deploye (Preview i Produkcję), nie tylko
+  Cron.** Darmowy plan Vercela (Hobby) dopuszcza cron jobs, ale tylko
+  z harmonogramem nie częstszym niż raz na dobę; próba dodania wpisu
+  `"schedule": "0 * * * *"` (co godzinę) do `vercel.json` powodowała, że
+  Vercel odrzucał każdy nowy deploy jeszcze przed budową (żaden branch,
+  żaden commit, bez widocznego błędu w GitHubie), bo `vercel.json` jest
+  walidowany dla każdego deploya niezależnie od tego, czy cron miałby się
+  tam w ogóle uruchomić. Efekt: `preview.homeyko.pl` przestało się
+  aktualizować mimo zielonych pushy i działającego workflow syncującego.
+  Rozwiązanie na razie: cron moderacji jest tylko w GitHub Actions (patrz
+  wyżej), a `vercel.json` nie ma sekcji `crons`. Jeśli kiedyś wraca
+  potrzeba crona w Vercelu, harmonogram musi być `"0 0 * * *"` (raz
+  dziennie) albo trzeba przejść na plan Pro.
 
 **Uwaga o `rewrites` w `vercel.json`:** próba przepisania `/kontakt/:typ`
 na `/kontakt.html` (dynamiczna i jawna wersja) 404owała w produkcji mimo
@@ -97,9 +137,15 @@ mechanizmem co `/admin`.
 2. W **Settings → Environment Variables** dodać ręcznie:
    - `ADMIN_SESSION_SECRET`: dowolny długi losowy ciąg (sekret do
      podpisywania cookie sesji)
+   - `CRON_SECRET`: dowolny długi losowy ciąg. Vercel Cron sam dokłada go
+     jako nagłówek `Authorization: Bearer ...` do wywołań
+     `api/cron/check-spam.js`, jeśli zmienna nosi dokładnie tę nazwę
+   - `GROQ_API_KEY`: klucz do darmowego API Groq
+     (https://console.groq.com/keys), używany przez moderację spamu
 3. Tabele `submissions` i `sztab_users` tworzą się same przy pierwszym
-   zapytaniu (`CREATE TABLE IF NOT EXISTS` w `lib/db.js`). Nie trzeba nic
-   ręcznie migrować.
+   zapytaniu (`CREATE TABLE IF NOT EXISTS` w `lib/db.js`), podobnie jak
+   kolumny `is_spam`/`spam_checked_at` (`ALTER TABLE ... ADD COLUMN IF NOT
+   EXISTS`). Nie trzeba nic ręcznie migrować.
 4. Dodać loginy członków sztabu (lokalnie, z `DATABASE_URL` w env):
    ```
    DATABASE_URL="..." node scripts/manage-users.js add kasia piotr ania ...
@@ -197,6 +243,17 @@ są równorzędne.
   formularze "Zgłoś pomysł"/"Zadaj pytanie" i panel admina.
 - `api/submit.js` ma honeypot (`website`) jako podstawową ochronę
   antyspamową, bez CAPTCHA.
+- **Moderacja spamu przez AI (dodane 2026-09-17):** cron
+  `api/cron/check-spam.js`, odpalany co godzinę przez Vercel Cron
+  (`vercel.json` → `crons`), bierze zgłoszenia jeszcze nie sprawdzone
+  (`spam_checked_at IS NULL`), klasyfikuje treść przez darmowe API Groq
+  (`lib/spam-detector.js`) i ustawia `is_spam`/`spam_checked_at`. Panel
+  admina (`public/js/admin-list.js`) pokazuje takie zgłoszenia na końcu
+  listy (`ORDER BY is_spam ASC` w `api/submissions.js`) z etykietą "Wykryto
+  spam" i wyszarzeniem karty, a usuwanie ich nie wymaga potwierdzenia
+  popupem (w przeciwieństwie do zwykłych zgłoszeń). Błąd wywołania AI
+  zostawia zgłoszenie niesprawdzone (retry przy kolejnym uruchomieniu
+  crona), zamiast fałszywie oznaczać je jako "nie spam".
 - **Styl treści:** nigdy nie używamy długiego myślnika (—) w tekstach na
   stronie ani w dokumentacji projektu. Zamiast tego: przecinek, kropka,
   dwukropek albo nawiasy, w zależności od kontekstu.
