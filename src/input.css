@@ -347,12 +347,13 @@ html {
 .btn--ghost {
   background: transparent;
   color: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.65);
 }
 
 .btn--ghost:hover,
 .btn--ghost:focus-visible {
-  border-color: #fff;
+  background: var(--brand-coral);
+  border-color: var(--brand-coral);
 }
 
 /* ----------------------------------------------------------------- */
