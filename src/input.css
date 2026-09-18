@@ -398,7 +398,7 @@ html {
 .program__list {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.6rem, 1.8vw, 1.1rem);
+  gap: clamp(1rem, 2.6vw, 1.6rem);
 }
 
 .program__item {
@@ -471,9 +471,9 @@ html {
 .dlaczego__photo {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
-  object-position: 50% 15%;
+  object-position: 50% 50%;
   border-radius: 14px;
   box-shadow: 0 20px 40px rgba(46, 0, 1, 0.18);
 }
