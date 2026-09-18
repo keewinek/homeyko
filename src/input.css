@@ -297,7 +297,6 @@ html {
 
 .hero__text {
   color: #fff;
-  font-family: var(--font-tagline);
   font-size: clamp(1rem, 2.4vw, 1.4rem);
   letter-spacing: 0.06em;
   max-width: 40ch;
