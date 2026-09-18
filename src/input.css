@@ -172,7 +172,7 @@ html {
 
 .hero__image {
   position: absolute;
-  inset: 0;
+  inset: var(--nav-height) 0 0 0;
   z-index: 0;
   display: flex;
   justify-content: center;
@@ -181,27 +181,12 @@ html {
 }
 
 .hero__image img {
-  height: 68svh;
+  height: 100%;
   width: auto;
   max-width: none;
   display: block;
   object-fit: contain;
   filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.5));
-}
-
-/* On short viewports (common laptop resolutions) 68svh leaves too
-   little room for the nav + title rows, so the photo bleeds over the
-   letters instead of just behind them. Shrink it as height drops. */
-@media (max-height: 820px) {
-  .hero__image img {
-    height: 54svh;
-  }
-}
-
-@media (max-height: 700px) {
-  .hero__image img {
-    height: 46svh;
-  }
 }
 
 .hero__scrim {
