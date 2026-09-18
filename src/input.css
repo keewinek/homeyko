@@ -176,8 +176,7 @@ html {
   z-index: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: clamp(4.5rem, 11svh, 7rem);
+  align-items: flex-end;
   pointer-events: none;
 }
 
