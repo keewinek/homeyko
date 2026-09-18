@@ -12,6 +12,7 @@
 html {
   background: #ffffff;
   color: #111827;
+  touch-action: manipulation;
 }
 
 /* ----------------------------------------------------------------- */
