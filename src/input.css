@@ -251,14 +251,7 @@ html {
   width: 0.62em;
   height: 0.62em;
   margin-right: 0.16em;
-}
-
-.hero__checkbox path {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  object-fit: contain;
 }
 
 .hero__title-sub {
