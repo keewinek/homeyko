@@ -59,4 +59,33 @@
       document.fonts.ready.then(syncCtaWidth);
     }
   }
+
+  var programItems = document.querySelectorAll(".program__item");
+  if (programItems.length) {
+    function syncProgramItemHeights() {
+      programItems.forEach(function (item) {
+        item.style.minHeight = "";
+      });
+      var tallest = 0;
+      programItems.forEach(function (item) {
+        tallest = Math.max(tallest, item.offsetHeight);
+      });
+      programItems.forEach(function (item) {
+        item.style.minHeight = tallest + "px";
+      });
+    }
+    syncProgramItemHeights();
+    var programResizeRaf = 0;
+    window.addEventListener("resize", function () {
+      if (!programResizeRaf) {
+        programResizeRaf = requestAnimationFrame(function () {
+          programResizeRaf = 0;
+          syncProgramItemHeights();
+        });
+      }
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncProgramItemHeights);
+    }
+  }
 })();
