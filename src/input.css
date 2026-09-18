@@ -99,6 +99,15 @@ html {
   text-transform: uppercase;
 }
 
+@media (min-width: 761px) {
+  .hero__links {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
 .hero__links a {
   color: #f2e4e4;
   text-decoration: none;
