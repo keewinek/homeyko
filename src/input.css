@@ -302,7 +302,7 @@ html {
   text-decoration: none;
   border-radius: 4px;
   transition: transform 0.15s ease, background-color 0.15s ease,
-    border-color 0.15s ease;
+    border-color 0.15s ease, color 0.15s ease;
 }
 
 .btn:hover,
@@ -310,19 +310,9 @@ html {
   transform: translateY(-2px);
 }
 
-.btn--primary {
-  background: var(--brand-coral);
-  color: #fff;
-}
-
-.btn--primary:hover,
-.btn--primary:focus-visible {
-  background: #eb8f8f;
-}
-
 .btn--ghost {
   background: transparent;
-  color: #fff;
+  color: var(--brand-coral);
   border: 2px solid var(--brand-coral);
 }
 
@@ -330,6 +320,7 @@ html {
 .btn--ghost:focus-visible {
   background: var(--brand-coral);
   border-color: var(--brand-coral);
+  color: #fff;
 }
 
 /* ----------------------------------------------------------------- */
