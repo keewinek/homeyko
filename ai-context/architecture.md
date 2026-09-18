@@ -103,11 +103,25 @@ Vercelu (Domains).
   Preview → Git Branch: `preview`).
 - Merge `preview` → `main` dopiero na wyraźną decyzję o publikacji.
 - **Cron (`vercel.json` → `crons`) działa tylko na deployu Produkcyjnym**
-  (branch `main`), Vercel nie odpala cronów na Preview. Dopóki
-  `api/cron/check-spam.js` jest tylko na `preview`, trzeba go testować
-  ręcznym wywołaniem (`curl` z nagłówkiem `Authorization: Bearer
-  $CRON_SECRET` na URL preview deploya), automatyczne uruchamianie co
-  godzinę zacznie działać dopiero po wejściu tego kodu na `main`.
+  (branch `main`), Vercel nie odpala cronów na Preview. Dlatego
+  `api/cron/check-spam.js` jest wywoływany na `preview.homeyko.pl`
+  wyłącznie przez GitHub Actions (`.github/workflows/moderation-cron.yml`,
+  co godzinę, przez `curl` z nagłówkiem `Authorization: Bearer
+  $CRON_SECRET`), niezależnie od Vercela.
+- **Pułapka: wpis w `vercel.json` → `crons` z harmonogramem częstszym niż
+  raz dziennie wywalał WSZYSTKIE deploye (Preview i Produkcję), nie tylko
+  Cron.** Darmowy plan Vercela (Hobby) dopuszcza cron jobs, ale tylko
+  z harmonogramem nie częstszym niż raz na dobę; próba dodania wpisu
+  `"schedule": "0 * * * *"` (co godzinę) do `vercel.json` powodowała, że
+  Vercel odrzucał każdy nowy deploy jeszcze przed budową (żaden branch,
+  żaden commit, bez widocznego błędu w GitHubie), bo `vercel.json` jest
+  walidowany dla każdego deploya niezależnie od tego, czy cron miałby się
+  tam w ogóle uruchomić. Efekt: `preview.homeyko.pl` przestało się
+  aktualizować mimo zielonych pushy i działającego workflow syncującego.
+  Rozwiązanie na razie: cron moderacji jest tylko w GitHub Actions (patrz
+  wyżej), a `vercel.json` nie ma sekcji `crons`. Jeśli kiedyś wraca
+  potrzeba crona w Vercelu, harmonogram musi być `"0 0 * * *"` (raz
+  dziennie) albo trzeba przejść na plan Pro.
 
 **Uwaga o `rewrites` w `vercel.json`:** próba przepisania `/kontakt/:typ`
 na `/kontakt.html` (dynamiczna i jawna wersja) 404owała w produkcji mimo
