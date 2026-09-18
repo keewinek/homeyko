@@ -499,6 +499,7 @@ html {
   line-height: 1.6;
   max-width: 56ch;
   margin: 0 auto 1rem;
+  text-align: justify;
 }
 
 .dlaczego__text:last-child {
