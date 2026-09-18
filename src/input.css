@@ -251,17 +251,39 @@ html {
   width: 0.62em;
   height: 0.62em;
   margin-right: 0.16em;
-  object-fit: contain;
-  animation: hero-checkbox-wobble 1.8s ease-in-out infinite;
 }
 
-@keyframes hero-checkbox-wobble {
-  0%,
-  100% {
-    transform: translateY(-54%) rotate(-4deg) scale(1);
+.hero__checkbox path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hero-checkbox-draw 3.4s ease-in-out infinite;
+}
+
+.hero__checkbox-x1 {
+  animation-delay: 0.85s;
+}
+
+.hero__checkbox-x2 {
+  animation-delay: 1.05s;
+}
+
+@keyframes hero-checkbox-draw {
+  0% {
+    stroke-dashoffset: 1;
   }
-  50% {
-    transform: translateY(-54%) rotate(4deg) scale(1.08);
+  22% {
+    stroke-dashoffset: 0;
+  }
+  88% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 1;
   }
 }
 
