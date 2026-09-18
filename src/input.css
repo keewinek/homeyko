@@ -1121,3 +1121,22 @@ html {
     transform: scale(1);
   }
 }
+
+/* ----------------------------------------------------------------- */
+/* Easter egg                                                         */
+/* ----------------------------------------------------------------- */
+
+.easter-egg {
+  --egg-w: clamp(140px, 20vw, 220px);
+  height: calc(var(--egg-w) * 707 / 628 * 0.5);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  background: #fff;
+}
+
+.easter-egg__img {
+  width: var(--egg-w);
+  height: auto;
+  display: block;
+}
