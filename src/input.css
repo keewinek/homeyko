@@ -1127,8 +1127,7 @@ html {
 /* ----------------------------------------------------------------- */
 
 .easter-egg {
-  --egg-w: clamp(140px, 20vw, 220px);
-  height: calc(var(--egg-w) * 707 / 628 * 0.5);
+  width: 100vw;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -1136,7 +1135,9 @@ html {
 }
 
 .easter-egg__img {
-  width: var(--egg-w);
-  height: auto;
+  width: clamp(150px, 20vw, 240px);
+  height: clamp(85px, 11vw, 135px);
+  object-fit: cover;
+  object-position: top;
   display: block;
 }
