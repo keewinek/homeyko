@@ -34,6 +34,7 @@ html {
 .hero__bg {
   position: absolute;
   inset: 0;
+  background-color: var(--brand-maroon-dark);
   background-size: cover;
   background-position: center;
   transform: scale(1.12);
