@@ -432,6 +432,7 @@ html {
 
 .dlaczego__content {
   text-align: center;
+  padding-inline: clamp(0.5rem, 4vw, 2rem);
 }
 
 .dlaczego__title {
