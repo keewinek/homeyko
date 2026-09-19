@@ -360,9 +360,16 @@ html {
   margin-bottom: clamp(2.5rem, 6vw, 4rem);
 }
 
+/* Wszystkie punkty mają tę samą wysokość dzięki `grid-auto-rows: 1fr`
+   (wiersze auto z jednostką fr wyrównują się do najwyższego). Wcześniej
+   robił to JavaScript, ustawiając `min-height` przy każdym zdarzeniu
+   `resize`. Na telefonie `resize` leci przy każdym chowaniu i pokazywaniu
+   paska adresu, a handler na moment zdejmował ok. 600 px wysokości
+   dokumentu nad widocznym obszarem, przez co przeglądarka przerzucała
+   scroll. Wersja czysto CSS-owa nie rusza layoutu w trakcie przewijania. */
 .program__list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-auto-rows: 1fr;
   gap: clamp(1rem, 2.6vw, 1.6rem);
 }
 
