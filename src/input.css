@@ -71,7 +71,7 @@ html {
   background: transparent;
   box-shadow: none;
   transition: background-color 0.25s ease, box-shadow 0.25s ease;
-  transform: translateZ(0);
+  will-change: background-color, box-shadow;
 }
 
 .hero__nav--scrolled {
