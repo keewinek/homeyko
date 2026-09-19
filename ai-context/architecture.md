@@ -248,15 +248,28 @@ z tym panelem.
 - `sztab_users.last_login_at`: aktualizowane w `api/login.js` przy każdym
   udanym logowaniu.
 - Tabela `admin_activity_log` (`lib/db.js`): `actor_username`, `action`
-  (`login`, `logout`, `submission_delete`), `target`, `details`,
-  `created_at`. Wpisy dopisywane przez `lib/admin-log.js` z `api/login.js`,
-  `api/logout.js` i gałęzi `DELETE` w `api/submissions.js`.
-- Dostęp do `GET /api/admin/users` i `GET /api/admin/logs` (lista
-  sztabu + log) wymaga `permission_level >= 2`, sprawdzane po stronie
-  serwera w `lib/permissions.js` (`isAdministrator`). Strona
-  `public/admin/administracja.html` dodatkowo przekierowuje na `/admin`
-  po stronie klienta dla zalogowanych, ale nie-administratorów - to tylko
-  kosmetyka, prawdziwa kontrola dostępu jest w API.
+  (`login`, `logout`, `submission_delete`, `user_delete`,
+  `user_password_reset`, `user_permission_grant`,
+  `user_permission_revoke`), `target`, `details`, `created_at`. Wpisy
+  dopisywane przez `lib/admin-log.js` z `api/login.js`, `api/logout.js`,
+  gałęzi `DELETE` w `api/submissions.js` oraz z `api/admin/users.js`
+  (`DELETE`/`PATCH`).
+- Dostęp do `api/admin/users.js` (`GET`/`DELETE`/`PATCH`) i
+  `GET /api/admin/logs` (lista sztabu + log) wymaga `permission_level >=
+  2`, sprawdzane po stronie serwera w `lib/permissions.js`
+  (`isAdministrator`). Strona `public/admin/administracja.html`
+  dodatkowo przekierowuje na `/admin` po stronie klienta dla
+  zalogowanych, ale nie-administratorów - to tylko kosmetyka, prawdziwa
+  kontrola dostępu jest w API.
+- W zakładce "Użytkownicy sztabu" każdy wiersz (poza własnym kontem
+  zalogowanego administratora, celowo ukrytym żeby nie dało się
+  przypadkiem zablokować sobie dostępu) ma menu z trzema kropkami:
+  "Zresetuj hasło" (`PATCH` `action: "reset_password"`, czyści
+  `password_hash`/`password_set_at` jak `scripts/manage-users.js
+  reset`), "Przyznaj/zabierz uprawnienia administratora" (`PATCH`
+  `action: "grant_admin"`/`"revoke_admin"`) i "Usuń konto" (`DELETE
+  /api/admin/users?username=...`). Serwer też odrzuca próbę zmiany
+  własnego konta tą drogą (400), niezależnie od ukrycia w UI.
 - Kafelek "Administracja" w `public/admin.html` jest ukryty domyślnie i
   pokazywany tylko wtedy, gdy `/api/me` zwróci `permission_level >= 2`.
 

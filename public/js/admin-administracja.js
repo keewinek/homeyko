@@ -17,12 +17,36 @@
   var loadedLogs = [];
   var logsTotal = 0;
   var loadingMoreLogs = false;
+  var currentUsername = null;
 
   var ACTION_LABELS = {
     login: "Zalogowanie",
     logout: "Wylogowanie",
     submission_delete: "Usunięcie zgłoszenia",
+    user_delete: "Usunięcie konta",
+    user_password_reset: "Reset hasła",
+    user_permission_grant: "Nadanie uprawnień administratora",
+    user_permission_revoke: "Odebranie uprawnień administratora",
   };
+
+  var tabButtons = document.querySelectorAll(".tab-btn");
+  var tabPanels = document.querySelectorAll(".tab-panel");
+
+  tabButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var target = btn.getAttribute("data-tab");
+      tabButtons.forEach(function (b) {
+        var active = b === btn;
+        b.classList.toggle("border-[color:var(--brand-maroon)]", active);
+        b.classList.toggle("text-gray-900", active);
+        b.classList.toggle("border-transparent", !active);
+        b.classList.toggle("text-gray-500", !active);
+      });
+      tabPanels.forEach(function (panel) {
+        panel.classList.toggle("hidden", panel.id !== "tab-" + target);
+      });
+    });
+  });
 
   function escapeHtml(str) {
     var div = document.createElement("div");
@@ -44,21 +68,52 @@
     }
   }
 
+  function closeAllMenus() {
+    usersTableBody.querySelectorAll(".user-menu").forEach(function (menu) {
+      menu.classList.add("hidden");
+    });
+  }
+
   function renderUsers(users) {
     usersEmptyState.classList.toggle("hidden", users.length > 0);
     usersTableBody.innerHTML = users
       .map(function (user) {
-        var levelLabel = user.permission_level >= ADMINISTRATOR_LEVEL ? "Administrator" : "Moderator";
+        var isAdmin = user.permission_level >= ADMINISTRATOR_LEVEL;
+        var levelLabel = isAdmin ? "Administrator" : "Moderator";
         var passwordLabel = user.password_set
           ? '<span class="text-green-700">Ustawione</span>'
           : '<span class="text-amber-600">Oczekuje na pierwsze logowanie</span>';
         var lastLogin = user.last_login_at ? escapeHtml(formatDate(user.last_login_at)) : "Nigdy";
+        var isSelf = user.username === currentUsername;
+        var menuHtml = isSelf
+          ? ""
+          : '<div class="relative inline-block text-left">' +
+            '<button type="button" class="menu-toggle-btn rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600" data-username="' +
+            escapeHtml(user.username) +
+            '" aria-label="Akcje dla ' + escapeHtml(user.username) + '">' +
+            '<svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true"><circle cx="12" cy="6" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="12" cy="18" r="1.6" /></svg>' +
+            "</button>" +
+            '<div class="user-menu hidden absolute right-0 z-20 mt-1 w-64 rounded-lg border border-gray-100 bg-white py-1 shadow-lg">' +
+            '<button type="button" class="reset-password-btn block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50" data-username="' +
+            escapeHtml(user.username) +
+            '">Zresetuj hasło</button>' +
+            '<button type="button" class="toggle-admin-btn block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50" data-username="' +
+            escapeHtml(user.username) +
+            '" data-action="' + (isAdmin ? "revoke_admin" : "grant_admin") + '">' +
+            (isAdmin ? "Zabierz uprawnienia administratora" : "Przyznaj uprawnienia administratora") +
+            "</button>" +
+            '<button type="button" class="delete-account-btn block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50" data-username="' +
+            escapeHtml(user.username) +
+            '">Usuń konto</button>' +
+            "</div>" +
+            "</div>";
         return (
           '<tr class="border-b border-gray-50 last:border-0">' +
           '<td class="px-4 py-3 font-medium text-gray-900">' + escapeHtml(user.username) + "</td>" +
           '<td class="px-4 py-3 text-gray-600">' + levelLabel + "</td>" +
           '<td class="px-4 py-3">' + passwordLabel + "</td>" +
           '<td class="px-4 py-3 text-gray-500">' + lastLogin + "</td>" +
+          '<td class="px-4 py-3 text-right">' + menuHtml + "</td>" +
           "</tr>"
         );
       })
@@ -78,6 +133,90 @@
         console.error(err);
       });
   }
+
+  function patchUser(targetUsername, action) {
+    return fetch("/api/admin/users", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: targetUsername, action: action }),
+    })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          if (!res.ok) throw new Error(data.error || "Błąd");
+          return data;
+        });
+      })
+      .then(function () {
+        return loadUsers();
+      })
+      .catch(function (err) {
+        window.alert(err.message);
+      });
+  }
+
+  function deleteUser(targetUsername) {
+    return fetch("/api/admin/users?username=" + encodeURIComponent(targetUsername), { method: "DELETE" })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          if (!res.ok) throw new Error(data.error || "Błąd");
+          return data;
+        });
+      })
+      .then(function () {
+        return loadUsers();
+      })
+      .catch(function (err) {
+        window.alert(err.message);
+      });
+  }
+
+  usersTableBody.addEventListener("click", function (e) {
+    var toggleBtn = e.target.closest(".menu-toggle-btn");
+    if (toggleBtn) {
+      var menu = toggleBtn.nextElementSibling;
+      var wasHidden = menu.classList.contains("hidden");
+      closeAllMenus();
+      if (wasHidden) menu.classList.remove("hidden");
+      e.stopPropagation();
+      return;
+    }
+
+    var resetBtn = e.target.closest(".reset-password-btn");
+    if (resetBtn) {
+      closeAllMenus();
+      var resetUsername = resetBtn.getAttribute("data-username");
+      if (!window.confirm("Zresetować hasło dla " + resetUsername + "? Będzie mógł/mogła ustawić nowe przy następnym logowaniu.")) return;
+      patchUser(resetUsername, "reset_password");
+      return;
+    }
+
+    var toggleAdminBtn = e.target.closest(".toggle-admin-btn");
+    if (toggleAdminBtn) {
+      closeAllMenus();
+      var toggleUsername = toggleAdminBtn.getAttribute("data-username");
+      var action = toggleAdminBtn.getAttribute("data-action");
+      var confirmMsg =
+        action === "grant_admin"
+          ? "Przyznać uprawnienia administratora dla " + toggleUsername + "?"
+          : "Zabrać uprawnienia administratora dla " + toggleUsername + "?";
+      if (!window.confirm(confirmMsg)) return;
+      patchUser(toggleUsername, action);
+      return;
+    }
+
+    var deleteBtn = e.target.closest(".delete-account-btn");
+    if (deleteBtn) {
+      closeAllMenus();
+      var deleteUsername = deleteBtn.getAttribute("data-username");
+      if (!window.confirm("Usunąć konto " + deleteUsername + "? Tej operacji nie można cofnąć.")) return;
+      deleteUser(deleteUsername);
+      return;
+    }
+  });
+
+  document.addEventListener("click", function () {
+    closeAllMenus();
+  });
 
   function renderLogs() {
     logsCountEl.textContent = logsTotal ? "(" + logsTotal + ")" : "";
@@ -171,6 +310,7 @@
           window.location.href = "/admin";
           return;
         }
+        currentUsername = me.username;
         headerUser.classList.remove("hidden");
         headerUser.classList.add("flex");
         whoamiEl.textContent = "Zalogowano jako: " + me.username;
