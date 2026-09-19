@@ -414,7 +414,7 @@ html {
   display: block;
   width: clamp(180px, 32vw, 260px);
   height: auto;
-  margin: clamp(2rem, 5vw, 3rem) 0 0 auto;
+  margin: clamp(2rem, 5vw, 3rem) auto 0;
 }
 
 /* ----------------------------------------------------------------- */
