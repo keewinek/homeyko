@@ -1126,17 +1126,15 @@ html {
 /* ----------------------------------------------------------------- */
 
 .easter-egg {
-  width: 100vw;
+  width: 100%;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
+  /* image is 628x707; ratio doubles the width so only the top half shows */
+  aspect-ratio: 1256 / 707;
   background: #fff;
 }
 
 .easter-egg__img {
   width: 100%;
-  height: clamp(110px, 15vw, 260px);
-  object-fit: cover;
-  object-position: top;
+  height: auto;
   display: block;
 }
