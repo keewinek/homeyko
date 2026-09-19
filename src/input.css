@@ -410,6 +410,16 @@ html {
   color: #9a9a9a;
 }
 
+.program__signature {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: clamp(180px, 32vw, 260px);
+  height: auto;
+  margin: 0 0 0 auto;
+  transform: translateY(-30%);
+}
+
 /* ----------------------------------------------------------------- */
 /* Dlaczego Filip                                                     */
 /* ----------------------------------------------------------------- */
