@@ -1155,6 +1155,27 @@ html {
 }
 
 /* ----------------------------------------------------------------- */
+/* Hashtag banner                                                     */
+/* ----------------------------------------------------------------- */
+
+.hashtag-banner {
+  text-align: center;
+  background: #fff;
+  padding: clamp(1.5rem, 5vw, 2.5rem) 1rem clamp(0.5rem, 2vw, 1rem);
+}
+
+.hashtag-banner__text {
+  display: inline-block;
+  margin: 0;
+  font-family: var(--font-tagline);
+  font-size: clamp(1.75rem, 7vw, 3.5rem);
+  letter-spacing: 0.02em;
+  color: var(--brand-coral);
+  text-shadow: 3px 3px 0 var(--brand-maroon-dark);
+  transform: rotate(-2deg);
+}
+
+/* ----------------------------------------------------------------- */
 /* Easter egg                                                         */
 /* ----------------------------------------------------------------- */
 
