@@ -831,6 +831,14 @@ html {
   .hero__links-cta {
     display: block;
   }
+
+  .zespol__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .zespol__member:first-child {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 480px) {
