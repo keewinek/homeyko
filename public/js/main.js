@@ -28,8 +28,10 @@
   }
 
   var heroBg = document.getElementById("hero-bg");
-  if (heroBg) {
+  var heroSection = document.querySelector(".hero");
+  if (heroBg && heroSection) {
     var raf = 0;
+    var heroVisible = true;
     function applyParallax() {
       raf = 0;
       var offset = window.scrollY * 0.35;
@@ -38,11 +40,21 @@
     window.addEventListener(
       "scroll",
       function () {
+        if (!heroVisible) return;
         if (!raf) raf = requestAnimationFrame(applyParallax);
       },
       { passive: true }
     );
     applyParallax();
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(
+        function (entries) {
+          heroVisible = entries[0].isIntersecting;
+        },
+        { rootMargin: "20% 0px" }
+      ).observe(heroSection);
+    }
   }
 
   var heroTitle = document.querySelector(".hero__title");
