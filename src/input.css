@@ -1164,12 +1164,45 @@ html {
   padding: clamp(1.5rem, 5vw, 2.5rem) 1rem 0.25rem;
 }
 
-.hashtag-banner__text {
+.hashtag-badge {
+  position: relative;
+  display: inline-block;
+  transform: rotate(-3deg);
+}
+
+.hashtag-badge__star {
+  position: absolute;
+  top: -16px;
+  right: -12px;
+  width: 34px;
+  height: 34px;
+  background: #ff3fb0;
+  transform: rotate(12deg);
+  clip-path: polygon(
+    50% 0%,
+    64% 34%,
+    100% 50%,
+    64% 66%,
+    50% 100%,
+    36% 66%,
+    0% 50%,
+    36% 34%
+  );
+  z-index: 0;
+}
+
+.hashtag-badge__text {
+  position: relative;
+  z-index: 1;
   margin: 0;
+  background: #d4f34a;
+  border: 3px solid #111;
+  padding: 0.5em 1.1em;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(1rem, 3vw, 1.4rem);
-  color: #111827;
+  font-weight: 900;
+  font-size: clamp(1.1rem, 3.4vw, 1.6rem);
+  color: #111;
+  box-shadow: 5px 5px 0 #111;
 }
 
 /* ----------------------------------------------------------------- */
