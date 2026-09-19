@@ -1134,8 +1134,8 @@ html {
 }
 
 .easter-egg__img {
-  width: clamp(150px, 20vw, 240px);
-  height: clamp(85px, 11vw, 135px);
+  width: 100%;
+  height: clamp(110px, 15vw, 260px);
   object-fit: cover;
   object-position: top;
   display: block;
