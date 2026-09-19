@@ -1138,7 +1138,7 @@ html {
 
 .copyright {
   margin: 0;
-  padding: 0.5rem 1rem 1.5rem;
+  padding: 1.5rem 1rem 0.4rem;
   text-align: center;
   background: #fff;
   color: var(--brand-maroon-dark);
