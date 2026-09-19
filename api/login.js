@@ -1,6 +1,7 @@
 const { sql, ensureSchema } = require("../lib/db");
 const { hashPassword, verifyPassword } = require("../lib/password");
 const { createSessionToken, sessionCookieHeader } = require("../lib/auth");
+const { logAdminActivity } = require("../lib/admin-log");
 
 const USERNAME_RE = /^[a-z0-9_.-]{2,32}$/;
 
@@ -49,6 +50,11 @@ module.exports = async function handler(req, res) {
       res.status(401).json({ error: "Nieprawidłowe hasło" });
       return;
     }
+
+    await sql`
+      UPDATE sztab_users SET last_login_at = now() WHERE username = ${normalizedUsername}
+    `;
+    await logAdminActivity({ actorUsername: normalizedUsername, action: "login" });
 
     const token = createSessionToken(normalizedUsername);
     res.setHeader("Set-Cookie", sessionCookieHeader(token));

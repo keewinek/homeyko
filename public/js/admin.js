@@ -9,8 +9,11 @@
   var headerUser = document.getElementById("header-user");
   var logoutBtn = document.getElementById("logout-btn");
   var whoamiEl = document.getElementById("whoami");
+  var tileAdministracja = document.getElementById("tile-administracja");
 
-  function showLoggedIn(username) {
+  var ADMINISTRATOR_LEVEL = 2;
+
+  function showLoggedIn(username, permissionLevel) {
     bootSpinner.classList.add("hidden");
     loginSection.classList.add("hidden");
     loginSection.classList.remove("flex");
@@ -19,6 +22,13 @@
     headerUser.classList.add("flex");
     if (username) {
       whoamiEl.textContent = "Zalogowano jako: " + username;
+    }
+    if (permissionLevel >= ADMINISTRATOR_LEVEL) {
+      tileAdministracja.classList.remove("hidden");
+      tileAdministracja.classList.add("flex");
+    } else {
+      tileAdministracja.classList.add("hidden");
+      tileAdministracja.classList.remove("flex");
     }
   }
 
@@ -42,7 +52,7 @@
         }
         if (!res.ok) throw new Error("Błąd sprawdzania sesji");
         return res.json().then(function (me) {
-          showLoggedIn(me.username);
+          showLoggedIn(me.username, me.permission_level);
         });
       })
       .catch(function (err) {
@@ -71,9 +81,9 @@
           return data;
         });
       })
-      .then(function (data) {
+      .then(function () {
         loginForm.reset();
-        showLoggedIn(data.username);
+        return checkSession();
       })
       .catch(function (err) {
         loginSpinner.classList.add("hidden");

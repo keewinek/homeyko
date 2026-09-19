@@ -1,5 +1,6 @@
 const { sql, ensureSchema } = require("../lib/db");
-const { isAuthenticated } = require("../lib/auth");
+const { isAuthenticated, getSessionUsername } = require("../lib/auth");
+const { logAdminActivity } = require("../lib/admin-log");
 
 module.exports = async function handler(req, res) {
   if (!isAuthenticated(req)) {
@@ -44,7 +45,17 @@ module.exports = async function handler(req, res) {
         res.status(400).json({ error: "Brak id" });
         return;
       }
+      const existingRows = await sql`SELECT type, message FROM submissions WHERE id = ${id}`;
+      const existing = existingRows[0];
       await sql`DELETE FROM submissions WHERE id = ${id}`;
+      if (existing) {
+        await logAdminActivity({
+          actorUsername: getSessionUsername(req),
+          action: "submission_delete",
+          target: `${existing.type}:${id}`,
+          details: existing.message.slice(0, 200),
+        });
+      }
       res.status(200).json({ ok: true });
       return;
     }

@@ -187,7 +187,8 @@ gdzie się jej testuje.
   (uważać, żeby redeployować właściwy branch/projekt, nie np. `main`
   zamiast `preview`).
 - Jeden login to jeden członek sztabu, w tabeli `sztab_users`
-  (`username`, `password_hash`, brak innych danych osobowych).
+  (`username`, `password_hash`, `permission_level`, `last_login_at`, brak
+  innych danych osobowych).
 - Hasła nigdy nie są przechowywane w postaci jawnej ani jako sam
   SHA-256. Używany jest `scrypt` (wbudowany w Node.js `crypto`, solony,
   "memory-hard", odporny na ataki brute-force/rainbow tables),
@@ -232,8 +233,32 @@ imię.nazwisko, małymi literami, bez polskich znaków:
 
 Uwaga: "Administrator" przy Filipie na zrzutach to etykieta/rola w innej
 aplikacji (ekran "znajomi" z przyciskami "Dodaj znajomego"), niepowiązana
-z tym panelem, tabela `sztab_users` nie ma pojęcia roli, wszystkie loginy
-są równorzędne.
+z tym panelem.
+
+## Panel "Administracja" (poziomy uprawnień i log aktywności)
+
+- `sztab_users.permission_level`: `1` = moderator (domyślny dla każdego
+  nowego loginu), `2` = administrator. Jedyny administrator na start to
+  `wojciech.kolacz`, ustawiony przez:
+  ```
+  DATABASE_URL="..." node scripts/manage-users.js set-permission wojciech.kolacz 2
+  ```
+  (trzeba to uruchomić osobno na Neon branchu `preview` i `production`,
+  patrz uwaga o Neon branch-per-git-branch wyżej).
+- `sztab_users.last_login_at`: aktualizowane w `api/login.js` przy każdym
+  udanym logowaniu.
+- Tabela `admin_activity_log` (`lib/db.js`): `actor_username`, `action`
+  (`login`, `logout`, `submission_delete`), `target`, `details`,
+  `created_at`. Wpisy dopisywane przez `lib/admin-log.js` z `api/login.js`,
+  `api/logout.js` i gałęzi `DELETE` w `api/submissions.js`.
+- Dostęp do `GET /api/admin/users` i `GET /api/admin/logs` (lista
+  sztabu + log) wymaga `permission_level >= 2`, sprawdzane po stronie
+  serwera w `lib/permissions.js` (`isAdministrator`). Strona
+  `public/admin/administracja.html` dodatkowo przekierowuje na `/admin`
+  po stronie klienta dla zalogowanych, ale nie-administratorów - to tylko
+  kosmetyka, prawdziwa kontrola dostępu jest w API.
+- Kafelek "Administracja" w `public/admin.html` jest ukryty domyślnie i
+  pokazywany tylko wtedy, gdy `/api/me` zwróci `permission_level >= 2`.
 
 ## Uwagi
 
