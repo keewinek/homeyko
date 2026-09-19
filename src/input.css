@@ -721,6 +721,77 @@ html {
   color: var(--brand-maroon-dark);
 }
 
+.kontakt-cta__anon {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.1rem 1.4rem;
+  background: transparent;
+  border: 2px solid var(--brand-coral);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.kontakt-cta__anon:hover,
+.kontakt-cta__anon:focus-visible {
+  transform: translateY(-2px);
+  background: var(--brand-coral);
+}
+
+.kontakt-cta__anon-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  color: var(--brand-coral);
+  transition: color 0.15s ease;
+}
+
+.kontakt-cta__anon-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  text-align: left;
+}
+
+.kontakt-cta__anon-label {
+  color: var(--brand-maroon-dark);
+  font-weight: 700;
+  font-size: 1.05rem;
+  transition: color 0.15s ease;
+}
+
+.kontakt-cta__anon-sub {
+  color: #a06a6a;
+  font-size: 0.85rem;
+  transition: color 0.15s ease;
+}
+
+.kontakt-cta__anon-arrow {
+  flex-shrink: 0;
+  display: inline-flex;
+  color: var(--brand-coral);
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.kontakt-cta__anon:hover .kontakt-cta__anon-icon,
+.kontakt-cta__anon:hover .kontakt-cta__anon-label,
+.kontakt-cta__anon:hover .kontakt-cta__anon-sub,
+.kontakt-cta__anon:hover .kontakt-cta__anon-arrow,
+.kontakt-cta__anon:focus-visible .kontakt-cta__anon-icon,
+.kontakt-cta__anon:focus-visible .kontakt-cta__anon-label,
+.kontakt-cta__anon:focus-visible .kontakt-cta__anon-sub,
+.kontakt-cta__anon:focus-visible .kontakt-cta__anon-arrow {
+  color: #fff;
+}
+
+.kontakt-cta__anon:hover .kontakt-cta__anon-arrow,
+.kontakt-cta__anon:focus-visible .kontakt-cta__anon-arrow {
+  transform: translateX(4px);
+}
+
 /* ----------------------------------------------------------------- */
 /* Odliczanie do startu kampanii                                     */
 /* ----------------------------------------------------------------- */
