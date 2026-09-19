@@ -461,6 +461,12 @@ html {
   margin-bottom: 0;
 }
 
+@media (max-width: 759px) {
+  .dlaczego__photo {
+    box-shadow: 0 8px 18px rgba(46, 0, 1, 0.16);
+  }
+}
+
 @media (min-width: 760px) {
   .dlaczego__inner {
     flex-direction: row;
