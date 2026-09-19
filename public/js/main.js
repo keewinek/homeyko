@@ -18,10 +18,46 @@
     link.addEventListener("click", closeNav);
   });
 
+  /* Na telefonie zdarzenie `resize` leci przy każdym chowaniu i pokazywaniu
+     paska adresu, czyli praktycznie przez cały czas przewijania. Gdyby
+     przeliczać wtedy layout, przeglądarka gubiłaby pozycję scrolla. Dlatego
+     przeliczamy tylko wtedy, gdy realnie zmieniła się szerokość okna
+     (obrót telefonu, zmiana rozmiaru okna na desktopie). */
+  var lastWidth = window.innerWidth;
+  var widthCallbacks = [];
+  var widthRaf = 0;
+
+  function onWidthChange(callback) {
+    widthCallbacks.push(callback);
+    callback();
+  }
+
+  function runWidthCallbacks() {
+    widthRaf = 0;
+    widthCallbacks.forEach(function (callback) {
+      callback();
+    });
+  }
+
+  window.addEventListener("resize", function () {
+    if (window.innerWidth === lastWidth) return;
+    lastWidth = window.innerWidth;
+    if (!widthRaf) widthRaf = requestAnimationFrame(runWidthCallbacks);
+  });
+
+  window.addEventListener("orientationchange", function () {
+    lastWidth = window.innerWidth;
+    if (!widthRaf) widthRaf = requestAnimationFrame(runWidthCallbacks);
+  });
+
   var heroNav = document.querySelector(".hero__nav");
   if (heroNav) {
+    var navScrolled = null;
     function syncNavBackground() {
-      heroNav.classList.toggle("hero__nav--scrolled", window.scrollY > 10);
+      var scrolled = window.scrollY > 10;
+      if (scrolled === navScrolled) return;
+      navScrolled = scrolled;
+      heroNav.classList.toggle("hero__nav--scrolled", scrolled);
     }
     window.addEventListener("scroll", syncNavBackground, { passive: true });
     syncNavBackground();
@@ -57,6 +93,8 @@
     }
   }
 
+  /* Szerokość przycisku CTA dopasowana do napisu w hero. Zmienia tylko
+     szerokość elementu wewnątrz hero, więc nie rusza wysokości dokumentu. */
   var heroTitle = document.querySelector(".hero__title");
   var heroCta = document.querySelector(".hero__cta .btn");
   if (heroTitle && heroCta) {
@@ -65,39 +103,9 @@
       var targetWidth = Math.max(heroTitle.offsetWidth, heroCta.offsetWidth);
       heroCta.style.width = targetWidth + "px";
     }
-    syncCtaWidth();
-    window.addEventListener("resize", syncCtaWidth);
+    onWidthChange(syncCtaWidth);
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(syncCtaWidth);
-    }
-  }
-
-  var programItems = document.querySelectorAll(".program__item");
-  if (programItems.length) {
-    function syncProgramItemHeights() {
-      programItems.forEach(function (item) {
-        item.style.minHeight = "";
-      });
-      var tallest = 0;
-      programItems.forEach(function (item) {
-        tallest = Math.max(tallest, item.offsetHeight);
-      });
-      programItems.forEach(function (item) {
-        item.style.minHeight = tallest + "px";
-      });
-    }
-    syncProgramItemHeights();
-    var programResizeRaf = 0;
-    window.addEventListener("resize", function () {
-      if (!programResizeRaf) {
-        programResizeRaf = requestAnimationFrame(function () {
-          programResizeRaf = 0;
-          syncProgramItemHeights();
-        });
-      }
-    });
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(syncProgramItemHeights);
     }
   }
 })();
