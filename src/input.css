@@ -70,6 +70,7 @@ html {
   background: transparent;
   box-shadow: none;
   transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  transform: translateZ(0);
 }
 
 .hero__nav--scrolled {
@@ -428,6 +429,7 @@ html {
   object-position: 50% 50%;
   border-radius: 14px;
   box-shadow: 0 20px 40px rgba(46, 0, 1, 0.18);
+  transform: translateZ(0);
 }
 
 .dlaczego__content {
