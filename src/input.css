@@ -349,11 +349,6 @@ html {
   padding: clamp(3rem, 8vw, 5.5rem) clamp(1.25rem, 4vw, 3rem);
 }
 
-.program__inner {
-  max-width: 780px;
-  margin: 0 auto;
-}
-
 .program__title {
   color: var(--brand-maroon-dark);
   font-family: var(--font-display);
@@ -425,8 +420,6 @@ html {
 }
 
 .dlaczego__inner {
-  max-width: 780px;
-  margin: 0 auto;
   text-align: center;
 }
 
@@ -442,7 +435,6 @@ html {
 
 .dlaczego__media {
   width: 100%;
-  max-width: 900px;
   aspect-ratio: 16 / 9;
   margin: 0 auto clamp(2rem, 5vw, 3rem);
   border-radius: 14px;
@@ -457,17 +449,10 @@ html {
   display: block;
 }
 
-.dlaczego__content {
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center;
-}
-
 .dlaczego__text {
   color: #55494a;
   font-size: 1rem;
   line-height: 1.6;
-  width: 100%;
   margin: 0;
   text-align: justify;
 }
@@ -488,8 +473,6 @@ html {
 }
 
 .zespol__inner {
-  max-width: 980px;
-  margin: 0 auto;
   text-align: center;
 }
 
@@ -505,7 +488,6 @@ html {
 
 .zespol__group-photo {
   width: 100%;
-  max-width: 900px;
   aspect-ratio: 16 / 9;
   margin: 0 auto clamp(2rem, 5vw, 3rem);
   border-radius: 14px;
