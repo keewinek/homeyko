@@ -1128,7 +1128,7 @@ html {
 .hashtag-banner {
   text-align: center;
   background: #fff;
-  padding: clamp(1.5rem, 5vw, 2.5rem) 1rem clamp(0.5rem, 2vw, 1rem);
+  padding: clamp(1.5rem, 5vw, 2.5rem) 1rem 0.25rem;
 }
 
 .hashtag-banner__text {
