@@ -54,6 +54,46 @@
         </div>
 
         <section id="tab-users" class="tab-panel">
+          <div class="mb-4 flex justify-end">
+            <button
+              type="button"
+              id="add-user-toggle-btn"
+              class="rounded-lg bg-[color:var(--brand-coral)] px-4 py-2 text-sm font-bold text-[color:var(--brand-maroon-dark)] transition-transform hover:-translate-y-0.5"
+            >
+              + Dodaj użytkownika
+            </button>
+          </div>
+
+          <form
+            id="add-user-form"
+            class="mb-4 hidden flex-wrap items-start gap-2 rounded-xl border border-gray-100 bg-white p-4 shadow-sm"
+          >
+            <input
+              type="text"
+              id="add-user-username"
+              name="username"
+              placeholder="login (np. jan.kowalski)"
+              required
+              pattern="[a-z0-9_.\-]{2,32}"
+              autocomplete="off"
+              class="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-[color:var(--brand-maroon)] focus:outline-none focus:ring-1 focus:ring-[color:var(--brand-maroon)]"
+            />
+            <button
+              type="submit"
+              class="rounded-lg bg-[color:var(--brand-coral)] px-4 py-2 text-sm font-bold text-[color:var(--brand-maroon-dark)]"
+            >
+              Dodaj
+            </button>
+            <button
+              type="button"
+              id="add-user-cancel-btn"
+              class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50"
+            >
+              Anuluj
+            </button>
+            <p id="add-user-status" role="status" class="w-full text-sm text-red-600"></p>
+          </form>
+
           <div class="overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-sm">
             <table class="w-full min-w-[640px] text-left text-sm">
               <thead>

@@ -248,19 +248,25 @@ z tym panelem.
 - `sztab_users.last_login_at`: aktualizowane w `api/login.js` przy każdym
   udanym logowaniu.
 - Tabela `admin_activity_log` (`lib/db.js`): `actor_username`, `action`
-  (`login`, `logout`, `submission_delete`, `user_delete`,
+  (`login`, `logout`, `submission_delete`, `user_create`, `user_delete`,
   `user_password_reset`, `user_permission_grant`,
   `user_permission_revoke`), `target`, `details`, `created_at`. Wpisy
   dopisywane przez `lib/admin-log.js` z `api/login.js`, `api/logout.js`,
   gałęzi `DELETE` w `api/submissions.js` oraz z `api/admin/users.js`
-  (`DELETE`/`PATCH`).
-- Dostęp do `api/admin/users.js` (`GET`/`DELETE`/`PATCH`) i
+  (`POST`/`DELETE`/`PATCH`).
+- Dostęp do `api/admin/users.js` (`GET`/`POST`/`DELETE`/`PATCH`) i
   `GET /api/admin/logs` (lista sztabu + log) wymaga `permission_level >=
   2`, sprawdzane po stronie serwera w `lib/permissions.js`
   (`isAdministrator`). Strona `public/admin/administracja.html`
   dodatkowo przekierowuje na `/admin` po stronie klienta dla
   zalogowanych, ale nie-administratorów - to tylko kosmetyka, prawdziwa
   kontrola dostępu jest w API.
+- W zakładce "Użytkownicy sztabu" przycisk "+ Dodaj użytkownika"
+  rozwija formularz z samym loginem (`POST /api/admin/users`); nowe
+  konto powstaje bez hasła, tak jak przez `scripts/manage-users.js add`
+  - dana osoba ustawia je sama przy pierwszym logowaniu na `/admin`.
+  Domyślny poziom to moderator (`1`); podniesienie do administratora
+  robi się później przez menu z trzema kropkami.
 - W zakładce "Użytkownicy sztabu" każdy wiersz (poza własnym kontem
   zalogowanego administratora, celowo ukrytym żeby nie dało się
   przypadkiem zablokować sobie dostępu) ma menu z trzema kropkami:

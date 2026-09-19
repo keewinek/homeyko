@@ -9,6 +9,12 @@
   var usersTableBody = document.getElementById("users-table-body");
   var usersEmptyState = document.getElementById("users-empty-state");
 
+  var addUserToggleBtn = document.getElementById("add-user-toggle-btn");
+  var addUserForm = document.getElementById("add-user-form");
+  var addUserCancelBtn = document.getElementById("add-user-cancel-btn");
+  var addUserUsernameInput = document.getElementById("add-user-username");
+  var addUserStatus = document.getElementById("add-user-status");
+
   var logsListEl = document.getElementById("logs-list");
   var logsEmptyState = document.getElementById("logs-empty-state");
   var logsCountEl = document.getElementById("logs-count");
@@ -23,6 +29,7 @@
     login: "Zalogowanie",
     logout: "Wylogowanie",
     submission_delete: "Usunięcie zgłoszenia",
+    user_create: "Dodanie konta",
     user_delete: "Usunięcie konta",
     user_password_reset: "Reset hasła",
     user_permission_grant: "Nadanie uprawnień administratora",
@@ -216,6 +223,49 @@
 
   document.addEventListener("click", function () {
     closeAllMenus();
+  });
+
+  function showAddUserForm() {
+    addUserForm.classList.remove("hidden");
+    addUserForm.classList.add("flex");
+    addUserToggleBtn.classList.add("hidden");
+    addUserUsernameInput.focus();
+  }
+
+  function hideAddUserForm() {
+    addUserForm.classList.add("hidden");
+    addUserForm.classList.remove("flex");
+    addUserToggleBtn.classList.remove("hidden");
+    addUserStatus.textContent = "";
+    addUserForm.reset();
+  }
+
+  addUserToggleBtn.addEventListener("click", showAddUserForm);
+  addUserCancelBtn.addEventListener("click", hideAddUserForm);
+
+  addUserForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    addUserStatus.textContent = "";
+    var newUsername = addUserUsernameInput.value.trim().toLowerCase();
+
+    fetch("/api/admin/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: newUsername }),
+    })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          if (!res.ok) throw new Error(data.error || "Błąd dodawania użytkownika");
+          return data;
+        });
+      })
+      .then(function () {
+        hideAddUserForm();
+        return loadUsers();
+      })
+      .catch(function (err) {
+        addUserStatus.textContent = err.message;
+      });
   });
 
   function renderLogs() {

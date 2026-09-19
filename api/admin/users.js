@@ -3,6 +3,8 @@ const { getSessionUsername } = require("../../lib/auth");
 const { isAdministrator } = require("../../lib/permissions");
 const { logAdminActivity } = require("../../lib/admin-log");
 
+const USERNAME_RE = /^[a-z0-9_.-]{2,32}$/;
+
 module.exports = async function handler(req, res) {
   const username = getSessionUsername(req);
   if (!username) {
@@ -30,6 +32,30 @@ module.exports = async function handler(req, res) {
         ORDER BY username
       `;
       res.status(200).json({ users: rows });
+      return;
+    }
+
+    if (req.method === "POST") {
+      const targetUsername = String((req.body || {}).username || "").trim().toLowerCase();
+      if (!USERNAME_RE.test(targetUsername)) {
+        res.status(400).json({
+          error: "Nieprawidłowy login: dozwolone tylko litery a-z, cyfry, '.', '-' i '_', 2-32 znaki",
+        });
+        return;
+      }
+
+      try {
+        await sql`INSERT INTO sztab_users (username) VALUES (${targetUsername})`;
+      } catch (err) {
+        if (err.code === "23505") {
+          res.status(409).json({ error: "Ten login już istnieje" });
+          return;
+        }
+        throw err;
+      }
+
+      await logAdminActivity({ actorUsername: username, action: "user_create", target: targetUsername });
+      res.status(201).json({ ok: true });
       return;
     }
 
