@@ -410,6 +410,13 @@ html {
   color: #9a9a9a;
 }
 
+.program__signature {
+  display: block;
+  width: clamp(180px, 32vw, 260px);
+  height: auto;
+  margin: clamp(2rem, 5vw, 3rem) 0 0 auto;
+}
+
 /* ----------------------------------------------------------------- */
 /* Dlaczego Filip                                                     */
 /* ----------------------------------------------------------------- */
