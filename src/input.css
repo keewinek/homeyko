@@ -1166,6 +1166,8 @@ html {
 
 .hashtag-banner__text {
   margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(1rem, 3vw, 1.4rem);
   color: #111827;
 }
