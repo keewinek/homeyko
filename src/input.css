@@ -427,30 +427,7 @@ html {
 .dlaczego__inner {
   max-width: 980px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.dlaczego__media {
-  width: 100%;
-}
-
-.dlaczego__photo {
-  display: block;
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-  object-position: 50% 50%;
-  border-radius: 14px;
-  box-shadow: 0 20px 40px rgba(46, 0, 1, 0.18);
-  transform: translateZ(0);
-}
-
-.dlaczego__content {
   text-align: center;
-  padding-inline: clamp(0.5rem, 4vw, 2rem);
 }
 
 .dlaczego__title {
@@ -460,7 +437,28 @@ html {
   text-transform: uppercase;
   font-size: clamp(1.75rem, 5vw, 2.5rem);
   letter-spacing: 0.01em;
-  margin-bottom: 1.25rem;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.dlaczego__media {
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto clamp(2rem, 5vw, 3rem);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(46, 0, 1, 0.15);
+}
+
+.dlaczego__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.dlaczego__content {
+  text-align: center;
 }
 
 .dlaczego__text {
@@ -474,36 +472,6 @@ html {
 
 .dlaczego__text:last-child {
   margin-bottom: 0;
-}
-
-@media (max-width: 759px) {
-  .dlaczego__photo {
-    box-shadow: 0 8px 18px rgba(46, 0, 1, 0.16);
-  }
-}
-
-@media (min-width: 760px) {
-  .dlaczego__inner {
-    flex-direction: row;
-    align-items: center;
-    text-align: left;
-    gap: clamp(2.5rem, 6vw, 4rem);
-  }
-
-  .dlaczego__media {
-    flex: 0 0 auto;
-    width: 38%;
-    max-width: 360px;
-  }
-
-  .dlaczego__content {
-    text-align: left;
-  }
-
-  .dlaczego__text {
-    margin-left: 0;
-    margin-right: 0;
-  }
 }
 
 /* ----------------------------------------------------------------- */
