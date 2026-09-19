@@ -1128,8 +1128,8 @@ html {
 .easter-egg {
   width: 100%;
   overflow: hidden;
-  /* image is 628x707; ratio doubles the width so only the top half shows */
-  aspect-ratio: 1256 / 707;
+  /* image is 628x707; container height = 75% of the scaled image height */
+  aspect-ratio: 2512 / 2121;
   background: #fff;
 }
 
