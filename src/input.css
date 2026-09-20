@@ -424,8 +424,7 @@ html {
   z-index: 1;
   width: clamp(180px, 32vw, 260px);
   height: auto;
-  margin: 0 0 0 auto;
-  transform: translateY(-30%);
+  margin: clamp(-4.6rem, -9vw, -3.15rem) 0 -2rem auto;
 }
 
 /* ----------------------------------------------------------------- */
