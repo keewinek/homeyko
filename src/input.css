@@ -293,7 +293,7 @@ html {
   white-space: nowrap;
   /* width is set inline by main.js to match .hero__title's rendered width */
   background: transparent;
-  color: var(--brand-coral);
+  color: #fff;
   border: 2px solid var(--brand-coral);
   box-shadow: none;
 }
