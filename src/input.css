@@ -292,8 +292,8 @@ html {
   padding-bottom: 0.65rem;
   white-space: nowrap;
   /* width is set inline by main.js to match .hero__title's rendered width */
-  background: var(--brand-coral);
-  color: #fff;
+  background: transparent;
+  color: var(--brand-coral);
   border: 2px solid var(--brand-coral);
   box-shadow: none;
 }
