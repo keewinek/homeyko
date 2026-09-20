@@ -346,7 +346,8 @@ html {
 
 .program {
   background: #fff;
-  padding: clamp(3rem, 8vw, 5.5rem) clamp(1.25rem, 4vw, 3rem);
+  padding: clamp(3rem, 8vw, 5.5rem) clamp(1.25rem, 4vw, 3rem) 0;
+  margin-bottom: 0;
 }
 
 .program__title {
