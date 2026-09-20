@@ -312,32 +312,27 @@ html {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.9rem 1.75rem;
+  padding: 0.9rem 1.85rem;
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 0.02em;
   text-decoration: none;
-  border-radius: 4px;
+  border: none;
+  border-radius: 999px;
+  background: var(--brand-maroon);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(84, 0, 2, 0.22);
+  cursor: pointer;
   transition: transform 0.15s ease, background-color 0.15s ease,
-    border-color 0.15s ease, color 0.15s ease;
+    box-shadow 0.15s ease, color 0.15s ease;
 }
 
 .btn:hover,
 .btn:focus-visible {
-  transform: translateY(-2px);
-}
-
-.btn--ghost {
-  background: transparent;
-  color: var(--brand-coral);
-  border: 2px solid var(--brand-coral);
-}
-
-.btn--ghost:hover,
-.btn--ghost:focus-visible {
   background: var(--brand-coral);
-  border-color: var(--brand-coral);
   color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(224, 118, 118, 0.32);
 }
 
 /* ----------------------------------------------------------------- */
