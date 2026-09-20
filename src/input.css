@@ -1173,3 +1173,51 @@ html {
   height: auto;
   display: block;
 }
+
+/* ----------------------------------------------------------------- */
+/* Animacje przy przewijaniu                                          */
+/* ----------------------------------------------------------------- */
+
+/* Elementy dostają `data-reveal` z JS-a (main.js), więc bez JS-a albo
+   przy wyłączonych animacjach strona zostaje w pełni widoczna. */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0s),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0s);
+}
+
+[data-reveal="zoom"] {
+  transform: translate3d(0, 24px, 0) scale(0.96);
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Długie teksty pojawiają się słowo po słowie, w tempie przewijania. */
+.reveal-text {
+  opacity: 1;
+}
+
+.reveal-text__word {
+  display: inline;
+  opacity: var(--word-opacity, 0.12);
+  transition: opacity 0.25s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .reveal-text__word {
+    opacity: 1;
+    transition: none;
+  }
+}
