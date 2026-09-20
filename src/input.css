@@ -1197,15 +1197,20 @@ html {
   transform: none;
 }
 
-/* Długie teksty pojawiają się słowo po słowie, w tempie przewijania. */
+/* Długie teksty pojawiają się słowo po słowie: jedno przejście zaraz po
+   wejściu akapitu w kadr, potem tekst zostaje na stałe czytelny. */
 .reveal-text {
   opacity: 1;
 }
 
 .reveal-text__word {
   display: inline;
-  opacity: var(--word-opacity, 0.12);
-  transition: opacity 0.25s linear;
+  opacity: 0;
+  transition: opacity 0.45s ease var(--word-delay, 0s);
+}
+
+.reveal-text.is-revealed .reveal-text__word {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1216,7 +1221,8 @@ html {
     transition: none;
   }
 
-  .reveal-text__word {
+  .reveal-text__word,
+  .reveal-text.is-revealed .reveal-text__word {
     opacity: 1;
     transition: none;
   }

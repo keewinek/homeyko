@@ -158,7 +158,8 @@
       });
     });
 
-    /* Długie akapity rozjaśniają się słowo po słowie, w tempie przewijania. */
+    /* Długie akapity rozjaśniają się słowo po słowie, ale tylko raz i zaraz
+       po wejściu w kadr, żeby czytanie nie zależało od przewijania. */
     function splitIntoWords(el) {
       var words = el.textContent.trim().split(/\s+/);
       var spans = [];
@@ -177,65 +178,28 @@
       return spans;
     }
 
-    var textBlocks = [];
+    var textObserver = new IntersectionObserver(
+      function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var words = entry.target.querySelectorAll(".reveal-text__word");
+          /* Całe przejście trwa ok. 0,9 s niezależnie od długości akapitu. */
+          var step = Math.min(0.03, 0.9 / Math.max(words.length, 1));
+          words.forEach(function (word, index) {
+            word.style.setProperty("--word-delay", (index * step).toFixed(3) + "s");
+          });
+          entry.target.classList.add("is-revealed");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0 }
+    );
+
     document
       .querySelectorAll(".dlaczego__text, .zespol__intro, [data-reveal-text]")
       .forEach(function (el) {
-        textBlocks.push({ el: el, words: splitIntoWords(el), progress: -1 });
+        splitIntoWords(el);
+        textObserver.observe(el);
       });
-
-    if (textBlocks.length) {
-      var textRaf = 0;
-
-      function updateTextReveal() {
-        textRaf = 0;
-        var viewport = window.innerHeight;
-        /* Start: góra akapitu wjeżdża na 85% wysokości ekranu.
-           Koniec: dół akapitu mija 45% wysokości ekranu. */
-        var start = viewport * 0.85;
-        var end = viewport * 0.45;
-
-        textBlocks.forEach(function (block) {
-          var rect = block.el.getBoundingClientRect();
-          var distance = rect.height + (start - end);
-          var progress = distance > 0 ? (start - rect.top) / distance : 1;
-          if (progress < 0) progress = 0;
-          if (progress > 1) progress = 1;
-          if (Math.abs(progress - block.progress) < 0.004) return;
-          block.progress = progress;
-
-          var count = block.words.length;
-          /* Ile słów rozjaśnia się jednocześnie: krótsza fala dla krótkich
-             akapitów, dłuższa dla długich. */
-          var wave = Math.max(4, Math.round(count * 0.18));
-          var head = progress * (count + wave);
-
-          block.words.forEach(function (word, index) {
-            var value = (head - index) / wave;
-            if (value < 0) value = 0;
-            if (value > 1) value = 1;
-            word.style.setProperty(
-              "--word-opacity",
-              (0.12 + 0.88 * value).toFixed(2)
-            );
-          });
-        });
-      }
-
-      window.addEventListener(
-        "scroll",
-        function () {
-          if (!textRaf) textRaf = requestAnimationFrame(updateTextReveal);
-        },
-        { passive: true }
-      );
-
-      onWidthChange(function () {
-        textBlocks.forEach(function (block) {
-          block.progress = -1;
-        });
-        updateTextReveal();
-      });
-    }
   }
 })();
