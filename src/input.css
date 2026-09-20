@@ -911,20 +911,19 @@ html {
   height: 140px;
   resize: none;
   padding: 1rem 3rem 1.75rem 1rem;
-  border: 2px solid #e5d6d6;
+  border: 2px solid var(--brand-maroon);
   border-radius: 10px;
   font-size: 0.95rem;
   line-height: 1.5;
   color: #2e0001;
-  background: #fffdfa;
-  box-shadow: 0 6px 16px rgba(84, 0, 2, 0.08);
+  background: #fff;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .kontakt-card__textarea:focus {
   outline: none;
-  border-color: var(--brand-coral);
-  box-shadow: 0 6px 20px rgba(224, 118, 118, 0.25);
+  border-color: var(--brand-maroon-dark);
+  box-shadow: 0 0 0 3px rgba(84, 0, 2, 0.15);
 }
 
 .kontakt-card__counter {
@@ -932,12 +931,12 @@ html {
   left: 14px;
   bottom: 10px;
   font-size: 0.72rem;
-  color: #b79c9c;
+  color: #a08585;
   pointer-events: none;
 }
 
 .kontakt-card__counter.is-near-limit {
-  color: #c0392b;
+  color: var(--brand-maroon);
 }
 
 .kontakt-send {
@@ -951,7 +950,7 @@ html {
   justify-content: center;
   border: none;
   border-radius: 50%;
-  background: var(--brand-coral);
+  background: var(--brand-maroon);
   color: #fff;
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(84, 0, 2, 0.2);
@@ -961,7 +960,7 @@ html {
 
 .kontakt-send:hover:not(:disabled),
 .kontakt-send:focus-visible:not(:disabled) {
-  background: #eb8f8f;
+  background: var(--brand-maroon-dark);
   transform: translateY(-1px) scale(1.05);
 }
 
@@ -982,7 +981,7 @@ html {
 }
 
 .kontakt-status--error {
-  color: #c0392b;
+  color: var(--brand-maroon);
 }
 
 /* -- Latająca karteczka (klon treści w trakcie animacji) -- */
@@ -990,8 +989,8 @@ html {
 .kontakt-flying-card {
   position: fixed;
   z-index: 50;
-  background: #fffdfa;
-  border: 2px solid #e5d6d6;
+  background: #fff;
+  border: 2px solid var(--brand-maroon);
   border-radius: 10px;
   box-shadow: 0 6px 16px rgba(84, 0, 2, 0.15);
   padding: 1rem;
@@ -1063,8 +1062,8 @@ html {
 }
 
 .mailbox__check--heart svg {
-  filter: drop-shadow(0 0 10px rgba(224, 67, 60, 0.55))
-    drop-shadow(0 0 22px rgba(224, 67, 60, 0.35));
+  filter: drop-shadow(0 0 10px rgba(84, 0, 2, 0.45))
+    drop-shadow(0 0 22px rgba(224, 118, 118, 0.4));
 }
 
 .mailbox__check--limited {
