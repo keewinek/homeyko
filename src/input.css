@@ -292,6 +292,18 @@ html {
   padding-bottom: 0.65rem;
   white-space: nowrap;
   /* width is set inline by main.js to match .hero__title's rendered width */
+  background: transparent;
+  color: #fff;
+  border: 2px solid var(--brand-coral);
+  box-shadow: none;
+}
+
+.hero__cta .btn:hover,
+.hero__cta .btn:focus-visible {
+  background: var(--brand-coral);
+  border-color: var(--brand-coral);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(224, 118, 118, 0.32);
 }
 
 .btn__icon {
