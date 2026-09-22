@@ -16,7 +16,6 @@
   var liveEl = document.getElementById("cd-live");
   var doneEl = document.getElementById("cd-done");
   var els = {
-    days: document.getElementById("cd-days"),
     hours: document.getElementById("cd-hours"),
     minutes: document.getElementById("cd-minutes"),
     seconds: document.getElementById("cd-seconds"),
@@ -60,8 +59,9 @@
       return;
     }
     var totalSeconds = Math.floor(diff / 1000);
-    if (els.days) els.days.textContent = pad(Math.floor(totalSeconds / 86400));
-    if (els.hours) els.hours.textContent = pad(Math.floor((totalSeconds % 86400) / 3600));
+    // Bez jednostki "dni": godziny liczone od całości, żeby przy odliczaniu
+    // dłuższym niż doba nie zawijały się do zera co 24 godziny.
+    if (els.hours) els.hours.textContent = pad(Math.floor(totalSeconds / 3600));
     if (els.minutes) els.minutes.textContent = pad(Math.floor((totalSeconds % 3600) / 60));
     if (els.seconds) els.seconds.textContent = pad(totalSeconds % 60);
   }
