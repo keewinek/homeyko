@@ -26,6 +26,9 @@ projektem.
 
 ## Do ustalenia (TODO)
 
-- Docelowe podstrony/sekcje (Zespół, Galeria, Kontakt: linki w nawigacji
-  na razie prowadzą donikąd poza `#program`).
+- Sekcje "Dlaczego Filip", "Sztab" i "Kontakt" na stronie głównej mają na
+  razie treść szablonową (zdjęcie sztabu, dane pozostałych członków, opis
+  ekipy): do uzupełnienia realnymi zdjęciami i tekstami.
+- Docelowa podstrona/sekcja Galeria: link w nawigacji na razie prowadzi
+  donikąd poza `#program`.
 - Data wyborów i harmonogram kampanii (do uzupełnienia w `roadmap.md`).

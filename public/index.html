@@ -3,41 +3,577 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homeyko</title>
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="robots" content="noindex, nofollow" />
+    <title>Homeyko - Filip Gałązka na przewodniczącego</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/images/icon-512.png" />
+    <meta name="theme-color" content="#540002" />
+    <meta name="description" content="Kampania Filipa Gałązki na przewodniczącego samorządu uczniowskiego CXXII LO im. Ignacego Domeyki w Warszawie. Poznaj postulaty, zespół i zgłoś swój pomysł." />
+    <link rel="canonical" href="https://homeyko.pl/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Homeyko" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:url" content="https://homeyko.pl/" />
+    <meta property="og:title" content="Homeyko - Filip Gałązka na przewodniczącego" />
+    <meta property="og:description" content="Kampania Filipa Gałązki na przewodniczącego samorządu uczniowskiego CXXII LO im. Ignacego Domeyki w Warszawie. Poznaj postulaty, zespół i zgłoś swój pomysł." />
+    <meta property="og:image" content="https://homeyko.pl/images/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Logo Homeyko na bordowym tle" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Homeyko - Filip Gałązka na przewodniczącego" />
+    <meta name="twitter:description" content="Kampania Filipa Gałązki na przewodniczącego samorządu uczniowskiego CXXII LO im. Ignacego Domeyki w Warszawie. Poznaj postulaty, zespół i zgłoś swój pomysł." />
+    <meta name="twitter:image" content="https://homeyko.pl/images/og-image.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&family=Anton&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/css/styles.css" />
   </head>
   <body>
-    <section class="countdown-gate" aria-label="Odliczanie do uruchomienia strony">
-      <div class="countdown-gate__inner">
-        <img src="/images/logo-white.png" alt="Homeyko" class="countdown-gate__logo" />
+    <section class="hero">
+      <div class="hero__bg" id="hero-bg" style="background-image: url('/images/flag-bg.jpg')"></div>
+      <div class="hero__overlay"></div>
 
-        <div id="cd-live" class="countdown-gate__timer">
-          <div class="countdown-gate__unit">
-            <span id="cd-hours" class="countdown-gate__value">00</span>
-            <span class="countdown-gate__label">godz.</span>
+      <header class="hero__nav">
+        <a href="#" class="hero__brand">
+          <img src="/images/logo-white.png" alt="Homeyko" class="hero__brand-logo" />
+        </a>
+
+        <nav class="hero__links" id="nav-links" aria-label="Menu główne">
+          <div class="hero__links-top">
+            <img src="/images/logo-white.png" alt="Homeyko" class="hero__links-logo" />
+            <button type="button" class="nav-close-btn" id="nav-close" aria-label="Zamknij menu">
+              <svg viewBox="0 0 320 512" width="18" height="18" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M310.6 361.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L160 301.3 54.6 406.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L114.7 256 9.4 150.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 210.7 265.4 105.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L205.3 256 310.6 361.4z"
+                />
+              </svg>
+            </button>
           </div>
-          <div class="countdown-gate__unit">
-            <span id="cd-minutes" class="countdown-gate__value">00</span>
-            <span class="countdown-gate__label">min.</span>
+          <a href="#program">Postulaty</a>
+          <a href="#dlaczego">Dlaczego ja?</a>
+          <a href="#zespol">Zespół</a>
+          <a href="#kontakt">Kontakt</a>
+          <a href="/kontakt/pomysl" class="hero__links-cta">Zgłoś pomysł</a>
+          <a href="/kontakt/pytania" class="hero__links-cta">Zadaj pytanie</a>
+          <a
+            href="https://instagram.com/homeyko.su"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Instagram"
+            class="hero__links-instagram"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <rect x="2.2" y="2.2" width="19.6" height="19.6" rx="6.2" fill="none" stroke="#fff" stroke-width="2.3" />
+              <circle cx="12" cy="12" r="5.1" fill="none" stroke="#fff" stroke-width="2.3" />
+              <circle cx="17.6" cy="6.4" r="1.5" fill="#fff" />
+            </svg>
+          </a>
+        </nav>
+
+        <div class="hero__nav-right">
+          <div class="hero__socials">
+            <a href="https://instagram.com/homeyko.su" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <rect x="2.2" y="2.2" width="19.6" height="19.6" rx="6.2" fill="none" stroke="#fff" stroke-width="2.3" />
+                <circle cx="12" cy="12" r="5.1" fill="none" stroke="#fff" stroke-width="2.3" />
+                <circle cx="17.6" cy="6.4" r="1.5" fill="#fff" />
+              </svg>
+            </a>
           </div>
-          <div class="countdown-gate__unit">
-            <span id="cd-seconds" class="countdown-gate__value">00</span>
-            <span class="countdown-gate__label">sek.</span>
+
+          <button type="button" class="nav-toggle-btn" id="nav-open" aria-label="Otwórz menu">
+            <svg viewBox="0 0 448 512" width="20" height="20" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"
+              />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="hero__image">
+        <img src="/images/filip-hero.png" alt="Filip Gałązka" />
+      </div>
+      <div class="hero__scrim"></div>
+
+      <div class="hero__body">
+        <div class="hero__content">
+          <h1 class="hero__title">
+            <span class="hero__title-sub">Filip</span>
+            <span class="hero__title-main">
+              <img class="hero__checkbox" src="/images/x.gif" alt="" aria-hidden="true" />
+              Gałązka
+            </span>
+          </h1>
+          <p class="hero__text">Twój kandydat na przewodniczącego</p>
+          <div class="hero__cta">
+            <a href="/kontakt/pomysl" class="btn">
+              <span class="btn__icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 12 20 22 4 22 4 12" />
+                  <rect x="2" y="7" width="20" height="5" />
+                  <line x1="12" y1="22" x2="12" y2="7" />
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                </svg>
+              </span>
+              <span class="btn__label">Zgłoś swój pomysł</span>
+            </a>
           </div>
         </div>
-
-        <p id="cd-done" hidden class="countdown-gate__done">
-          Kampania właśnie się rozpoczęła! Strona zaraz się odświeży.
-        </p>
-
-        <noscript>
-          <p class="countdown-gate__noscript">Start kampanii: 23 września, o północy.</p>
-        </noscript>
       </div>
     </section>
 
-    <script src="/js/countdown.js"></script>
-  </body>
+    <section class="program" id="program">
+      <div class="program__inner mx-auto max-w-[780px]">
+        <h2 class="program__title">Postulaty</h2>
+
+        <div class="program__list">
+          <article class="program__item">
+            <span class="program__number">01</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Imprezy szkolne</h3>
+              <p class="program__item-text">Okazja do wspólnej zabawy i potańczenia przynajmniej dwa razy w roku.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">02</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Cheerleaderki na DomeykoCupie</h3>
+              <p class="program__item-text">Lepsza atmosfera na mistrzostwach i kolejny sposób na uczestniczenie w życiu szkoły.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">03</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Strona internetowa samorządu</h3>
+              <p class="program__item-text">Kalendarz, skrzynka pomysłów, głosowania i aktualności: wszystko w jednym miejscu.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">04</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Gniazdka na korytarzu</h3>
+              <p class="program__item-text">Ogólnodostępne przedłużacze, żeby łatwo podładować telefon czy tablet.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">05</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Wolontariat</h3>
+              <p class="program__item-text">Zapewnimy więcej opcji wolontariatu, żeby przy rekrutacji na studia nie był on problemem.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">06</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Dni tematyczne</h3>
+              <p class="program__item-text">Dzień idola, postaci z bajki: okazja na dobrą zabawę i uniknięcie odpowiedzi na lekcji.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">07</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Walentynki szkolne</h3>
+              <p class="program__item-text">Romantyczne wyznania lub przyjacielskie podziękowania: z nami walentynka dotrze na czas!</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">08</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Kalendarz adwentowy i wielkanocny</h3>
+              <p class="program__item-text">Oczekiwanie na wolne zostanie urozmaicone wyzwaniami i specjalnymi aktywnościami.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">09</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Dwie edycje DomeykoCup</h3>
+              <p class="program__item-text">Kultowa sportowa rywalizacja w odświeżonej odsłonie.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">10</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Silent disco</h3>
+              <p class="program__item-text">Nowa forma szkolnej dyskoteki, gdzie każdy bawi się w swoim rytmie.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">11</span>
+            <div class="program__content">
+              <h3 class="program__item-title">TikTok szkolny</h3>
+              <p class="program__item-text">Sondy, wywiady i życie szkoły na bieżąco w Waszej ulubionej formie.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">12</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Noc filmowa</h3>
+              <p class="program__item-text">Popcorn, koc, super ludzie i dobry film: czy może być coś lepszego?</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">13</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Zdjęcia klasowe i kontynuacja yearbooków</h3>
+              <p class="program__item-text">Uwiecznimy licealne wspomnienia tak, żeby zostały na zawsze.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">14</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Dystrybutory wody na korytarzu</h3>
+              <p class="program__item-text">Szybki sposób na ugaszenie pragnienia w upalne dni.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">15</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Kontynuacja debat oksfordzkich</h3>
+              <p class="program__item-text">Idealna szansa na podszkolenie swoich umiejętności argumentacji.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">16</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Turnieje sportowe</h3>
+              <p class="program__item-text">Tenis stołowy, szachy czy badminton: każdy znajdzie coś dla siebie.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">17</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Szkolna gala Oscarów</h3>
+              <p class="program__item-text">Głosowanie na nauczycieli roku, aby docenić ich wkład w nasz rozwój.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">18</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Turnieje esportowe</h3>
+              <p class="program__item-text">Clash Royale, Brawl Stars i inne: wirtualne mistrzostwa na szkolnym korytarzu.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">19</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Teleturnieje</h3>
+              <p class="program__item-text">Familiada, Giganci historii, Tak to leciało, milionerzy czy Va banque w szkolnym wydaniu.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">20</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Domeyko's Got Talent</h3>
+              <p class="program__item-text">Talent show, gdzie możesz zaprezentować to, co umiesz najlepiej.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">21</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Piknik szkolny</h3>
+              <p class="program__item-text">Zwieńczenie roku szkolnego na świeżym powietrzu.</p>
+            </div>
+          </article>
+
+          <article class="program__item">
+            <span class="program__number">22</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Turniej uczniowie vs nauczyciele</h3>
+              <p class="program__item-text">Sprawdzimy, co naprawdę się liczy: młodość czy doświadczenie.</p>
+            </div>
+          </article>
+
+          <article class="program__item program__item--ghost">
+            <span class="program__number">23</span>
+            <div class="program__content">
+              <h3 class="program__item-title">Tutaj może być twój pomysł</h3>
+              <a href="/kontakt/pomysl" class="btn program__item-btn">
+                <span class="btn__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <polyline points="20 12 20 22 4 22 4 12" />
+                    <rect x="2" y="7" width="20" height="5" />
+                    <line x1="12" y1="22" x2="12" y2="7" />
+                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                  </svg>
+                </span>
+                <span class="btn__label">Zgłaszam go</span>
+              </a>
+            </div>
+          </article>
+        </div>
+
+        <img
+          src="/images/filip-podpis.gif"
+          alt="Podpis Filipa Gałązki"
+          class="program__signature"
+          width="440"
+          height="410"
+          loading="lazy"
+        />
+      </div>
+    </section>
+
+    <section class="dlaczego" id="dlaczego">
+      <div class="dlaczego__inner mx-auto max-w-[780px]">
+        <h2 class="dlaczego__title">Dlaczego ja?</h2>
+        <div class="dlaczego__media">
+          <img
+            src="/images/filip-dlaczego.jpg"
+            alt="Filip Gałązka"
+            class="dlaczego__photo"
+            width="1200"
+            height="800"
+            decoding="async"
+          />
+        </div>
+        <p class="dlaczego__text">
+          Cześć! Nazywam się Filip Gałązka i jestem uczniem klasy 3a (mat-fiz). Od dwóch lat aktywnie
+          angażuję się w życie naszej szkoły: współtworzyłem Samorząd Uczniowski, jestem przewodniczącym
+          chóru szkolnego i pomagam przy organizacji szkolnych wydarzeń oraz różnych inicjatyw.
+          Swoje doświadczenie zdobywam również poza szkołą. Byłem liderem miniprzedsiębiorstwa „Newear",
+          które zdobyło 2. miejsce w ogólnopolskim konkursie. Współtworzyłem też projekt „NieSkupuj",
+          nagrodzony Brązowym Wilkiem 2026. Aktywnie uczestniczę w debatach oksfordzkich i MUN-ach,
+          gdzie zdobyłem m.in. nagrodę najlepszego debiutanta.
+          Jestem osobą zaangażowaną, dobrze zorganizowaną i przede wszystkim nastawioną na działanie.
+          Chcę wykorzystać swoje doświadczenie, żeby razem z Wami tworzyć szkołę, w której naprawdę dużo
+          się dzieje. Głosując na mnie, głosujesz na doświadczenie, zaangażowanie i siłę do działania.
+        </p>
+      </div>
+    </section>
+
+    <section class="zespol" id="zespol">
+      <div class="zespol__inner mx-auto max-w-[780px]">
+        <h2 class="zespol__title">Sztab</h2>
+
+        <div class="zespol__group-photo">
+          <img src="/images/sztab-grupa.jpg" alt="Sztab kampanii" class="zespol__group-photo-img" />
+        </div>
+
+        <p class="zespol__intro">
+          Jesteśmy grupą młodych ludzi, którzy lubią działać i nie boją się brać spraw w swoje ręce. Angażujemy się w życie szkoły, działamy w różnych organizacjach i wspólnie realizujemy kolejne inicjatywy. Chcemy, by nasza energia i doświadczenie przełożyły się na szkołę, w której każdy może czuć się jak u siebie. Razem sprawmy, by Domeyko znów stało się naszym drugim domem!
+        </p>
+
+        <div class="zespol__grid">
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/filip-galazka-sztab.jpg" alt="Filip Gałązka" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Filip Gałązka</h3>
+            <p class="zespol__member-role">Przewodniczący sztabu</p>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/kamil-pietka-ze-zdj-sztabu.jpg" alt="Kamil Piętka" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Kamil Piętka</h3>
+            <p class="zespol__member-role">Wiceprzewodniczący</p>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/marta-debek-ze-zdj-sztabu.jpg" alt="Marta Dębek" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Marta Dębek</h3>
+            <p class="zespol__member-role">Wiceprzewodnicząca</p>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/alicja-janaszek-ze-zdj-sztabu.jpg" alt="Alicja Janaszek" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Alicja Janaszek</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/alicja-skrzymowska-ze-zdj-sztabu.jpg" alt="Alicja Skrzymowska" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Alicja Skrzymowska</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/diana-koronevich-ze-zdj-sztabu.jpg" alt="Diana Koronevich" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Diana Koronevich</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/hanna-bialas-ze-zdj-sztabu.jpg" alt="Hanna Białas" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Hanna Białas</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/julia-stawczyk-ze-zdj-sztabu.jpg" alt="Julia Stawczyk" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Julia Stawczyk</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/karolina-opara-ze-zdj-sztabu.jpg" alt="Karolina Opara" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Karolina Opara</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/maria-grzyb-ze-zdj-sztabu.jpg" alt="Maria Grzyb" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Maria Grzyb</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/natalia-holubowicz-ze-zdj-sztabu.jpg" alt="Natalia Hołubowicz" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Natalia Hołubowicz</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/natasza-kurpiewska-ze-zdj-sztabu.jpg" alt="Natasza Kurpiewska" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Natasza Kurpiewska</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/waleria-wroblewska-ze-zdj-sztabu.jpg" alt="Waleria Wróblewska" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Waleria Wróblewska</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/wojciech-kolacz-ze-zdj-sztabu.jpg" alt="Wojciech Kołacz" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Wojciech Kołacz</h3>
+          </article>
+
+          <article class="zespol__member">
+            <div class="zespol__headshot">
+              <img src="/images/zosia-piskorz-ze-zdj-sztabu.jpg" alt="Zosia Piskorz" class="zespol__headshot-img" />
+            </div>
+            <h3 class="zespol__member-name">Zosia Piskorz</h3>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="kontakt-cta" id="kontakt">
+      <div class="kontakt-cta__inner">
+        <h2 class="kontakt-cta__title">Kontakt</h2>
+
+        <a href="https://instagram.com/homeyko.su" target="_blank" rel="noreferrer" class="kontakt-cta__ig">
+          <span class="kontakt-cta__ig-icon">
+            <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+              <rect x="2.2" y="2.2" width="19.6" height="19.6" rx="6.2" fill="none" stroke="#fff" stroke-width="2.3" />
+              <circle cx="12" cy="12" r="5.1" fill="none" stroke="#fff" stroke-width="2.3" />
+              <circle cx="17.6" cy="6.4" r="1.5" fill="#fff" />
+            </svg>
+          </span>
+          <span class="kontakt-cta__ig-text">
+            <span class="kontakt-cta__ig-label">Śledź nas na Instagramie</span>
+            <span class="kontakt-cta__ig-handle">@homeyko.su</span>
+          </span>
+        </a>
+
+        <div class="kontakt-cta__ask">
+          <p class="kontakt-cta__ask-title">Masz pytanie, ale wstydzisz się napisać?</p>
+          <a href="/kontakt/pytania" class="btn">
+            <span class="btn__icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </span>
+            <span class="btn__label">Zadaj anonimowe pytanie</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="hashtag-banner">
+      <div class="hashtag-badge">
+        <p class="hashtag-badge__text">#VoteGałązka2026</p>
+      </div>
+    </div>
+
+    <p class="pt-6 px-4 pb-[0.4rem] text-center text-[0.8rem] text-[var(--brand-maroon-dark)]/70">
+      &copy; 2026 Homeyko. Wszystkie prawa zastrzeżone.
+    </p>
+
+    <div class="easter-egg" aria-hidden="true">
+      <img src="/images/filip-dab-easter-egg.png" alt="" class="easter-egg__img" />
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
 </html>
