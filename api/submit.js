@@ -3,7 +3,7 @@ const { sql, ensureSchema } = require("../lib/db");
 
 const ALLOWED_TYPES = new Set(["pomysl", "pytanie"]);
 
-const MIN_MESSAGE_LENGTH = 5;
+const MIN_MESSAGE_LENGTH = 3;
 const MAX_MESSAGE_LENGTH = 500;
 
 // Dozwolone: litery (także polskie znaki), cyfry, białe znaki i

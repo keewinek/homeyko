@@ -17,7 +17,7 @@
     pytanie: "Dziękujemy za pytanie!",
   };
   var LIMIT_MESSAGE = "Co za dużo, to niezdrowo! Zwolnij trochę.";
-  var MIN_MESSAGE_LENGTH = 5;
+  var MIN_MESSAGE_LENGTH = 3;
   var MAX_MESSAGE_LENGTH = 500;
   var TOO_SHORT_MESSAGE =
     "Wiadomość musi mieć co najmniej " + MIN_MESSAGE_LENGTH + " znaków.";
