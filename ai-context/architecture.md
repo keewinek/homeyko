@@ -102,6 +102,20 @@ Vercelu (Domains).
   z domeną `preview.homeyko.pl` (Settings → Domains → Environment:
   Preview → Git Branch: `preview`).
 - Merge `preview` → `main` dopiero na wyraźną decyzję o publikacji.
+- **Automatyczna publikacja na start kampanii:** workflow
+  `.github/workflows/publish-campaign-launch.yml` o 22:00 UTC 22.09
+  (czyli o północy czasu polskiego 23.09) scala treść z `preview` na
+  `main`. Merge jest robiony strategią "historia obu branchy, drzewo
+  plików dokładnie jak na `preview`" (`git merge -s ours --no-commit` +
+  `git read-tree -u --reset origin/preview`), więc nie może się
+  skonfliktować z odliczaniem, które leży na `main`. Workflow jest
+  idempotentny (jeśli `main` ma już drzewo `preview`, nic nie robi),
+  odpala się kilka razy w oknie 22:00 UTC do 00:30 UTC (cron GitHuba
+  bywa opóźniony), ma też `workflow_dispatch` z opcją `force`, i na
+  koniec sprawdza curlem, czy `homeyko.pl` faktycznie serwuje stronę
+  kampanii. **Uwaga: `schedule` działa tylko z domyślnego brancha, więc
+  ten plik musi leżeć na `main`** (kopia na `preview` jest tylko dla
+  porządku).
 - **Cron (`vercel.json` → `crons`) działa tylko na deployu Produkcyjnym**
   (branch `main`), Vercel nie odpala cronów na Preview. Dlatego
   `api/cron/check-spam.js` jest wywoływany na `preview.homeyko.pl`
