@@ -1,0 +1,127 @@
+name: Publikacja kampanii na main (start 23.09, polnoc)
+
+# Jednorazowa, zaplanowana publikacja: o polnocy czasu polskiego
+# 23 wrzesnia 2026 (22:00 UTC 22.09) tresc z brancha `preview` ma trafic
+# na `main`, czyli na homeyko.pl, zastepujac odliczanie.
+#
+# Wyjatek od zasady z CLAUDE.md ("nigdy nie pushuj na main samodzielnie"):
+# wlasciciel repo poprosil wprost o taka automatyzacje startu kampanii.
+#
+# Uwagi:
+# - Harmonogram (`schedule`) dziala tylko z domyslnego brancha, czyli z
+#   `main`. Dlatego ten plik musi lezec na `main` (na `preview` jest tylko
+#   kopia dla porzadku).
+# - GitHub potrafi opoznic cron nawet o kilkanascie minut, a czasem
+#   pominac pojedyncze odpalenie. Dlatego odpalen jest kilka, a caly
+#   workflow jest idempotentny: jesli `main` ma juz dokladnie tresc
+#   z `preview`, kolejny przebieg nic nie robi.
+
+on:
+  schedule:
+    # 22:00 UTC 22.09 = 00:00 czasu polskiego 23.09 (CEST, UTC+2)
+    - cron: "0,10,20,30,40,50 22 22 9 *"
+    - cron: "0,20,40 23 22 9 *"
+    - cron: "0,30 0 23 9 *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Opublikuj natychmiast, bez czekania na godzine startu"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-campaign-launch
+  cancel-in-progress: false
+
+env:
+  LAUNCH_AT_UTC: "2026-09-22T22:00:00Z"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Sprawdz, czy minela godzina startu
+        id: gate
+        env:
+          FORCE: ${{ inputs.force }}
+        run: |
+          launch=$(date -u -d "$LAUNCH_AT_UTC" +%s)
+          now=$(date -u +%s)
+          if [ "$FORCE" = "true" ]; then
+            echo "Reczne uruchomienie z force=true, publikuje od razu."
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          elif [ "$now" -ge "$launch" ]; then
+            echo "Godzina startu minela ($(date -u)), publikuje."
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Jeszcze przed startem kampanii ($(date -u)), nic nie robie."
+            echo "go=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Pobierz preview
+        if: steps.gate.outputs.go == 'true'
+        run: git fetch origin preview
+
+      - name: Przenies tresc z preview na main
+        id: merge
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          main_tree=$(git rev-parse HEAD^{tree})
+          preview_tree=$(git rev-parse origin/preview^{tree})
+
+          if [ "$main_tree" = "$preview_tree" ]; then
+            echo "main ma juz dokladnie tresc z preview, nic do zrobienia."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Merge, ktory nie moze sie skonfliktowac: bierzemy historie obu
+          # branchy, ale drzewo plikow dokladnie takie jak na preview.
+          git merge -s ours --no-commit --no-ff origin/preview
+          git read-tree -u --reset origin/preview
+          git commit -m "Start kampanii: opublikuj strone z preview na main"
+
+          if [ "$(git rev-parse HEAD^{tree})" != "$preview_tree" ]; then
+            echo "::error::Drzewo po scaleniu nie zgadza sie z preview. Przerywam."
+            exit 1
+          fi
+
+          for delay in 0 2 4 8 16; do
+            [ "$delay" -gt 0 ] && sleep "$delay"
+            if git push origin HEAD:main; then
+              echo "pushed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Push nieudany, ponawiam."
+          done
+          echo "::error::Nie udalo sie wypchnac na main."
+          exit 1
+
+      - name: Sprawdz, czy homeyko.pl ma juz strone kampanii
+        if: steps.merge.outputs.pushed == 'true'
+        run: |
+          for i in $(seq 1 30); do
+            sleep 30
+            body=$(curl -fsSL --max-time 30 "https://homeyko.pl/?cachebust=$(date +%s)" || true)
+            if printf '%s' "$body" | grep -q 'id="program"' \
+               && ! printf '%s' "$body" | grep -q 'countdown-gate'; then
+              echo "homeyko.pl serwuje juz strone kampanii (proba $i)."
+              exit 0
+            fi
+            echo "Proba $i: homeyko.pl jeszcze nie zaktualizowane."
+          done
+          echo "::error::Po 15 minutach homeyko.pl wciaz nie pokazuje strony kampanii. Sprawdz deploy na Vercelu."
+          exit 1

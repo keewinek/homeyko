@@ -2,13 +2,20 @@ const crypto = require("crypto");
 const { sql, ensureSchema } = require("../../lib/db");
 const { isSpam } = require("../../lib/spam-detector");
 
-// Ile zgłoszeń sprawdzamy jednorazowo, żeby nie przekroczyć limitu czasu
-// wykonania funkcji serverless (nowe zgłoszenia i tak poczekają do kolejnego
-// uruchomienia crona, co godzinę).
-const BATCH_SIZE = 20;
+// Ile zgłoszeń bierzemy na jeden przebieg crona. Reszta poczeka do kolejnego
+// uruchomienia (co godzinę), więc to jest sufit przepustowości moderacji:
+// 50 na godzinę, czyli 1200 na dobę.
+const BATCH_SIZE = 50;
+
+// Ile zapytań do Groqa leci równocześnie. Za dużo naraz to ryzyko limitu
+// zapytań na minutę po stronie Groqa (i odrzuconych sprawdzeń), za mało to
+// ryzyko przekroczenia czasu funkcji. Piątka mieści cały batch w kilkunastu
+// sekundach, przy maxDuration ustawionym w vercel.json na 60 s.
+const CONCURRENCY = 5;
 
 // Vercel Cron dokłada nagłówek "Authorization: Bearer $CRON_SECRET"
 // automatycznie, jeśli w projekcie ustawiona jest zmienna CRON_SECRET.
+// Tak samo woła ten endpoint workflow .github/workflows/moderation-cron.yml.
 function isAuthorizedCronRequest(req) {
   const secret = process.env.CRON_SECRET;
   if (!secret) return false;
@@ -20,6 +27,24 @@ function isAuthorizedCronRequest(req) {
   const expectedBuf = Buffer.from(expected);
   if (headerBuf.length !== expectedBuf.length) return false;
   return crypto.timingSafeEqual(headerBuf, expectedBuf);
+}
+
+async function checkOne(row, stats) {
+  try {
+    const spam = await isSpam(row.message);
+    await sql`
+      UPDATE submissions
+      SET is_spam = ${spam}, spam_checked_at = now()
+      WHERE id = ${row.id}
+    `;
+    stats.checked += 1;
+    if (spam) stats.spamFound += 1;
+  } catch (err) {
+    // Zostawiamy spam_checked_at = null, żeby ponowić przy kolejnym
+    // uruchomieniu crona zamiast fałszywie uznać zgłoszenie za czyste.
+    stats.failed += 1;
+    console.error(`Spam check failed for submission ${row.id}:`, err);
+  }
 }
 
 module.exports = async function handler(req, res) {
@@ -39,29 +64,21 @@ module.exports = async function handler(req, res) {
       LIMIT ${BATCH_SIZE}
     `;
 
-    let checked = 0;
-    let spamFound = 0;
+    const stats = { checked: 0, spamFound: 0, failed: 0 };
 
+    // Kolejka z ograniczoną równoległością: CONCURRENCY "pracowników" bierze
+    // kolejne zgłoszenia z tej samej listy, aż się skończą.
+    let next = 0;
     await Promise.all(
-      pending.map(async (row) => {
-        try {
-          const spam = await isSpam(row.message);
-          await sql`
-            UPDATE submissions
-            SET is_spam = ${spam}, spam_checked_at = now()
-            WHERE id = ${row.id}
-          `;
-          checked += 1;
-          if (spam) spamFound += 1;
-        } catch (err) {
-          // Zostawiamy spam_checked_at = null, żeby ponowić przy kolejnym
-          // uruchomieniu crona zamiast fałszywie uznać zgłoszenie za czyste.
-          console.error(`Spam check failed for submission ${row.id}:`, err);
+      Array.from({ length: Math.min(CONCURRENCY, pending.length) }, async () => {
+        while (next < pending.length) {
+          const row = pending[next++];
+          await checkOne(row, stats);
         }
       })
     );
 
-    res.status(200).json({ ok: true, pending: pending.length, checked, spamFound });
+    res.status(200).json({ ok: true, pending: pending.length, ...stats });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Błąd serwera" });

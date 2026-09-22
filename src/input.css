@@ -292,6 +292,18 @@ html {
   padding-bottom: 0.65rem;
   white-space: nowrap;
   /* width is set inline by main.js to match .hero__title's rendered width */
+  background: transparent;
+  color: #fff;
+  border: 2px solid var(--brand-coral);
+  box-shadow: none;
+}
+
+.hero__cta .btn:hover,
+.hero__cta .btn:focus-visible {
+  background: var(--brand-coral);
+  border-color: var(--brand-coral);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(224, 118, 118, 0.32);
 }
 
 .btn__icon {
@@ -312,32 +324,27 @@ html {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.9rem 1.75rem;
+  padding: 0.9rem 1.85rem;
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 0.02em;
   text-decoration: none;
-  border-radius: 4px;
+  border: none;
+  border-radius: 12px;
+  background: var(--brand-maroon);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(84, 0, 2, 0.22);
+  cursor: pointer;
   transition: transform 0.15s ease, background-color 0.15s ease,
-    border-color 0.15s ease, color 0.15s ease;
+    box-shadow 0.15s ease, color 0.15s ease;
 }
 
 .btn:hover,
 .btn:focus-visible {
-  transform: translateY(-2px);
-}
-
-.btn--ghost {
-  background: transparent;
-  color: var(--brand-coral);
-  border: 2px solid var(--brand-coral);
-}
-
-.btn--ghost:hover,
-.btn--ghost:focus-visible {
   background: var(--brand-coral);
-  border-color: var(--brand-coral);
   color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(224, 118, 118, 0.32);
 }
 
 /* ----------------------------------------------------------------- */
@@ -424,8 +431,7 @@ html {
   z-index: 1;
   width: clamp(180px, 32vw, 260px);
   height: auto;
-  margin: 0 0 0 auto;
-  transform: translateY(-30%);
+  margin: clamp(-4.6rem, -9vw, -3.15rem) 0 -2rem auto;
 }
 
 /* ----------------------------------------------------------------- */
@@ -526,6 +532,7 @@ html {
   line-height: 1.6;
   max-width: 56ch;
   margin: 0 auto clamp(2.5rem, 6vw, 3.5rem);
+  text-align: justify;
 }
 
 .zespol__grid {
@@ -905,20 +912,19 @@ html {
   height: 140px;
   resize: none;
   padding: 1rem 3rem 1.75rem 1rem;
-  border: 2px solid #e5d6d6;
+  border: 2px solid var(--brand-maroon);
   border-radius: 10px;
   font-size: 0.95rem;
   line-height: 1.5;
   color: #2e0001;
-  background: #fffdfa;
-  box-shadow: 0 6px 16px rgba(84, 0, 2, 0.08);
+  background: #fff;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .kontakt-card__textarea:focus {
   outline: none;
-  border-color: var(--brand-coral);
-  box-shadow: 0 6px 20px rgba(224, 118, 118, 0.25);
+  border-color: var(--brand-maroon-dark);
+  box-shadow: 0 0 0 3px rgba(84, 0, 2, 0.15);
 }
 
 .kontakt-card__counter {
@@ -926,12 +932,12 @@ html {
   left: 14px;
   bottom: 10px;
   font-size: 0.72rem;
-  color: #b79c9c;
+  color: #a08585;
   pointer-events: none;
 }
 
 .kontakt-card__counter.is-near-limit {
-  color: #c0392b;
+  color: var(--brand-maroon);
 }
 
 .kontakt-send {
@@ -945,7 +951,7 @@ html {
   justify-content: center;
   border: none;
   border-radius: 50%;
-  background: var(--brand-coral);
+  background: var(--brand-maroon);
   color: #fff;
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(84, 0, 2, 0.2);
@@ -955,7 +961,7 @@ html {
 
 .kontakt-send:hover:not(:disabled),
 .kontakt-send:focus-visible:not(:disabled) {
-  background: #eb8f8f;
+  background: var(--brand-maroon-dark);
   transform: translateY(-1px) scale(1.05);
 }
 
@@ -976,7 +982,7 @@ html {
 }
 
 .kontakt-status--error {
-  color: #c0392b;
+  color: var(--brand-maroon);
 }
 
 /* -- Latająca karteczka (klon treści w trakcie animacji) -- */
@@ -984,8 +990,8 @@ html {
 .kontakt-flying-card {
   position: fixed;
   z-index: 50;
-  background: #fffdfa;
-  border: 2px solid #e5d6d6;
+  background: #fff;
+  border: 2px solid var(--brand-maroon);
   border-radius: 10px;
   box-shadow: 0 6px 16px rgba(84, 0, 2, 0.15);
   padding: 1rem;
@@ -1057,8 +1063,8 @@ html {
 }
 
 .mailbox__check--heart svg {
-  filter: drop-shadow(0 0 10px rgba(224, 67, 60, 0.55))
-    drop-shadow(0 0 22px rgba(224, 67, 60, 0.35));
+  filter: drop-shadow(0 0 10px rgba(84, 0, 2, 0.45))
+    drop-shadow(0 0 22px rgba(224, 118, 118, 0.4));
 }
 
 .mailbox__check--limited {
@@ -1167,4 +1173,58 @@ html {
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* ----------------------------------------------------------------- */
+/* Animacje przy przewijaniu                                          */
+/* ----------------------------------------------------------------- */
+
+/* Elementy dostają `data-reveal` z JS-a (main.js), więc bez JS-a albo
+   przy wyłączonych animacjach strona zostaje w pełni widoczna. */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0s),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0s);
+}
+
+[data-reveal="zoom"] {
+  transform: translate3d(0, 24px, 0) scale(0.96);
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Długie teksty pojawiają się słowo po słowie: jedno przejście zaraz po
+   wejściu akapitu w kadr, potem tekst zostaje na stałe czytelny. */
+.reveal-text {
+  opacity: 1;
+}
+
+.reveal-text__word {
+  display: inline;
+  opacity: 0;
+  transition: opacity 0.45s ease var(--word-delay, 0s);
+}
+
+.reveal-text.is-revealed .reveal-text__word {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .reveal-text__word,
+  .reveal-text.is-revealed .reveal-text__word {
+    opacity: 1;
+    transition: none;
+  }
 }

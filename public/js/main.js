@@ -108,4 +108,98 @@
       document.fonts.ready.then(syncCtaWidth);
     }
   }
+
+  /* ----------------------------------------------------------------- */
+  /* Animacje przy przewijaniu                                          */
+  /* ----------------------------------------------------------------- */
+
+  /* Atrybuty i podział tekstu na słowa dokładamy z JS-a, więc bez JS-a
+     albo przy wyłączonych animacjach strona zostaje w pełni widoczna. */
+  var reduceMotion =
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    var revealTargets = [
+      { selector: ".program__title", mode: "" },
+      { selector: ".program__item", mode: "" },
+      { selector: ".program__signature", mode: "zoom" },
+      { selector: ".dlaczego__title", mode: "" },
+      { selector: ".dlaczego__media", mode: "zoom" },
+      { selector: ".zespol__title", mode: "" },
+      { selector: ".zespol__group-photo", mode: "zoom" },
+      { selector: ".zespol__member", mode: "zoom" },
+      { selector: ".kontakt-cta__title", mode: "" },
+      { selector: ".kontakt-cta__ig", mode: "" },
+      { selector: ".kontakt-cta__ask", mode: "" },
+      { selector: ".hashtag-banner", mode: "zoom" }
+    ];
+
+    var revealObserver = new IntersectionObserver(
+      function (entries, observer) {
+        var shown = 0;
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          /* Elementy wjeżdżające w tej samej klatce (np. kafelki sztabu)
+             pojawiają się kaskadowo, jeden po drugim. */
+          entry.target.style.setProperty("--reveal-delay", shown * 0.08 + "s");
+          entry.target.classList.add("is-revealed");
+          observer.unobserve(entry.target);
+          shown += 1;
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.15 }
+    );
+
+    revealTargets.forEach(function (target) {
+      document.querySelectorAll(target.selector).forEach(function (el) {
+        el.setAttribute("data-reveal", target.mode);
+        revealObserver.observe(el);
+      });
+    });
+
+    /* Długie akapity rozjaśniają się słowo po słowie, ale tylko raz i zaraz
+       po wejściu w kadr, żeby czytanie nie zależało od przewijania. */
+    function splitIntoWords(el) {
+      var words = el.textContent.trim().split(/\s+/);
+      var spans = [];
+      el.textContent = "";
+      words.forEach(function (word, index) {
+        var span = document.createElement("span");
+        span.className = "reveal-text__word";
+        span.textContent = word;
+        el.appendChild(span);
+        if (index < words.length - 1) {
+          el.appendChild(document.createTextNode(" "));
+        }
+        spans.push(span);
+      });
+      el.classList.add("reveal-text");
+      return spans;
+    }
+
+    var textObserver = new IntersectionObserver(
+      function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var words = entry.target.querySelectorAll(".reveal-text__word");
+          /* Całe przejście trwa ok. 0,9 s niezależnie od długości akapitu. */
+          var step = Math.min(0.03, 0.9 / Math.max(words.length, 1));
+          words.forEach(function (word, index) {
+            word.style.setProperty("--word-delay", (index * step).toFixed(3) + "s");
+          });
+          entry.target.classList.add("is-revealed");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0 }
+    );
+
+    document
+      .querySelectorAll(".dlaczego__text, .zespol__intro, [data-reveal-text]")
+      .forEach(function (el) {
+        splitIntoWords(el);
+        textObserver.observe(el);
+      });
+  }
 })();

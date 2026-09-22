@@ -1,11 +1,23 @@
 name: Moderacja spamu (cron co godzinę)
 
-# Vercel Cron (vercel.json -> crons) odpala się tylko na deployu
-# Produkcyjnym (branch main), nigdy na Preview. Dopóki kod moderacji jest
-# tylko na `preview`, ten workflow zastępuje Vercel Cron: woła co godzinę
-# endpoint api/cron/check-spam.js na preview.homeyko.pl. Wymaga sekretu
-# repozytorium CRON_SECRET (Settings -> Secrets and variables -> Actions),
-# z tą samą wartością co CRON_SECRET ustawiony w Vercelu.
+# Vercel Cron (vercel.json -> crons) odpala się tylko na deployu Produkcyjnym
+# i na darmowym planie nie częściej niż raz na dobę, a próba dodania
+# częstszego harmonogramu wywalała wszystkie deploye (patrz ai-context/
+# architecture.md). Dlatego moderację spamu odpala ten workflow: co godzinę
+# woła endpoint api/cron/check-spam.js na OBU środowiskach.
+#
+# Dlaczego na obu: zgłoszenia z preview.homeyko.pl i z homeyko.pl trafiają do
+# osobnych gałęzi bazy Neona. Gdyby cron pukał tylko w preview, zgłoszenia
+# wysłane przez uczniów na produkcji nigdy nie zostałyby sprawdzone.
+#
+# Uwaga na adres produkcji: homeyko.pl przekierowuje (308) na
+# www.homeyko.pl, a curl przy przekierowaniu na inny host WYCINA nagłówek
+# Authorization ze względów bezpieczeństwa. Dlatego wołamy od razu
+# www.homeyko.pl, bez przekierowania.
+#
+# Wymaga sekretu repozytorium CRON_SECRET (Settings -> Secrets and variables
+# -> Actions) o tej samej wartości co zmienna CRON_SECRET w Vercelu,
+# ustawiona osobno dla środowiska Preview i Production.
 
 on:
   schedule:
@@ -15,15 +27,38 @@ on:
 jobs:
   check-spam:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: preview
+            base: https://preview.homeyko.pl
+          - name: produkcja
+            base: https://www.homeyko.pl
     steps:
-      - name: Wywołaj moderację spamu na preview.homeyko.pl
+      - name: Wywołaj moderację spamu (${{ matrix.name }})
+        env:
+          BASE: ${{ matrix.base }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           status=$(curl -sS -o /tmp/response.json -w "%{http_code}" \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            https://preview.homeyko.pl/api/cron/check-spam)
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$BASE/api/cron/check-spam")
           echo "HTTP $status"
-          cat /tmp/response.json
+          cat /tmp/response.json || true
+          echo
+
+          if [ "$status" = "404" ]; then
+            echo "::notice::Endpoint moderacji nie istnieje jeszcze na $BASE. Przed startem kampanii to normalne: main nie ma kodu moderacji. Pomijam."
+            exit 0
+          fi
+
+          if [ "$status" = "401" ]; then
+            echo "::error::$BASE odrzuca cron (401). Sprawdź, czy zmienna CRON_SECRET jest ustawiona w Vercelu dla tego środowiska i czy ma tę samą wartość co sekret CRON_SECRET w repozytorium."
+            exit 1
+          fi
+
           if [ "$status" -ge 300 ]; then
-            echo "::error::Cron moderacji zwrócił HTTP $status"
+            echo "::error::Cron moderacji na $BASE zwrócił HTTP $status"
             exit 1
           fi

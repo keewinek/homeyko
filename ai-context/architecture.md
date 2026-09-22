@@ -102,12 +102,46 @@ Vercelu (Domains).
   z domeną `preview.homeyko.pl` (Settings → Domains → Environment:
   Preview → Git Branch: `preview`).
 - Merge `preview` → `main` dopiero na wyraźną decyzję o publikacji.
+- **Automatyczna publikacja na start kampanii:** workflow
+  `.github/workflows/publish-campaign-launch.yml` o 22:00 UTC 22.09
+  (czyli o północy czasu polskiego 23.09) scala treść z `preview` na
+  `main`. Merge jest robiony strategią "historia obu branchy, drzewo
+  plików dokładnie jak na `preview`" (`git merge -s ours --no-commit` +
+  `git read-tree -u --reset origin/preview`), więc nie może się
+  skonfliktować z odliczaniem, które leży na `main`. Workflow jest
+  idempotentny (jeśli `main` ma już drzewo `preview`, nic nie robi),
+  odpala się kilka razy w oknie 22:00 UTC do 00:30 UTC (cron GitHuba
+  bywa opóźniony), ma też `workflow_dispatch` z opcją `force`, i na
+  koniec sprawdza curlem, czy `homeyko.pl` faktycznie serwuje stronę
+  kampanii. **Uwaga: `schedule` działa tylko z domyślnego brancha, więc
+  ten plik musi leżeć na `main`** (kopia na `preview` jest tylko dla
+  porządku).
 - **Cron (`vercel.json` → `crons`) działa tylko na deployu Produkcyjnym**
   (branch `main`), Vercel nie odpala cronów na Preview. Dlatego
-  `api/cron/check-spam.js` jest wywoływany na `preview.homeyko.pl`
-  wyłącznie przez GitHub Actions (`.github/workflows/moderation-cron.yml`,
-  co godzinę, przez `curl` z nagłówkiem `Authorization: Bearer
-  $CRON_SECRET`), niezależnie od Vercela.
+  `api/cron/check-spam.js` jest wywoływany wyłącznie przez GitHub Actions
+  (`.github/workflows/moderation-cron.yml`, co godzinę, przez `curl`
+  z nagłówkiem `Authorization: Bearer $CRON_SECRET`), niezależnie od
+  Vercela. Workflow puka w **oba środowiska**: `preview.homeyko.pl`
+  i `www.homeyko.pl`, bo zgłoszenia z preview i z produkcji trafiają do
+  osobnych gałęzi bazy Neona i cron pukający tylko w jedno środowisko
+  zostawia drugie bez moderacji. Odpowiedź 404 jest traktowana jako
+  "endpoint jeszcze nie wdrożony" i pomijana, 401 jako brak `CRON_SECRET`
+  w danym środowisku Vercela.
+- **Pułapka: `schedule` w GitHub Actions działa TYLKO z domyślnego brancha**
+  (tu: `main`). Workflow z harmonogramem, który leży wyłącznie na
+  `preview`, nigdy się nie odpala i nie widać go nawet na liście workflow
+  w zakładce Actions. Tak przez pierwsze dni przepadła cała moderacja
+  spamu: `moderation-cron.yml` był tylko na `preview`, więc ani jedno
+  zgłoszenie nie zostało sprawdzone (`spam_checked_at` puste we
+  wszystkich wierszach). Każdy workflow z `schedule` musi być
+  zacommitowany na `main`, nawet jeśli dotyczy preview.
+- **Adresy w cronie:** `homeyko.pl` przekierowuje (308) na
+  `www.homeyko.pl`, a `curl` przy przekierowaniu na inny host wycina
+  nagłówek `Authorization`. Dlatego cron woła od razu `www.homeyko.pl`.
+- `api/cron/check-spam.js` bierze 50 zgłoszeń na przebieg i sprawdza je
+  po 5 równocześnie (limit zapytań na minutę po stronie Groqa), a
+  `vercel.json` podnosi `maxDuration` tej funkcji do 60 s, bo domyślne
+  10 s na planie Hobby nie starczało na cały batch.
 - **Pułapka: wpis w `vercel.json` → `crons` z harmonogramem częstszym niż
   raz dziennie wywalał WSZYSTKIE deploye (Preview i Produkcję), nie tylko
   Cron.** Darmowy plan Vercela (Hobby) dopuszcza cron jobs, ale tylko
@@ -142,10 +176,31 @@ mechanizmem co `/admin`.
      `api/cron/check-spam.js`, jeśli zmienna nosi dokładnie tę nazwę
    - `GROQ_API_KEY`: klucz do darmowego API Groq
      (https://console.groq.com/keys), używany przez moderację spamu
-3. Tabele `submissions` i `sztab_users` tworzą się same przy pierwszym
-   zapytaniu (`CREATE TABLE IF NOT EXISTS` w `lib/db.js`), podobnie jak
-   kolumny `is_spam`/`spam_checked_at` (`ALTER TABLE ... ADD COLUMN IF NOT
-   EXISTS`). Nie trzeba nic ręcznie migrować.
+3. Tabele `submissions`, `sztab_users` i `admin_activity_log` tworzą się
+   same przy pierwszym zapytaniu (`lib/db.js`), razem z kolumnami
+   dokładanymi przez `ALTER TABLE ... ADD COLUMN IF NOT EXISTS`. Nie
+   trzeba nic ręcznie migrować.
+
+   **Jak to działa i dlaczego tak:** `ensureSchema()` najpierw robi jedno
+   tanie zapytanie o marker (`to_regclass` na ostatnim indeksie ze
+   schematu). Jeśli marker istnieje, kończy bez żadnego DDL. Jeśli nie,
+   wysyła cały schemat jako **jedną transakcję** (jedno zapytanie HTTP do
+   Neona), otwartą blokadą doradczą `pg_advisory_xact_lock`, żeby przy
+   równoczesnych zimnych startach na pustej bazie schemat tworzyła tylko
+   jedna funkcja. Wynik jest zapamiętany w module, więc kolejne żądania
+   obsłużone przez tę samą instancję funkcji nie pytają bazy w ogóle.
+
+   Wcześniej `ensureSchema()` wysyłało 11 poleceń DDL przy **każdym**
+   żądaniu do API. To nie tylko kosztowało 11 round tripów narzutu na
+   każde zgłoszenie, ale i groziło zakleszczeniem: `ALTER TABLE ... ADD
+   COLUMN IF NOT EXISTS` bierze na tabeli blokadę ACCESS EXCLUSIVE nawet
+   wtedy, gdy kolumna już istnieje i nie ma nic do zrobienia, więc przy
+   kilkunastu równoczesnych zgłoszeniach żądania ustawiały się w kolejce
+   po blokady, aż do 504 po limicie czasu funkcji.
+
+   **Dokładając cokolwiek do schematu**, trzeba zmienić stałą
+   `SCHEMA_MARKER` w `lib/db.js` na nowy ostatni obiekt listy, inaczej
+   bazy, które mają już stary schemat, nigdy nie dostaną nowych kolumn.
 4. Dodać loginy członków sztabu (lokalnie, z `DATABASE_URL` w env):
    ```
    DATABASE_URL="..." node scripts/manage-users.js add kasia piotr ania ...
