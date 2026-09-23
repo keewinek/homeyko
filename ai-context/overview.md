@@ -31,4 +31,5 @@ projektem.
   ekipy): do uzupełnienia realnymi zdjęciami i tekstami.
 - Docelowa podstrona/sekcja Galeria: link w nawigacji na razie prowadzi
   donikąd poza `#program`.
-- Data wyborów i harmonogram kampanii (do uzupełnienia w `roadmap.md`).
+- Harmonogram wyborów i stan kampanii: patrz `roadmap.md` (strona żyje od
+  23.09.2026, kampania kończy się 25.09.2026, potem bez nowych treści).

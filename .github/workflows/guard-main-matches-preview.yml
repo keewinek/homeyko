@@ -1,0 +1,55 @@
+name: "Straznik: main musi byc odbiciem preview"
+
+# Na `main` (produkcja, homeyko.pl) nie powstaje wlasna tresc. Kazda zmiana
+# idzie najpierw na `preview`, a na `main` trafia tylko jako cale drzewo
+# plikow z `preview`, po wyraznym poleceniu wlasciciela repo. Pelne zasady:
+# CLAUDE.md, sekcja "Zasady publikacji".
+#
+# Ten workflow niczego nie pushuje i niczego nie cofa. Tylko sprawdza po
+# kazdym pushu na `main`, czy drzewo plikow zgadza sie z `preview`, i jesli
+# nie, zapala czerwone swiatlo. Wyjatek: pliki workflowow (.github/), ktore
+# z natury moga sie roznic, bo `schedule` dziala tylko z domyslnego brancha.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Pobierz preview
+        run: git fetch origin preview
+
+      - name: Porownaj drzewo main z preview
+        run: |
+          set -euo pipefail
+          if [ "$(git rev-parse HEAD^{tree})" = "$(git rev-parse origin/preview^{tree})" ]; then
+            echo "OK: main ma dokladnie to samo drzewo co preview."
+            exit 0
+          fi
+
+          # Roznica tylko w .github/ jest dopuszczalna (harmonogramy workflowow).
+          diff_files=$(git diff --name-only origin/preview main)
+          outside=$(printf '%s\n' "$diff_files" | grep -v '^\.github/' || true)
+          echo "Pliki roznice miedzy preview i main:"
+          printf '%s\n' "$diff_files"
+
+          if [ -z "$outside" ]; then
+            echo "OK: roznice dotycza wylacznie .github/, to dopuszczalne."
+            exit 0
+          fi
+
+          echo "::error::main rozni sie od preview poza .github/. Na main nie wolno edytowac tresci bezposrednio: zmiana idzie na preview, a potem cale drzewo z preview na main (patrz CLAUDE.md)."
+          printf '%s\n' "$outside"
+          exit 1

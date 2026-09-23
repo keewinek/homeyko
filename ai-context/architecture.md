@@ -95,27 +95,38 @@ Vercelu (Domains).
 
 ### Środowiska: produkcja vs preview
 
-- **`main`** to branch produkcyjny, spięty z `homeyko.pl`. Do czasu
-  oficjalnego release'u zawiera tylko pustą stronę (`public/index.html`
-  bez treści kampanii), żeby nie zdradzać programu przed startem.
-- **`preview`** to branch roboczy z pełną, aktualną wersją strony. Spięty
-  z domeną `preview.homeyko.pl` (Settings → Domains → Environment:
-  Preview → Git Branch: `preview`).
-- Merge `preview` → `main` dopiero na wyraźną decyzję o publikacji.
-- **Automatyczna publikacja na start kampanii:** workflow
+- **`main`** to branch produkcyjny, spięty z `homeyko.pl`. Od premiery
+  (północ 23.09.2026) zawiera pełną stronę kampanii. `main` nigdy nie jest
+  edytowany bezpośrednio: jego drzewo plików to zawsze dokładne odbicie
+  `preview`.
+- **`preview`** to branch roboczy z bieżącą wersją strony. Spięty z domeną
+  `preview.homeyko.pl` (Settings → Domains → Environment: Preview → Git
+  Branch: `preview`). Tu idzie każda zmiana i tu się ją testuje.
+- **Publikacja `preview` → `main` tylko na wyraźne polecenie właściciela
+  repo.** Pełne zasady (co jest, a co nie jest takim poleceniem, oraz
+  dokładna procedura merge'a) są w `CLAUDE.md`, sekcja "Zasady
+  publikacji". Skrót procedury: `git merge -s ours --no-commit --no-ff
+  origin/preview` + `git read-tree -u --reset origin/preview`, czyli
+  historia obu branchy i drzewo dokładnie jak na `preview`, więc merge nie
+  może się skonfliktować. Po pushu `git diff --stat origin/main
+  origin/preview` musi być pusty.
+- **Strażnik:** `.github/workflows/guard-main-matches-preview.yml` przy
+  każdym pushu na `main` porównuje drzewo `main` z drzewem `preview` i
+  wywala się, jeśli się różnią. Nic nie pushuje ani nie cofa, tylko
+  zapala czerwone światło, gdy ktoś (albo jakiś agent) zedytował `main`
+  na skróty. Workflow reaguje na push tylko wtedy, gdy leży na `main`,
+  więc zaczyna działać z pierwszą publikacją po jego dodaniu.
+- **Historia: automatyczna publikacja na start kampanii.** Workflow
   `.github/workflows/publish-campaign-launch.yml` o 22:00 UTC 22.09
-  (czyli o północy czasu polskiego 23.09) scala treść z `preview` na
-  `main`. Merge jest robiony strategią "historia obu branchy, drzewo
-  plików dokładnie jak na `preview`" (`git merge -s ours --no-commit` +
-  `git read-tree -u --reset origin/preview`), więc nie może się
-  skonfliktować z odliczaniem, które leży na `main`. Workflow jest
-  idempotentny (jeśli `main` ma już drzewo `preview`, nic nie robi),
-  odpala się kilka razy w oknie 22:00 UTC do 00:30 UTC (cron GitHuba
-  bywa opóźniony), ma też `workflow_dispatch` z opcją `force`, i na
-  koniec sprawdza curlem, czy `homeyko.pl` faktycznie serwuje stronę
-  kampanii. **Uwaga: `schedule` działa tylko z domyślnego brancha, więc
-  ten plik musi leżeć na `main`** (kopia na `preview` jest tylko dla
-  porządku).
+  (północ czasu polskiego 23.09) scalił treść z `preview` na `main`,
+  zastępując odliczanie z `public/countdown.html`. Zadziałał (run z
+  22:04 UTC 22.09) i jest **zużyty**: jego `schedule` dotyczył wyłącznie
+  22/23.09.2026. Był jednorazowym, wprost zamówionym wyjątkiem od zasady
+  "żadna automatyzacja nie pushuje na `main`". Nie odtwarzać podobnych
+  automatów bez wyraźnej prośby.
+- Pliki odliczania (`public/countdown.html`, `public/js/countdown.js`)
+  zostały w repo jako pamiątka. Nic ich nie linkuje, mają `noindex`, i
+  `vercel.json` nie przekierowuje na nie `/`.
 - **Cron (`vercel.json` → `crons`) działa tylko na deployu Produkcyjnym**
   (branch `main`), Vercel nie odpala cronów na Preview. Dlatego
   `api/cron/check-spam.js` jest wywoływany wyłącznie przez GitHub Actions
