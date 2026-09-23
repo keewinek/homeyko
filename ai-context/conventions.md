@@ -34,5 +34,8 @@
 - Minimalne, punktowe zmiany. Bez nadmiarowych abstrakcji.
 - Każda zmiana wizualna testowana w przeglądarce (Playwright) przed
   wgraniem, na desktopie i mobile.
-- Każda zmiana od razu commitowana i pushowana na `main` (bez pytania o
-  potwierdzenie, ustalone wcześniej w rozmowie).
+- Każda zmiana od razu commitowana i pushowana na **`preview`** (bez
+  pytania o potwierdzenie, ustalone raz na zawsze). Nigdy na `main`:
+  `main` to produkcja (homeyko.pl) i trafia tam wyłącznie całe drzewo
+  z `preview`, po wyraźnym poleceniu właściciela repo. Pełne zasady:
+  `CLAUDE.md`, sekcja "Zasady publikacji".

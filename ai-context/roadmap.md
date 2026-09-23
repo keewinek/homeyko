@@ -2,11 +2,11 @@
 
 ## Harmonogram wyborów (rok szkolny 2026/2027)
 
-**Faza I**
+**Faza I** (za nami)
 - 15-18.09: zbieranie podpisów
 - 21-22.09: rejestracja podpisów
 
-**Faza II**
+**Faza II** (trwa)
 - 23-25.09: kampanie wyborcze
 - 28.09: debata kandydatów
 
@@ -14,7 +14,21 @@
 - 28-29.09: cisza wyborcza
 - 29.09: głosowanie i wyniki
 
-## Planowane etapy
+## Gdzie jesteśmy (stan na 23.09.2026)
+
+- **Strona jest opublikowana.** Premiera: północ 23.09.2026. `main` i
+  `homeyko.pl` serwują pełną stronę kampanii, `preview` i
+  `preview.homeyko.pl` to wersja robocza.
+- **Kampania trwa i kończy się w piątek 25.09.2026.** Strona po kampanii
+  zostaje online na stałe.
+- **Po 25.09 nie dodajemy na stronę nowych treści kampanijnych** (nowe
+  sekcje, nowe postulaty, nowe materiały promocyjne). Poprawki techniczne,
+  literówki, bugfixy i moderacja zgłoszeń działają normalnie dalej.
+- Wszystko, co dotyczy publikacji (kto, kiedy i jak wypycha na `main`),
+  jest w `CLAUDE.md`. Ten plik nie powtarza tych zasad, tylko do nich
+  odsyła.
+
+## Etapy
 
 1. **Szkielet techniczny** ✅: strona statyczna (HTML/Tailwind/JS) na
    Vercelu, hero, sekcja programu, formularze i panel admina gotowe.
@@ -23,31 +37,20 @@
    - sekcja "Sztab" ✅ (szablon: zdjęcie grupowe i dane pozostałych osób
      do uzupełnienia)
    - sekcja "Kontakt" ✅
-   - do zrobienia: galeria, aktualności / newsy z kampanii
+   - galeria, aktualności / newsy z kampanii: **tylko do 25.09**, po
+     kampanii nowych treści już nie dodajemy
 3. **Identyfikacja wizualna** ✅: logo, kolory, zdjęcia kampanijne gotowe.
-4. **Wdrożenie / publikacja** ✅: strona działa na homeyko.pl.
+4. **Wdrożenie / publikacja** ✅: strona działa na homeyko.pl od 23.09.
 
-## Uwaga
+## Co zostało z okresu przed premierą (kontekst historyczny)
 
-Harmonogram jest napięty (kampania startuje 23.09, głosowanie 29.09).
-Treść merytoryczna (etap 2, podstrony Zespół/Galeria/aktualności) powinna
-być priorytetem.
-
-## ⚠️ Zasada publikacji: embargo do startu kampanii (BARDZO WAŻNE)
-
-Kampania startuje **23 września 2026, o północy czasu polskiego**
-(00:00 CEST, czyli 22:00 UTC 22.09). Do tego momentu na domenie
-**homeyko.pl (branch `main`) nie może pojawić się żadna treść
-kampanijna** (program/postulaty, zespół, itd.), bo zdradziłoby to
-program przed startem.
-
-Konsekwencje dla pracy nad kodem:
-- Wszystkie zmiany, cała bieżąca praca: commit i push na branch
-  `preview` (preview.homeyko.pl). Nigdy na `main`, chyba że ktoś
-  wyraźnie o to poprosi.
-- `main` zostaje pusty (albo z odliczaniem, patrz niżej) aż do
-  wyraźnej decyzji o publikacji, zgodnie z opisem w
-  `architecture.md` ("Środowiska: produkcja vs preview").
-- Do czasu startu na `main` ma być widoczne odliczanie do północy
-  23.09. Po minięciu tego momentu odliczanie ma zniknąć i ustąpić
-  miejsca normalnej stronie kampanii.
+- Do 23.09 na `main` było odliczanie do startu kampanii
+  (`public/countdown.html`, `public/js/countdown.js`), a treść kampanijna
+  leżała wyłącznie na `preview`, żeby nie zdradzić programu przed startem.
+  **To embargo już nie obowiązuje**, treść jest publiczna.
+- Publikację o północy zrobił jednorazowy workflow
+  `.github/workflows/publish-campaign-launch.yml`. Jest już zużyty (jego
+  `schedule` dotyczył 22/23.09.2026) i nie należy odtwarzać takich
+  automatów pushujących na `main`.
+- Pliki odliczania zostały w repo jako pamiątka, nic ich już nie
+  linkuje, mają `noindex`.
