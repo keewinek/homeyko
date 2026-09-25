@@ -7,5 +7,12 @@
     "api/cron/check-spam.js": {
       "maxDuration": 60
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/zglos-pomysl",
+      "destination": "/kontakt/pomysl",
+      "permanent": false
+    }
+  ]
 }
