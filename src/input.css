@@ -295,19 +295,24 @@ html {
 
 @media (max-width: 640px) {
   /* Wąski ekran: całe zdjęcie grupowe na dole hero (bez powiększania),
-     napis nad nim, a w tle pośrodku półprzezroczyste logo. */
+     napis na nim, a w tle pośrodku półprzezroczyste logo. */
   .hero__image img {
     width: 100%;
     max-width: none;
     filter: none;
   }
 
-  .hero__body {
-    padding-bottom: calc(100vw / 1.9 + 1.25rem);
-  }
-
+  /* Ciemny gradient od dołu, żeby napis na zdjęciu był czytelny. */
   .hero__scrim {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 22%);
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 22%),
+      linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.8) 0,
+        rgba(0, 0, 0, 0.62) 9rem,
+        rgba(0, 0, 0, 0.35) 15rem,
+        rgba(0, 0, 0, 0) 22rem
+      );
   }
 
   .hero__overlay::after {
