@@ -19,8 +19,8 @@
      identyczne połówki, więc przesunięcie o -50% zapętla się bez skoku. */
   var logoWall = document.getElementById("logo-wall");
   if (logoWall) {
-    var ROWS = 12;
-    var LOGOS_PER_HALF = 8;
+    var ROWS = 30;
+    var LOGOS_PER_HALF = 10;
     for (var r = 0; r < ROWS; r++) {
       var row = document.createElement("div");
       row.className = "logo-wall__row " + (r % 2 === 0 ? "is-right" : "is-left");

@@ -351,7 +351,7 @@ html {
   .hero__logo-wall {
     display: flex;
     position: absolute;
-    inset: -35% -55%;
+    inset: -50% -55%;
     z-index: -1;
     flex-direction: column;
     justify-content: center;
