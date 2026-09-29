@@ -14,7 +14,7 @@
 
   function setStatus(text) {
     statusEl.textContent = text;
-    statusEl.className = "min-h-[1rem] text-sm font-semibold text-red-700";
+    statusEl.className = "text-sm font-semibold text-red-700 empty:hidden";
   }
 
   form.motivation.addEventListener("input", function () {

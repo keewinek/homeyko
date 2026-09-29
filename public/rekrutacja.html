@@ -48,10 +48,9 @@
     </header>
 
     <main class="mx-auto flex max-w-md flex-col px-4 py-8 sm:py-12">
-      <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg">
+      <div class="overflow-hidden rounded-xl border border-gray-200 bg-white">
         <div class="bg-[color:var(--brand-maroon)] px-5 py-4 sm:px-6">
           <h1 class="font-[family-name:var(--font-display)] text-lg font-black uppercase leading-tight text-white sm:text-xl">Chcę działać w samorządzie</h1>
-          <p class="mt-0.5 text-sm text-white/70">Wypełnij formularz, odezwiemy się do wybranych osób.</p>
         </div>
 
         <form id="rekrutacja-form" class="flex flex-col gap-3.5 p-5 sm:p-6" novalidate>
@@ -63,29 +62,29 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label for="firstName" class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-500">Imię</label>
-              <input type="text" id="firstName" name="firstName" required minlength="2" maxlength="40" autocomplete="given-name" class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:bg-white focus:ring-2 focus:ring-[color:var(--brand-coral)]/30" />
+              <input type="text" id="firstName" name="firstName" required minlength="2" maxlength="40" autocomplete="given-name" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/30" />
             </div>
             <div>
               <label for="lastName" class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-500">Nazwisko</label>
-              <input type="text" id="lastName" name="lastName" required minlength="2" maxlength="40" autocomplete="family-name" class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:bg-white focus:ring-2 focus:ring-[color:var(--brand-coral)]/30" />
+              <input type="text" id="lastName" name="lastName" required minlength="2" maxlength="40" autocomplete="family-name" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/30" />
             </div>
           </div>
 
           <div>
             <label for="className" class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-500">Klasa</label>
-            <input type="text" id="className" name="className" required maxlength="10" placeholder="np. 2B" autocomplete="off" class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:bg-white focus:ring-2 focus:ring-[color:var(--brand-coral)]/30 max-w-[8rem]" />
+            <input type="text" id="className" name="className" required maxlength="10" placeholder="np. 2B" autocomplete="off" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/30 max-w-[8rem]" />
           </div>
 
           <div>
             <label for="motivation" class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-500">Dlaczego chcesz być członkiem samorządu?</label>
-            <textarea id="motivation" name="motivation" rows="4" required minlength="10" maxlength="1000" class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:bg-white focus:ring-2 focus:ring-[color:var(--brand-coral)]/30 resize-none"></textarea>
-            <p id="motivation-counter" class="mt-0.5 text-right text-[11px] text-gray-400" aria-hidden="true"></p>
+            <textarea id="motivation" name="motivation" rows="4" required minlength="10" maxlength="1000" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/30 resize-none"></textarea>
+            <p id="motivation-counter" class="mt-1 text-right text-[11px] leading-none text-gray-400" aria-hidden="true"></p>
           </div>
 
-          <p id="rekrutacja-status" role="status" class="min-h-[1rem] text-sm font-semibold"></p>
+          <p id="rekrutacja-status" role="status" class="text-sm font-semibold empty:hidden"></p>
 
           <button type="submit" id="rekrutacja-submit"
-            class="inline-flex items-center justify-center rounded-lg bg-[color:var(--brand-coral)] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[color:var(--brand-maroon)] disabled:cursor-not-allowed disabled:opacity-50">
+            class="inline-flex items-center justify-center rounded-md bg-[color:var(--brand-coral)] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[color:var(--brand-maroon)] disabled:cursor-not-allowed disabled:opacity-50">
             Wyślij zgłoszenie
           </button>
         </form>
