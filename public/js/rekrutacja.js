@@ -39,7 +39,7 @@
     if (payload.firstName.length < 2) return setStatus("Podaj imię.");
     if (payload.lastName.length < 2) return setStatus("Podaj nazwisko.");
     if (!payload.className) return setStatus("Podaj klasę.");
-    if (payload.contact.length < 3) return setStatus("Zostaw kontakt do siebie.");
+    if (payload.contact.length < 3) return setStatus("Podaj link do profilu na Facebooku.");
     if (payload.motivation.length < MOTIVATION_MIN) {
       return setStatus("Napisz kilka słów o tym, dlaczego chcesz działać (min. " + MOTIVATION_MIN + " znaków).");
     }

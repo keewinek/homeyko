@@ -36,6 +36,15 @@
     }
   }
 
+  // Kontakt to zwykle link do Facebooka: klikalny tylko dla http(s).
+  function contactHtml(contact) {
+    if (!contact) return "brak";
+    if (/^https?:\/\//i.test(contact)) {
+      return '<a href="' + escapeHtml(contact).replace(/"/g, "&quot;").replace(/'/g, "&#39;") + '" target="_blank" rel="noopener noreferrer" class="underline hover:text-gray-700">' + escapeHtml(contact) + "</a>";
+    }
+    return escapeHtml(contact);
+  }
+
   function buildSkeleton() {
     skeletonEl.innerHTML = "";
     for (var i = 0; i < SKELETON_COUNT; i++) {
@@ -68,7 +77,7 @@
         escapeHtml(item.first_name + " " + item.last_name) +
         ' <span class="ml-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-600">' +
         escapeHtml(item.class_name) + "</span></p>" +
-        '<p class="mt-1 text-sm text-gray-500">Kontakt: ' + escapeHtml(item.contact || "brak") + "</p>" +
+        '<p class="mt-1 text-sm text-gray-500">Facebook: ' + contactHtml(item.contact) + "</p>" +
         '<p class="mt-2 whitespace-pre-wrap break-words text-gray-900">' + escapeHtml(item.motivation) + "</p>" +
         "</div>" +
         '<button type="button" data-id="' + item.id + '" class="delete-btn shrink-0 self-start rounded-md border border-gray-200 px-2.5 py-1 text-xs font-semibold text-gray-500 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-600">Usuń</button>';

@@ -73,14 +73,14 @@
           </div>
 
           <div>
-            <label for="contact" class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-500">Zostaw kontakt do siebie np. Instagram</label>
-            <input type="text" id="contact" name="contact" required minlength="3" maxlength="100" autocomplete="off" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/30" />
+            <label for="motivation" class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-500">Dlaczego chcesz być członkiem samorządu?</label>
+            <textarea id="motivation" name="motivation" rows="4" required minlength="10" maxlength="1000" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/30 resize-none"></textarea>
+            <p id="motivation-counter" class="mt-1 text-right text-[11px] leading-none text-gray-400 empty:hidden" aria-hidden="true"></p>
           </div>
 
           <div>
-            <label for="motivation" class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-500">Dlaczego chcesz być członkiem samorządu?</label>
-            <textarea id="motivation" name="motivation" rows="4" required minlength="10" maxlength="1000" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/30 resize-none"></textarea>
-            <p id="motivation-counter" class="mt-1 text-right text-[11px] leading-none text-gray-400" aria-hidden="true"></p>
+            <label for="contact" class="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-500">Link do profilu na Facebooku</label>
+            <input type="text" id="contact" name="contact" inputmode="url" placeholder="https://facebook.com/..." required minlength="3" maxlength="200" autocomplete="off" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/30" />
           </div>
 
           <p id="rekrutacja-status" role="status" class="text-sm font-semibold empty:hidden"></p>
