@@ -198,19 +198,6 @@ html {
   overflow: hidden;
 }
 
-@media (max-width: 640px) {
-  /* Wąski ekran: zdjęcie grupowe powiększone (środek kadru) i uniesione
-     nad blok z napisem, żeby nie ginęło pod tekstem. */
-  .hero__image {
-    padding-bottom: 12rem;
-  }
-
-  .hero__image img {
-    width: 200%;
-    max-width: none;
-  }
-}
-
 .hero__scrim {
   position: absolute;
   inset: 0;
@@ -304,6 +291,32 @@ html {
   border-color: var(--brand-coral);
   color: #fff;
   box-shadow: 0 10px 24px rgba(224, 118, 118, 0.32);
+}
+
+@media (max-width: 640px) {
+  /* Wąski ekran: całe zdjęcie grupowe na dole hero (bez powiększania),
+     napis nad nim, a w tle pośrodku półprzezroczyste logo. */
+  .hero__image img {
+    width: 100%;
+    max-width: none;
+    filter: none;
+  }
+
+  .hero__body {
+    padding-bottom: calc(100vw / 1.9 + 1.25rem);
+  }
+
+  .hero__scrim {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 22%);
+  }
+
+  .hero__overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("/images/logo-white.png") center 30% / 78% auto no-repeat;
+    opacity: 0.16;
+  }
 }
 
 .btn__icon {
