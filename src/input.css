@@ -293,6 +293,28 @@ html {
   box-shadow: 0 10px 24px rgba(224, 118, 118, 0.32);
 }
 
+@keyframes logo-wall-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes logo-wall-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.hero__logo-wall {
+  display: none;
+}
+
 @media (max-width: 640px) {
   /* Wąski ekran: zdjęcie grupowe powiększone, na dole hero,
      napis na nim, a w tle pośrodku półprzezroczyste logo. */
@@ -325,12 +347,43 @@ html {
       );
   }
 
-  .hero__overlay::after {
-    content: "";
+  /* Ściana logo Homeyko: obrócona, rzędy jadą na przemian w prawo i w lewo. */
+  .hero__logo-wall {
+    display: flex;
     position: absolute;
-    inset: 0;
-    background: url("/images/logo-white.png") center 30% / 78% auto no-repeat;
-    opacity: 0.16;
+    inset: -35% -55%;
+    z-index: -1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.75rem;
+    transform: rotate(-14deg);
+    opacity: 0.14;
+    pointer-events: none;
+  }
+
+  .logo-wall__row {
+    display: flex;
+    flex-shrink: 0;
+    gap: 2.5rem;
+    width: max-content;
+    animation: logo-wall-right 160s linear infinite;
+    will-change: transform;
+  }
+
+  .logo-wall__row.is-left {
+    animation-name: logo-wall-left;
+  }
+
+  .logo-wall__row img {
+    width: 110px;
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-wall__row {
+      animation: none;
+    }
   }
 }
 

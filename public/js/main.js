@@ -14,6 +14,30 @@
   if (openBtn) openBtn.addEventListener("click", openNav);
   if (closeBtn) closeBtn.addEventListener("click", closeNav);
 
+  /* Ściana logo w tle hero (widoczna tylko na telefonie, patrz CSS).
+     Rzędy przesuwają się na przemian w prawo i w lewo. Każdy rząd ma dwie
+     identyczne połówki, więc przesunięcie o -50% zapętla się bez skoku. */
+  var logoWall = document.getElementById("logo-wall");
+  if (logoWall) {
+    var ROWS = 12;
+    var LOGOS_PER_HALF = 8;
+    for (var r = 0; r < ROWS; r++) {
+      var row = document.createElement("div");
+      row.className = "logo-wall__row " + (r % 2 === 0 ? "is-right" : "is-left");
+      row.style.animationDelay = "-" + ((r * 7) % 40) + "s";
+      for (var i = 0; i < LOGOS_PER_HALF * 2; i++) {
+        var img = document.createElement("img");
+        img.src = "/images/logo-white.png";
+        img.alt = "";
+        img.width = 110;
+        img.height = 22;
+        img.decoding = "async";
+        row.appendChild(img);
+      }
+      logoWall.appendChild(row);
+    }
+  }
+
   navLinks.querySelectorAll("a").forEach(function (link) {
     link.addEventListener("click", closeNav);
   });
