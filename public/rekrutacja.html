@@ -40,20 +40,17 @@
     />
     <link rel="stylesheet" href="/css/styles.css" />
   </head>
-  <body class="min-h-screen bg-gray-50">
+  <body class="min-h-screen bg-white">
     <header class="bg-[color:var(--brand-maroon-dark)] py-5 px-[clamp(1.25rem,4vw,3rem)]">
       <a href="/" class="inline-flex items-center">
         <img src="/images/logo-white.png" alt="Homeyko" class="h-7 w-auto" />
       </a>
     </header>
 
-    <main class="mx-auto flex max-w-md flex-col px-4 py-8 sm:py-12">
-      <div class="overflow-hidden rounded-xl border border-gray-200 bg-white">
-        <div class="bg-[color:var(--brand-maroon)] px-5 py-4 sm:px-6">
-          <h1 class="font-[family-name:var(--font-display)] text-lg font-black uppercase leading-tight text-white sm:text-xl">Chcę działać w samorządzie</h1>
-        </div>
+    <main class="mx-auto flex max-w-lg flex-col px-4 py-8 sm:py-10">
+      <h1 class="mb-6 font-[family-name:var(--font-display)] text-2xl font-black uppercase leading-tight text-[color:var(--brand-maroon)] sm:text-[1.7rem]">Chcę działać w samorządzie</h1>
 
-        <form id="rekrutacja-form" class="flex flex-col gap-3.5 p-5 sm:p-6" novalidate>
+        <form id="rekrutacja-form" class="flex flex-col gap-4" novalidate>
           <div class="hidden" aria-hidden="true">
             <label for="website">Zostaw puste</label>
             <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
@@ -89,12 +86,11 @@
           </button>
         </form>
 
-        <div id="rekrutacja-thanks" class="hidden p-8 text-center" role="status">
+        <div id="rekrutacja-thanks" class="hidden py-6" role="status">
           <h2 class="text-xl font-black text-[color:var(--brand-maroon)]">Dziękujemy za zgłoszenie!</h2>
           <p class="mt-1 text-sm text-gray-600">Odezwiemy się do wybranych osób.</p>
           <a href="/" class="mt-5 inline-block text-sm font-semibold text-[color:var(--brand-maroon)] underline underline-offset-4">Wróć na stronę główną</a>
         </div>
-      </div>
     </main>
 
     <script src="/js/rekrutacja.js"></script>
