@@ -294,11 +294,21 @@ html {
 }
 
 @media (max-width: 640px) {
-  /* Wąski ekran: całe zdjęcie grupowe na dole hero (bez powiększania),
+  /* Wąski ekran: zdjęcie grupowe powiększone, na dole hero,
      napis na nim, a w tle pośrodku półprzezroczyste logo. */
+  /* Ludzie na zdjęciu zajmują ok. 73% jego wysokości (u góry jest puste,
+     przezroczyste pole), więc 88% wysokości ekranu daje im ok. 64%.
+     Zdjęcie jest wtedy szersze niż ekran, środek grupy zostaje w kadrze. */
+  .hero__image {
+    overflow: hidden;
+  }
+
   .hero__image img {
-    width: 100%;
+    height: 88vh;
+    height: 88svh;
+    width: auto;
     max-width: none;
+    aspect-ratio: auto;
     filter: none;
   }
 
