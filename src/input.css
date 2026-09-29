@@ -183,10 +183,31 @@ html {
   pointer-events: none;
 }
 
+.hero__easy {
+  position: absolute;
+  inset: var(--nav-height) 0 auto 0;
+  z-index: 0;
+  margin: 0;
+  padding-top: clamp(1rem, 6vh, 4rem);
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(6rem, 30vw, 24rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--brand-coral);
+  opacity: 0.9;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  user-select: none;
+}
+
 .hero__image img {
-  height: 100%;
+  height: auto;
+  max-height: 100%;
   width: auto;
-  max-width: none;
+  max-width: min(100%, 720px);
   display: block;
   object-fit: contain;
   filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.5));
@@ -1154,25 +1175,6 @@ html {
   font-size: clamp(1.1rem, 3.4vw, 1.6rem);
   color: #fff;
   box-shadow: 5px 5px 0 #111;
-}
-
-/* ----------------------------------------------------------------- */
-/* Easter egg                                                         */
-/* ----------------------------------------------------------------- */
-
-.easter-egg {
-  width: min(100%, 500px);
-  margin: 0 auto;
-  overflow: hidden;
-  /* image is 628x707; container height = 75% of the scaled image height */
-  aspect-ratio: 2512 / 2121;
-  background: #fff;
-}
-
-.easter-egg__img {
-  width: 100%;
-  height: auto;
-  display: block;
 }
 
 /* ----------------------------------------------------------------- */
