@@ -68,6 +68,7 @@
         escapeHtml(item.first_name + " " + item.last_name) +
         ' <span class="ml-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-600">' +
         escapeHtml(item.class_name) + "</span></p>" +
+        '<p class="mt-1 text-sm text-gray-500">Kontakt: ' + escapeHtml(item.contact || "brak") + "</p>" +
         '<p class="mt-2 whitespace-pre-wrap break-words text-gray-900">' + escapeHtml(item.motivation) + "</p>" +
         "</div>" +
         '<button type="button" data-id="' + item.id + '" class="delete-btn shrink-0 self-start rounded-md border border-gray-200 px-2.5 py-1 text-xs font-semibold text-gray-500 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-600">Usuń</button>';

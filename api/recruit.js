@@ -5,6 +5,8 @@ const NAME_MIN = 2;
 const NAME_MAX = 40;
 const CLASS_MIN = 1;
 const CLASS_MAX = 10;
+const CONTACT_MIN = 3;
+const CONTACT_MAX = 100;
 const MOTIVATION_MIN = 10;
 const MOTIVATION_MAX = 1000;
 
@@ -53,6 +55,7 @@ module.exports = async function handler(req, res) {
   const firstName = clean(body.firstName, NAME_MAX);
   const lastName = clean(body.lastName, NAME_MAX);
   const className = clean(body.className, CLASS_MAX);
+  const contact = clean(body.contact, CONTACT_MAX);
   // Motywację zostawiamy z nowymi liniami, tylko przycinamy.
   const motivation = String(body.motivation || "")
     .replace(ALLOWED_CHARS_REGEX, "")
@@ -64,6 +67,10 @@ module.exports = async function handler(req, res) {
   }
   if (className.length < CLASS_MIN) {
     res.status(400).json({ error: "Podaj klasę" });
+    return;
+  }
+  if (contact.length < CONTACT_MIN) {
+    res.status(400).json({ error: "Zostaw kontakt do siebie" });
     return;
   }
   if (motivation.length < MOTIVATION_MIN || motivation.length > MOTIVATION_MAX) {
@@ -92,8 +99,8 @@ module.exports = async function handler(req, res) {
 
     await sql`
       INSERT INTO recruitment_applications
-        (first_name, last_name, class_name, motivation, ip_hash)
-      VALUES (${firstName}, ${lastName}, ${className}, ${motivation}, ${ipHash})
+        (first_name, last_name, class_name, contact, motivation, ip_hash)
+      VALUES (${firstName}, ${lastName}, ${className}, ${contact}, ${motivation}, ${ipHash})
     `;
     res.status(200).json({ ok: true });
   } catch (err) {

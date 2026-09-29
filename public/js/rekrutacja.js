@@ -31,6 +31,7 @@
       firstName: form.firstName.value.trim(),
       lastName: form.lastName.value.trim(),
       className: form.className.value.trim(),
+      contact: form.contact.value.trim(),
       motivation: form.motivation.value.trim(),
       website: form.website.value,
     };
@@ -38,6 +39,7 @@
     if (payload.firstName.length < 2) return setStatus("Podaj imię.");
     if (payload.lastName.length < 2) return setStatus("Podaj nazwisko.");
     if (!payload.className) return setStatus("Podaj klasę.");
+    if (payload.contact.length < 3) return setStatus("Zostaw kontakt do siebie.");
     if (payload.motivation.length < MOTIVATION_MIN) {
       return setStatus("Napisz kilka słów o tym, dlaczego chcesz działać (min. " + MOTIVATION_MIN + " znaków).");
     }

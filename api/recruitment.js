@@ -16,7 +16,7 @@ module.exports = async function handler(req, res) {
       const offset = Math.max(Number(req.query.offset) || 0, 0);
 
       const rows = await sql`
-        SELECT id, first_name, last_name, class_name, motivation, created_at
+        SELECT id, first_name, last_name, class_name, contact, motivation, created_at
         FROM recruitment_applications
         ORDER BY created_at DESC
         LIMIT ${limit} OFFSET ${offset}
