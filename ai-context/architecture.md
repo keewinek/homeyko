@@ -8,7 +8,8 @@
   `public/admin/zgloszone_pytania.html`), serwowana pod czystymi URL-ami
   bez `.html` (`cleanUrls` w `vercel.json`): `/`, `/kontakt`,
   `/kontakt/pomysl`, `/kontakt/pytania`, `/admin`,
-  `/admin/zgloszone_pomysly`, `/admin/zgloszone_pytania`
+  `/admin/zgloszone_pomysly`, `/admin/zgloszone_pytania`, `/rekrutacja`,
+  `/admin/rekrutacja`
 - **Style:** [Tailwind CSS](https://tailwindcss.com/) v4 (CLI), źródło w
   `src/input.css`, kompilowane do `public/css/styles.css`
 - **JS (front):** vanilla JavaScript (`public/js/*.js`): menu mobilne,
@@ -46,6 +47,10 @@ public/                # publikowany katalog (output dir na Vercel)
   favicon.ico
 api/                    # Vercel Serverless Functions (Node.js)
   submit.js                # POST, zapis zgłoszenia (publiczne)
+  recruit.js                # POST, formularz /rekrutacja (publiczne, honeypot,
+                             #   limit 3/h na IP), tabela recruitment_applications
+  recruitment.js             # GET/DELETE, lista/usuwanie zgłoszeń rekrutacyjnych
+                              #   (wymaga loginu), strona /admin/rekrutacja
   login.js                  # POST, login+hasło; pierwsze logowanie na
                              #   dany login ustawia to hasło jako docelowe
   logout.js                  # POST, czyści cookie sesji

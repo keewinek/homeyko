@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homeyko - Rekrutacja do samorządu</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/images/icon-512.png" />
+    <meta name="theme-color" content="#540002" />
+    <meta name="description" content="Chcesz działać w samorządzie uczniowskim? Wypełnij krótki formularz i dołącz do zespołu." />
+    <link rel="canonical" href="https://homeyko.pl/rekrutacja" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Homeyko" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:url" content="https://homeyko.pl/rekrutacja" />
+    <meta property="og:title" content="Homeyko - Rekrutacja do samorządu" />
+    <meta property="og:description" content="Chcesz działać w samorządzie uczniowskim? Wypełnij krótki formularz i dołącz do zespołu." />
+    <meta property="og:image" content="https://homeyko.pl/images/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Logo Homeyko na bordowym tle" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Homeyko - Rekrutacja do samorządu" />
+    <meta name="twitter:description" content="Chcesz działać w samorządzie uczniowskim? Wypełnij krótki formularz i dołącz do zespołu." />
+    <meta name="twitter:image" content="https://homeyko.pl/images/og-image.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="min-h-screen bg-gray-50">
+    <header class="bg-[color:var(--brand-maroon-dark)] py-5 px-[clamp(1.25rem,4vw,3rem)]">
+      <a href="/" class="inline-flex items-center">
+        <img src="/images/logo-white.png" alt="Homeyko" class="h-7 w-auto" />
+      </a>
+    </header>
+
+    <main class="mx-auto max-w-xl px-4 py-10 sm:py-14">
+      <h1 class="font-[family-name:var(--font-display)] text-3xl font-black uppercase leading-tight text-[color:var(--brand-maroon)] sm:text-4xl">
+        Chcę działać w samorządzie
+      </h1>
+      <p class="mt-3 text-gray-600">Wypełnij formularz. Odezwiemy się do wybranych osób.</p>
+
+      <form id="rekrutacja-form" class="mt-8 flex flex-col gap-5 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7" novalidate>
+        <div class="hidden" aria-hidden="true">
+          <label for="website">Zostaw puste</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label for="firstName" class="mb-1.5 block text-sm font-semibold text-gray-900">Imię</label>
+            <input type="text" id="firstName" name="firstName" required minlength="2" maxlength="40" autocomplete="given-name"
+              class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-gray-900 outline-none transition-colors focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/40" />
+          </div>
+          <div>
+            <label for="lastName" class="mb-1.5 block text-sm font-semibold text-gray-900">Nazwisko</label>
+            <input type="text" id="lastName" name="lastName" required minlength="2" maxlength="40" autocomplete="family-name"
+              class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-gray-900 outline-none transition-colors focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/40" />
+          </div>
+        </div>
+
+        <div>
+          <label for="className" class="mb-1.5 block text-sm font-semibold text-gray-900">Klasa</label>
+          <input type="text" id="className" name="className" required maxlength="10" placeholder="np. 2B" autocomplete="off"
+            class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-gray-900 outline-none transition-colors focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/40 sm:max-w-[10rem]" />
+        </div>
+
+        <div>
+          <label for="motivation" class="mb-1.5 block text-sm font-semibold text-gray-900">Dlaczego chcesz być członkiem samorządu?</label>
+          <textarea id="motivation" name="motivation" rows="6" required minlength="10" maxlength="1000"
+            class="w-full resize-y rounded-lg border border-gray-300 px-3.5 py-2.5 text-gray-900 outline-none transition-colors focus:border-[color:var(--brand-maroon)] focus:ring-2 focus:ring-[color:var(--brand-coral)]/40"></textarea>
+          <p id="motivation-counter" class="mt-1 text-right text-xs text-gray-400" aria-hidden="true"></p>
+        </div>
+
+        <p id="rekrutacja-status" role="status" class="min-h-[1.25rem] text-sm font-semibold"></p>
+
+        <button type="submit" id="rekrutacja-submit"
+          class="inline-flex items-center justify-center rounded-lg bg-[color:var(--brand-maroon)] px-6 py-3 font-bold text-white transition-colors hover:bg-[color:var(--brand-maroon-dark)] disabled:cursor-not-allowed disabled:opacity-50">
+          Wyślij zgłoszenie
+        </button>
+      </form>
+
+      <div id="rekrutacja-thanks" class="mt-8 hidden rounded-2xl border border-gray-100 bg-white p-8 text-center shadow-sm" role="status">
+        <h2 class="text-2xl font-black text-[color:var(--brand-maroon)]">Dziękujemy za zgłoszenie!</h2>
+        <p class="mt-2 text-gray-600">Odezwiemy się do wybranych osób.</p>
+        <a href="/" class="mt-6 inline-block font-semibold text-[color:var(--brand-maroon)] underline underline-offset-4">Wróć na stronę główną</a>
+      </div>
+    </main>
+
+    <script src="/js/rekrutacja.js"></script>
+    <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
